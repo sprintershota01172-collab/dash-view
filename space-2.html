@@ -28,6 +28,9 @@
         --accent-soft: #dcefe3;
         --warn: #b3402a;
         --warn-soft: #fbe9e4;
+        --low: #9a7200;
+        --low-bar: #d9a514;
+        --low-soft: #faf0cd;
         --trip: #8a5a12;
         --trip-soft: #f7ecd4;
         --shadow: 0 1px 2px rgba(23, 60, 40, .06), 0 6px 18px rgba(23, 60, 40, .07);
@@ -46,6 +49,9 @@
           --accent-soft: #234433;
           --warn: #e0785c;
           --warn-soft: #452a22;
+          --low: #e3b93e;
+          --low-bar: #c99a17;
+          --low-soft: #3d3418;
           --trip: #d8ab54;
           --trip-soft: #3d3220;
           --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.35);
@@ -209,7 +215,8 @@
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        gap: 8px;
+        flex-wrap: wrap;
+        gap: 4px 8px;
         font-size: 11.5px;
         font-weight: 700;
         color: var(--ink-2);
@@ -275,11 +282,35 @@
       }
       .cat-remain small { font-size: 10.5px; font-weight: 700; color: var(--ink-2); }
       .cat.over .cat-remain { color: var(--warn); }
+      .cat.low .cat-remain { color: var(--low); }
       .cat-sub {
         font-size: 11px;
         color: var(--ink-2);
         margin-top: 2px;
         white-space: normal;
+      }
+      .cat-diff {
+        font-size: 10.5px;
+        color: var(--ink-3);
+        margin-top: 1px;
+        white-space: normal;
+      }
+      .cat-diff b { font-weight: 700; }
+      .cat-diff .up { color: var(--warn); }
+      .cat-diff .down { color: var(--accent); }
+      .csv-btn {
+        flex: none;
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink);
+        font-family: inherit;
+        font-size: 10.5px;
+        font-weight: 700;
+        border-radius: 7px;
+        padding: 2px 8px;
+        margin-left: 8px;
+        cursor: pointer;
+        white-space: nowrap;
       }
       .cat .bar { height: 4px; margin-top: 6px; }
 
@@ -430,6 +461,35 @@
         line-height: 1;
         cursor: pointer;
       }
+      .sheet-tools {
+        flex: none;
+        display: flex;
+        gap: 8px;
+        padding: 0 12px 10px;
+      }
+      .sheet-tools input[type="search"] {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink);
+        font-family: inherit;
+        font-size: 13px;
+        border-radius: 9px;
+        padding: 7px 10px;
+      }
+      .sheet-tools select {
+        flex: none;
+        max-width: 42%;
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink);
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        border-radius: 9px;
+        padding: 7px 6px;
+      }
       .sheet-body {
         overflow-y: auto;
         padding: 0 12px 14px;
@@ -452,10 +512,24 @@
       }
       @media (max-width: 719px) {
         .app { gap: 6px; }
-        .cat { padding: 6px 9px 7px; }
+        .main > .pane:first-child { flex: 1.3 1 0; min-height: 0; }
+        .pay-pane { flex: 1 1 0; min-height: 0; }
+        .cat-grid {
+          flex: 1;
+          min-height: 0;
+          grid-template-rows: repeat(5, minmax(0, 1fr));
+        }
+        .cat { padding: 5px 9px 6px; overflow: hidden; }
         .cat-remain { font-size: 15px; }
-        .cat-sub { margin-top: 1px; }
+        .cat-sub { font-size: 10.5px; margin-top: 1px; }
+        .cat-diff { font-size: 10px; margin-top: 0; }
         .cat .bar { margin-top: 4px; }
+        .hero { padding: 9px 14px 10px; }
+        .trip { padding: 8px 12px 9px; }
+      }
+      @media (max-width: 560px) {
+        .pane-hint { display: none; }
+        .csv-btn { margin-left: 6px; padding: 2px 7px; }
       }
       @media (max-width: 360px) {
         .hero .big { font-size: 27px; }
@@ -495,6 +569,11 @@
           <span>食費 <span id="tripFood">0</span>円</span>
           <span>交通・宿泊（全額支給）<span id="tripTrans">0</span>円</span>
         </div>
+        <div class="trip-meta">
+          <span>食費の1日平均 <span id="tripAvg">0</span>円</span>
+          <span>残り <span id="tripDaysLeft">0</span>日</span>
+          <span>1日あたり使える目安 <span id="tripPerDay">0</span>円</span>
+        </div>
       </section>
 
       <div class="main">
@@ -503,7 +582,7 @@
           <div class="cat-grid" id="catGrid"></div>
         </div>
         <div class="pane pay-pane">
-          <div class="pane-label"><span>支払い一覧<span class="pane-hint">タップで全件表示</span></span><span class="pane-total" id="payMonthTotal"></span></div>
+          <div class="pane-label"><span>支払い一覧<span class="pane-hint">タップで全件表示</span></span><span class="pane-total"><span id="payMonthTotal"></span><button type="button" class="csv-btn" id="csvBtn">CSV出力</button></span></div>
           <div class="pay-wrap" id="payWrap" title="タップで全件表示">
             <div id="payList"></div>
             <button type="button" class="pay-more" id="payMore"></button>
@@ -520,6 +599,10 @@
           <div class="sheet-title" id="sheetTitle">支払い一覧</div>
           <div class="sheet-total" id="sheetTotal"></div>
           <button type="button" class="sheet-close" id="sheetClose" aria-label="閉じる">×</button>
+        </div>
+        <div class="sheet-tools">
+          <input type="search" id="sheetSearch" placeholder="店名で検索" aria-label="店名で検索" />
+          <select id="sheetFilter" aria-label="区分で絞り込み"></select>
         </div>
         <div class="sheet-body" id="sheetBody"></div>
       </div>
@@ -578,8 +661,13 @@
 
       function renderTrip() {
         var food = 0, trans = 0;
+        var foodDates = {}, lastFoodDate = null;
         PAYMENTS.forEach(function (p) {
-          if (p.cat === "出張（食費）" && inTrip(p)) food += p.amount;
+          if (p.cat === "出張（食費）" && inTrip(p)) {
+            food += p.amount;
+            foodDates[p.date] = true;
+            if (!lastFoodDate || p.date > lastFoodDate) lastFoodDate = p.date;
+          }
           if (p.cat === "出張（交通・宿泊・燃料）") trans += p.amount;
         });
         var remain = TRIP.allowance - food;
@@ -588,6 +676,17 @@
         document.getElementById("tripTrans").textContent = yen(trans);
         var pct = Math.min(100, Math.round(food / TRIP.allowance * 1000) / 10);
         document.getElementById("tripBar").style.width = pct + "%";
+        // 食費の1日平均（食費の記録がある日数で割る）・残り日数・1日あたりの目安
+        var foodDays = Object.keys(foodDates).length;
+        var avg = foodDays ? Math.round(food / foodDays) : 0;
+        var DAY = 86400000;
+        function toTime(d) { var s = d.split("-"); return Date.UTC(+s[0], +s[1] - 1, +s[2]); }
+        var ref = lastFoodDate || TRIP.start;
+        var daysLeft = Math.max(0, Math.round((toTime(TRIP.end) - toTime(ref)) / DAY));
+        var perDay = daysLeft > 0 ? Math.floor(remain / daysLeft) : remain;
+        document.getElementById("tripAvg").textContent = yen(avg);
+        document.getElementById("tripDaysLeft").textContent = daysLeft;
+        document.getElementById("tripPerDay").textContent = yen(perDay);
       }
 
       // 支払い一覧：画面に収まる分だけ表示し、残りは件数バッジで示す（スクロールなし）
@@ -665,10 +764,14 @@
         document.getElementById("nextMonth").disabled = cur === MONTHS.length - 1;
 
         var usedByCat = {};
+        var pm = m - 1, py = y;
+        if (pm < 1) { pm = 12; py = String(+y - 1); }
+        var prevKey = py + "-" + ("0" + pm).slice(-2);
+        var prevUsedByCat = {};
         PAYMENTS.forEach(function (p) {
-          if (monthKey(p.date) === key && CAT_COLORS[p.cat] && BUDGETS.some(function (b) { return b.name === p.cat; })) {
-            usedByCat[p.cat] = (usedByCat[p.cat] || 0) + p.amount;
-          }
+          if (!BUDGETS.some(function (b) { return b.name === p.cat; })) return;
+          if (monthKey(p.date) === key) usedByCat[p.cat] = (usedByCat[p.cat] || 0) + p.amount;
+          if (monthKey(p.date) === prevKey) prevUsedByCat[p.cat] = (prevUsedByCat[p.cat] || 0) + p.amount;
         });
         var totalBudget = 0, totalUsed = 0;
         BUDGETS.forEach(function (b) { totalBudget += b.amount; totalUsed += usedByCat[b.name] || 0; });
@@ -688,12 +791,22 @@
           var used = usedByCat[b.name] || 0;
           var rem = b.amount - used;
           var p = b.amount ? Math.min(100, Math.round(used / b.amount * 1000) / 10) : 0;
+          var isOver = rem < 0;
+          var isLow = !isOver && b.amount > 0 && rem <= b.amount * 0.2;
+          var diff = used - (prevUsedByCat[b.name] || 0);
+          var diffHTML;
+          if (diff > 0) diffHTML = '前月比 <b class="up">+' + yen(diff) + "円</b>";
+          else if (diff < 0) diffHTML = '前月比 <b class="down">−' + yen(-diff) + "円</b>";
+          else diffHTML = "前月比 <b>±0円</b>";
+          diffHTML = "使用率 " + p + "% ・ " + diffHTML;
+          var barColor = isOver ? "var(--warn)" : (isLow ? "var(--low-bar)" : b.color);
           var div = document.createElement("div");
-          div.className = "cat" + (rem < 0 ? " over" : "");
+          div.className = "cat" + (isOver ? " over" : "") + (isLow ? " low" : "");
           div.innerHTML =
             '<div class="cat-top"><span class="cat-name"><span class="dot" style="background:' + b.color + '"></span>' + esc(b.name) + '</span><span class="cat-remain">' + yen(rem) + "<small> 円 残り</small></span></div>" +
             '<div class="cat-sub">予算 ' + yen(b.amount) + "円 ・ 使った " + yen(used) + "円</div>" +
-            '<div class="bar dark' + (rem < 0 ? " over" : "") + '"><i style="width:' + p + "%;background:" + (rem < 0 ? "var(--warn)" : b.color) + '"></i></div>';
+            '<div class="cat-diff">' + diffHTML + "</div>" +
+            '<div class="bar dark' + (isOver ? " over" : "") + '"><i style="width:' + p + "%;background:" + barColor + '"></i></div>';
           grid.appendChild(div);
         });
 
@@ -717,25 +830,87 @@
 
       // 全件オーバーレイ（メイン画面はスクロールなしのまま、ここだけスクロール可）
       var overlay = document.getElementById("overlay");
-      function openOverlay() {
-        if (!curMonthPays.length) return;
+      var sheetQuery = "", sheetCat = "";
+      function renderSheet() {
         var key = MONTHS[cur];
         var m = parseInt(key.slice(5, 7), 10);
-        var total = curMonthPays.reduce(function (s, p) { return s + p.amount; }, 0);
-        document.getElementById("sheetTitle").textContent = m + "月の支払い（全" + curMonthPays.length + "件）";
+        var q = sheetQuery.trim();
+        var filtered = curMonthPays.filter(function (p) {
+          if (sheetCat && p.cat !== sheetCat) return false;
+          if (q && p.store.indexOf(q) < 0) return false;
+          return true;
+        });
+        var total = filtered.reduce(function (s, p) { return s + p.amount; }, 0);
+        var filtering = q || sheetCat;
+        document.getElementById("sheetTitle").textContent =
+          m + "月の支払い（" + (filtering ? filtered.length + "件／全" + curMonthPays.length + "件" : "全" + curMonthPays.length + "件") + "）";
         document.getElementById("sheetTotal").textContent = "合計 " + yen(total) + "円";
-        document.getElementById("sheetBody").innerHTML = groupedHTML(curMonthPays);
+        document.getElementById("sheetBody").innerHTML = filtered.length
+          ? groupedHTML(filtered)
+          : '<div class="empty">条件に合う支払いはありません</div>';
         document.getElementById("sheetBody").scrollTop = 0;
+      }
+      function openOverlay() {
+        if (!curMonthPays.length) return;
+        // 区分フィルターの選択肢を表示中の月の支払いから作る
+        var sel = document.getElementById("sheetFilter");
+        var cats = [];
+        curMonthPays.forEach(function (p) { if (cats.indexOf(p.cat) < 0) cats.push(p.cat); });
+        sel.innerHTML = '<option value="">全ての区分</option>' + cats.map(function (c) {
+          return '<option value="' + esc(c) + '">' + esc(c) + "</option>";
+        }).join("");
+        sel.value = cats.indexOf(sheetCat) >= 0 ? sheetCat : "";
+        sheetCat = sel.value;
+        renderSheet();
         overlay.classList.add("open");
       }
+      document.getElementById("sheetSearch").addEventListener("input", function (e) {
+        sheetQuery = e.target.value;
+        renderSheet();
+      });
+      document.getElementById("sheetFilter").addEventListener("change", function (e) {
+        sheetCat = e.target.value;
+        renderSheet();
+      });
+
+      // 表示中の月の支払いをCSVでダウンロード
+      function csvCell(v) {
+        v = String(v == null ? "" : v);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+      }
+      document.getElementById("csvBtn").addEventListener("click", function () {
+        var key = MONTHS[cur];
+        var rows = [["日付", "時刻", "店名", "金額", "メモ", "支払い方法", "区分"]];
+        PAYMENTS.filter(function (p) { return monthKey(p.date) === key; }).forEach(function (p) {
+          rows.push([p.date, p.time || "", p.store, p.amount, p.note || "", p.method, p.cat]);
+        });
+        var csv = rows.map(function (r) { return r.map(csvCell).join(","); }).join("\r\n");
+        var blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "payments-" + key + ".csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      });
       function closeOverlay() { overlay.classList.remove("open"); }
       document.getElementById("payWrap").addEventListener("click", openOverlay);
       document.getElementById("sheetClose").addEventListener("click", closeOverlay);
       overlay.addEventListener("click", function (e) { if (e.target === overlay) closeOverlay(); });
       document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeOverlay(); });
 
-      document.getElementById("prevMonth").addEventListener("click", function () { if (cur > 0) { cur--; render(); } });
-      document.getElementById("nextMonth").addEventListener("click", function () { if (cur < MONTHS.length - 1) { cur++; render(); } });
+      function changeMonth(d) {
+        var n = cur + d;
+        if (n < 0 || n >= MONTHS.length) return;
+        cur = n;
+        sheetQuery = ""; sheetCat = "";
+        document.getElementById("sheetSearch").value = "";
+        render();
+      }
+      document.getElementById("prevMonth").addEventListener("click", function () { changeMonth(-1); });
+      document.getElementById("nextMonth").addEventListener("click", function () { changeMonth(1); });
       window.addEventListener("resize", fitPayments);
       window.addEventListener("load", fitPayments);
 
