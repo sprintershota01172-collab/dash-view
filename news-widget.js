@@ -1,143 +1,145 @@
-// ニュースウィジェット（Scriptable用）
-// Googleニュースの見出しを「総合・株・テック」の3ジャンルから集めて表示します。
-// 見出しをタップすると記事が開きます。
+// ニュースウィジェット（Scriptable用）・写真付き
+// Museが30分おきに更新する news.json（見出し＋記事写真）を読み込んで表示します。
+// 見出しや写真をタップすると記事が開きます。
 
-const FEEDS = [
-{ tag: "総合", url: "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja"},
-{ tag: "株", url: "https://news.google.com/rss/search?q=%E6%A0%AA%E5%BC%8F%20%E3%83%9E%E3%83%BC%E3%82%B1%E3%83%83%E3%83%88&hl=ja&gl=JP&ceid=JP:ja"},
-{ tag: "テック", url: "https://news.google.com/rss/search?q=%E3%83%86%E3%82%AF%E3%83%8E%E3%83%AD%E3%82%B8%E3%83%BC%20%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88&hl=ja&gl=JP&ceid=JP:ja"},
-];
+const DATA_URL = "https://sprintershota01172-collab.github.io/dash-view/news.json";
 
 const DARK = new Color("#1c2b22");
 const GRAY = new Color("#7a8a80");
-const ACCENT = new Color("#1f9d63");
-const TAGCOLOR = new Color("#2f6fd0");
 const BG = new Color("#ffffff");
+const PLACEHOLDER = new Color("#e8efe a".replace(" ", ""), 1);
 
-function decode(s) {
-return s
-.replace(/&amp;/g, "&")
-.replace(/&lt;/g, "<")
-.replace(/&gt;/g, ">")
-.replace(/&quot;/g, '"')
-.replace(/&#39;/g, "'")
-.replace(/<!\[CDATA\[|\]\]>/g, "");
-}
-
-function tagText(block, name) {
-const m = block.match(new RegExp("<" + name + "[^>]*>([\\s\\S]*?)</" + name + ">"));
-return m? decode(m[1].trim()): "";
-}
-
-function parseItems(xml, tag) {
-const items = [];
-const re = /<item>([\s\S]*?)<\/item>/g;
-let m;
-while ((m = re.exec(xml))!== null) {
-const b = m[1];
-let title = tagText(b, "title");
-const source = tagText(b, "source");
-if (source && title.endsWith(" - " + source)) {
-title = title.slice(0, title.length - source.length - 3);
-}
-const link = tagText(b, "link");
-const date = new Date(tagText(b, "pubDate"));
-if (title && link) items.push({ tag, title, link, source, date});
-}
-return items;
-}
-
-function ago(d) {
-const min = Math.max(1, Math.round((Date.now() - d.getTime()) / 60000));
+function ago(iso) {
+if (!iso) return "";
+const min = Math.max(1, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
 if (min < 60) return min + "分前";
 const h = Math.round(min / 60);
 if (h < 24) return h + "時間前";
 return Math.round(h / 24) + "日前";
 }
 
-async function loadAll() {
-const results = await Promise.all(
-FEEDS.map(async (f) => {
+async function loadImage(url) {
+if (!url) return null;
 try {
-const req = new Request(f.url);
-req.timeoutInterval = 12;
-const xml = await req.loadString();
-return parseItems(xml, f.tag).slice(0, 8);
+const req = new Request(url);
+req.timeoutInterval = 10;
+return await req.loadImage();
 } catch (e) {
-return [];
+return null;
 }
-})
-);
-let all = results.flat();
-// 重複タイトルを除いて新しい順
-const seen = new Set();
-all = all.filter((it) => {
-const key = it.title.slice(0, 24);
-if (seen.has(key)) return false;
-seen.add(key);
-return true;
-});
-all.sort((a, b) => b.date - a.date);
-// ジャンルが偏らないよう上位を交互に拾う
-const picked = [];
-const pools = { "総合": [], "株": [], "テック": []};
-all.forEach((it) => pools[it.tag] && pools[it.tag].push(it));
-const order = ["総合", "株", "総合", "テック", "株", "総合", "テック"];
-order.forEach((t) => {
-const it = pools[t] && pools[t].shift();
-if (it) picked.push(it);
-});
-return picked;
 }
 
 async function main() {
 const family = config.widgetFamily || "large";
-const counts = { small: 2, medium: 4, large: 7};
-const limit = counts[family] || 7;
-
 const w = new ListWidget();
 w.backgroundColor = BG;
 w.url = "https://news.google.com/?hl=ja&gl=JP&ceid=JP:ja";
 w.refreshAfterDate = new Date(Date.now() + 1000 * 60 * 30);
 w.setPadding(12, 14, 10, 14);
 
+let data = null;
+try {
+const req = new Request(DATA_URL + "?t=" + Date.now());
+req.timeoutInterval = 12;
+data = await req.loadJSON();
+} catch (e) {}
+
 const head = w.addStack();
 const h = head.addText("📰 ニュース");
 h.font = Font.boldSystemFont(13);
 h.textColor = DARK;
 head.addSpacer();
-const now = new Date();
-const upd = head.addText(now.getHours() + ":" + String(now.getMinutes()).padStart(2, "0") + " 更新");
+if (data && data.updatedLabel) {
+const upd = head.addText(data.updatedLabel + " 更新");
 upd.font = Font.systemFont(9);
 upd.textColor = GRAY;
-w.addSpacer(6);
-
-try {
-const items = (await loadAll()).slice(0, limit);
-if (items.length === 0) throw new Error("empty");
-items.forEach((it, i) => {
-const row = w.addStack();
-row.layoutVertically();
-const t = row.addText("" + it.title);
-t.font = Font.systemFont(family === "large"? 12: 11);
-t.textColor = DARK;
-t.lineLimit = 2;
-t.url = it.link;
-if (family!== "small") {
-const meta = row.addText((it.source || "") + " ・ " + ago(it.date));
-meta.font = Font.systemFont(9);
-meta.textColor = GRAY;
 }
-if (i < items.length - 1) w.addSpacer(family === "large"? 7: 5);
-});
-} catch (e) {
+
+if (!data ||!data.items || data.items.length === 0) {
+w.addSpacer(8);
 const err = w.addText("ニュースを読み込めませんでした");
 err.font = Font.systemFont(11);
 err.textColor = GRAY;
+finish(w, family);
+return;
 }
 
+const items = data.items;
+const images = await Promise.all(items.slice(0, 5).map((it) => loadImage(it.imageLarge || it.image)));
+
+if (family === "small") {
+w.addSpacer(6);
+if (images[0]) {
+const im = w.addImage(images[0]);
+im.imageSize = new Size(150, 74);
+im.cornerRadius = 8;
+im.url = items[0].link;
+w.addSpacer(5);
+}
+const t = w.addText("" + items[0].title);
+t.font = Font.systemFont(11);
+t.textColor = DARK;
+t.lineLimit = 3;
+t.url = items[0].link;
+finish(w, family);
+return;
+}
+
+// 先頭は大きな写真で
+w.addSpacer(7);
+const hero = items[0];
+if (images[0]) {
+const im = w.addImage(images[0]);
+im.imageSize = new Size(family === "large"? 336: 336, family === "large"? 104: 84);
+im.cornerRadius = 10;
+im.url = hero.link;
+w.addSpacer(5);
+}
+const ht = w.addText("" + hero.title);
+ht.font = Font.boldSystemFont(13);
+ht.textColor = DARK;
+ht.lineLimit = 2;
+ht.url = hero.link;
+const hm = w.addText((hero.source || "") + " ・ " + ago(hero.pubDate));
+hm.font = Font.systemFont(9);
+hm.textColor = GRAY;
+
+// 残りは写真＋見出しの行で
+const rowCount = family === "large"? 3: 2;
+for (let i = 1; i <= rowCount && i < items.length; i++) {
+const it = items[i];
+w.addSpacer(8);
+const row = w.addStack();
+row.centerAlignContent();
+if (images[i]) {
+const th = row.addImage(images[i]);
+th.imageSize = new Size(52, 52);
+th.cornerRadius = 7;
+th.url = it.link;
+row.addSpacer(8);
+}
+const col = row.addStack();
+col.layoutVertically();
+const t = col.addText("" + it.title);
+t.font = Font.systemFont(11);
+t.textColor = DARK;
+t.lineLimit = 2;
+t.url = it.link;
+const meta = col.addText((it.source || "") + " ・ " + ago(it.pubDate));
+meta.font = Font.systemFont(9);
+meta.textColor = GRAY;
+}
+
+finish(w, family);
+}
+
+function finish(w, family) {
 if (config.runsInWidget) {
 Script.setWidget(w);
+} else if (family === "medium") {
+w.presentMedium();
+} else if (family === "small") {
+w.presentSmall();
 } else {
 w.presentLarge();
 }
