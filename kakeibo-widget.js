@@ -1,8 +1,9 @@
 // 家計簿ウィジェット（Scriptable用）
 // GitHub Pages の data.json を読み込んで、今月の残りと出張手当を表示します。
-// 表示専用（タップでページは開きません。詳細はホーム画面の家計簿アイコンから）。
+// タップすると家計簿ページをSafariで開きます。
 
 const DATA_URL = "https://sprintershota01172-collab.github.io/dash-view/data.json";
+const PAGE_URL = "https://sprintershota01172-collab.github.io/dash-view/space-2.html";
 
 const GREEN = new Color("#1f9d63");
 const DARK = new Color("#173526");
@@ -16,6 +17,7 @@ function yen(n) {
 async function main() {
   const w = new ListWidget();
   w.backgroundColor = BG;
+  w.url = PAGE_URL;
   // 30分後に再読み込み
   w.refreshAfterDate = new Date(Date.now() + 1000 * 60 * 30);
   w.setPadding(14, 16, 12, 16);
