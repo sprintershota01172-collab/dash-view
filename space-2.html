@@ -398,18 +398,18 @@
         line-height: 1.3;
       }
       .pay-more {
-        position: absolute;
-        right: 6px;
-        bottom: 4px;
+        flex: none;
         display: none;
+        width: 100%;
+        margin-top: 4px;
         background: var(--card);
         border: 1px solid var(--line);
         color: var(--ink-2);
         font-family: inherit;
-        font-size: 11px;
+        font-size: 11.5px;
         font-weight: 700;
-        border-radius: 999px;
-        padding: 4px 10px;
+        border-radius: 10px;
+        padding: 7px 10px;
         box-shadow: var(--shadow);
         cursor: pointer;
       }
@@ -512,20 +512,23 @@
       }
       @media (max-width: 719px) {
         .app { gap: 6px; }
-        .main > .pane:first-child { flex: 1.3 1 0; min-height: 0; }
+        .main { gap: 6px; }
+        /* 区分カードは内容なりの高さで固定し、文字を切り捨てない（潰さない） */
+        .main > .pane:first-child { flex: none; }
         .pay-pane { flex: 1 1 0; min-height: 0; }
-        .cat-grid {
-          flex: 1;
-          min-height: 0;
-          grid-template-rows: repeat(5, minmax(0, 1fr));
-        }
-        .cat { padding: 5px 9px 6px; overflow: hidden; }
+        .cat-grid { gap: 5px; }
+        .cat { padding: 6px 9px 7px; }
+        .cat-name { font-size: 12px; }
         .cat-remain { font-size: 15px; }
-        .cat-sub { font-size: 10.5px; margin-top: 1px; }
-        .cat-diff { font-size: 10px; margin-top: 0; }
-        .cat .bar { margin-top: 4px; }
-        .hero { padding: 9px 14px 10px; }
+        .cat-sub { font-size: 10px; line-height: 1.45; margin-top: 1px; }
+        /* 狭い画面では前月比の行を省き、使用率はサブ行に含める（読みやすさ優先） */
+        .cat-diff { display: none; }
+        .cat .bar { height: 3px; margin-top: 5px; }
+        .hero { padding: 9px 12px 10px; }
+        .hero .big { font-size: 28px; }
         .trip { padding: 8px 12px 9px; }
+        .trip-meta { font-size: 11px; }
+        .pay { padding: 5px 10px 6px; margin-bottom: 3px; }
       }
       @media (max-width: 560px) {
         .pane-hint { display: none; }
@@ -689,7 +692,7 @@
         document.getElementById("tripPerDay").textContent = yen(perDay);
       }
 
-      // 支払い一覧：画面に収まる分だけ表示し、残りは件数バッジで示す（スクロールなし）
+      // 支払い一覧：画面に収まる分だけ表示し、残りは一覧下の独立したボタン行で示す（スクロールなし・重ねない）
       function fitPayments() {
         var list = document.getElementById("payList");
         var more = document.getElementById("payMore");
@@ -698,13 +701,20 @@
         more.classList.remove("show");
         var h = list.clientHeight;
         if (!h || !kids.length) return;
-        var cut = -1;
-        for (var j = 0; j < kids.length; j++) {
-          var el = kids[j];
-          if (el.classList.contains("empty")) continue;
-          if (el.offsetTop + el.offsetHeight > h + 1) { cut = j; break; }
+        function overflowAt(limit) {
+          for (var j = 0; j < kids.length; j++) {
+            var el = kids[j];
+            if (el.classList.contains("empty")) continue;
+            if (el.offsetTop + el.offsetHeight > limit + 1) return j;
+          }
+          return -1;
         }
-        if (cut < 0) return;
+        if (overflowAt(h) < 0) return; // ボタンなしで全件収まる
+        // ボタン行を表示するとリストの高さがその分縮むので、縮んだ高さで切り位置を決める
+        more.classList.add("show");
+        h = list.clientHeight;
+        var cut = overflowAt(h);
+        if (cut < 0) { more.classList.remove("show"); return; }
         var hidden = 0;
         for (var k = cut; k < kids.length; k++) {
           if (kids[k].classList.contains("pay")) hidden++;
@@ -718,7 +728,8 @@
         }
         if (hidden > 0) {
           more.textContent = "他 " + hidden + " 件 ›";
-          more.classList.add("show");
+        } else {
+          more.classList.remove("show");
         }
       }
 
@@ -798,13 +809,13 @@
           if (diff > 0) diffHTML = '前月比 <b class="up">+' + yen(diff) + "円</b>";
           else if (diff < 0) diffHTML = '前月比 <b class="down">−' + yen(-diff) + "円</b>";
           else diffHTML = "前月比 <b>±0円</b>";
-          diffHTML = "使用率 " + p + "% ・ " + diffHTML;
+          /* 使用率はサブ行に含め、この行は前月比のみ（狭い画面ではこの行を省く） */
           var barColor = isOver ? "var(--warn)" : (isLow ? "var(--low-bar)" : b.color);
           var div = document.createElement("div");
           div.className = "cat" + (isOver ? " over" : "") + (isLow ? " low" : "");
           div.innerHTML =
             '<div class="cat-top"><span class="cat-name"><span class="dot" style="background:' + b.color + '"></span>' + esc(b.name) + '</span><span class="cat-remain">' + yen(rem) + "<small> 円 残り</small></span></div>" +
-            '<div class="cat-sub">予算 ' + yen(b.amount) + "円 ・ 使った " + yen(used) + "円</div>" +
+            '<div class="cat-sub">予算 ' + yen(b.amount) + "円 ・ 使った " + yen(used) + "円 ・ 使用率 " + p + "%</div>" +
             '<div class="cat-diff">' + diffHTML + "</div>" +
             '<div class="bar dark' + (isOver ? " over" : "") + '"><i style="width:' + p + "%;background:" + barColor + '"></i></div>';
           grid.appendChild(div);
