@@ -1,5 +1,5 @@
 {
- "updatedLabel": "11/1 22:40",
+ "updatedLabel": "11/1 22:43",
  "items": [
   {
    "tag": "総合",
@@ -11,13 +11,22 @@
    "pubDate": "2026-11-01T10:29:20+00:00"
   },
   {
-   "tag": "株",
-   "title": "身構える株式市場 米中間選挙後、期待と懸念交錯：時事ドットコム",
-   "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5vcDZBZWxoMmhkUm1kUXl3dERHQmhMaVB5clAxOVd0NGlMNmZCUU1uVVJfVGQ5elNhMlViLVpRdzJVUmJuUkc4SUNEOTJhc1NLMHhfeGVIYWJwSTdEZGRqc0QxOA?oc=5",
-   "source": "時事ドットコム",
+   "tag": "スポーツ",
+   "title": "「何かあった？」「凄い違和感」ＴＢＳ「サンモニ」が２週続けて巨人・松井監督取り上げずＳＮＳ騒然「不自然なくらい松井監督避けてたな」（デイリースポーツ）",
+   "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5QenMyX3RqQXhfa0VpT21LTVBqTGVEcU9wdGxZT3NDSm5uTnZoRXBfZWUzeVdkejdxUnVDeDZnaEJrdTNGLXlaelpVd3l4UEg3SnQ5VThQMkxBMzRNUWp2VUZoMFUwQVpPa05hZkJNdFhxbm12NU9YamhVa0daZ0U?oc=5",
+   "source": "Yahoo!ニュース",
    "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
    "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
-   "pubDate": "2026-10-31T22:01:00+00:00"
+   "pubDate": "2026-11-01T01:13:29+00:00"
+  },
+  {
+   "tag": "エンタメ",
+   "title": "エンタメ総合",
+   "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE80ejMyNWxET1VsTGxFWHNLckRzeVBKM3RUbDBwMlhGM3lXcmNMdktXOUl6STBQRkZQOHRvZVZFTUJ4RHFXY3pqTVNraVNXQWNtb2Zn?oc=5",
+   "source": "名古屋テレビ",
+   "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
+   "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
+   "pubDate": "2026-10-30T03:57:20+00:00"
   },
   {
    "tag": "総合",
@@ -29,6 +38,24 @@
    "pubDate": "2026-10-31T22:02:00+00:00"
   },
   {
+   "tag": "株",
+   "title": "身構える株式市場 米中間選挙後、期待と懸念交錯：時事ドットコム",
+   "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5vcDZBZWxoMmhkUm1kUXl3dERHQmhMaVB5clAxOVd0NGlMNmZCUU1uVVJfVGQ5elNhMlViLVpRdzJVUmJuUkc4SUNEOTJhc1NLMHhfeGVIYWJwSTdEZGRqc0QxOA?oc=5",
+   "source": "時事ドットコム",
+   "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
+   "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
+   "pubDate": "2026-10-31T22:01:00+00:00"
+  },
+  {
+   "tag": "スポーツ",
+   "title": "【全日本大学駅伝】タスキからＧＰＳ外れるアクシデント「結び目を作りづらい」複数の監督から苦言　半数以上のチームがマップ上から消える",
+   "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQcE5wdFFCMUtxX1dmR1hBbDRGRHU3b0xIa1dRUlgtbHM3ZlF1ZFJPczVKUDAwaHRpV2ZIX09aV280NXhlenc5R0dnZ0k1ZmFra2t1cVJYR2E3MzdJTWRVSHhXWnNqQmw4NnpjMzZldkp2Rm4tUnZsaDY2Z3JJczd5RkV6N3bSAYoBQVVfeXFMTXBSdDhWSHRxV2VWNm9kMm00YzBnYkxkVENXTG94RHpCQ29TLXZVSjQ4bXItQ1RDbEpWLUpxeXJZTkF0N3owX1RKcW5rR2hxOHprcWtNXzF4RWhHQWlBcnRwZTFvdVZXY3RLZ0ZURG96WTlZSEQ4ZW9wVDVuZHFteHhucXNyQXdNOXN3?oc=5",
+   "source": "ｄメニューニュース",
+   "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
+   "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
+   "pubDate": "2026-11-01T02:50:00+00:00"
+  },
+  {
    "tag": "テック",
    "title": "便利さよりも「好き」を優先。元エンジニアが作る、偏愛だらけのガジェット",
    "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5KUjhsaGdrLTk0eWYyWGRmckJ4X0p1VV9EYUNHVFdLdU5hNTdoZXczMUU4SHBDNHBsU1VNSDZJSEp0UFFVYnZaT2JZM2VDNi1tbUllNFdFclozdF9ONjY3OWRqaw?oc=5",
@@ -38,15 +65,6 @@
    "pubDate": "2026-10-31T06:00:00+00:00"
   },
   {
-   "tag": "株",
-   "title": "マーケットカレンダー",
-   "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQMzZ0Sm9BVVVYZk9MNjRqdnFYamFQRURXdHZzRE1lR0xSdkhQZ0pIbWF6SE9INllYcG9pR3BuQjAwU0VjWFY3OTIwWU9PMkFDVktNRTBWV2hka1pTczcwUUFyVWgxdmNYejg1bkhnVzVsWWN1Q0Q1Z3VLNElhbXRoTDNUVnlQUF9ocHJEODJvUWZLUQ?oc=5",
-   "source": "日本経済新聞",
-   "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
-   "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
-   "pubDate": "2026-10-31T16:33:15+00:00"
-  },
-  {
    "tag": "総合",
    "title": "兼六園で冬の風物詩「雪吊り」の作業始まる 金沢",
    "link": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE03T3pocVZ3SmJCaFpyd1hhSUlPQVEzOHktSjd5VTExSjFTYjEwSG1vOVg2T3FYQWdackZ6cW1Tc2d6Zk1hdmpYcUF3cnZ0a1ExYk56ck9DUUxLdlVvWEww?oc=5",
@@ -54,24 +72,6 @@
    "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
    "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
    "pubDate": "2026-11-01T03:57:41+00:00"
-  },
-  {
-   "tag": "テック",
-   "title": "【2026年】最新おすすめガジェットまとめ！ベストバイの商品を35個紹介",
-   "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFA3RXJwYnVmOFhLR1l0Y3pDemFhcDJTd25lYlh3czRvMEJzcGt6SkhQNHZSSVRxRnloWlhVQkhabWdWTGZWNTlkRE95OWFITTVX?oc=5",
-   "source": "ガジェットレビューブログ",
-   "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
-   "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
-   "pubDate": "2026-10-18T07:00:00+00:00"
-  },
-  {
-   "tag": "総合",
-   "title": "ロシア占領下の避難者、ウクライナ支配地域に帰還 局地的停戦で夫婦が1711日ぶりの再会",
-   "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE9UaGlXLVNnRTRpMjhRSk8wcUxaMVk1NHQwZ1FMdjA1ZlVGdmhtelItQ3JZS1BqdElPSXFlMmNETW14Y3FndW5ENUtMQ0JzYWN6S1BV?oc=5",
-   "source": "CNN",
-   "image": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
-   "imageLarge": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=w800",
-   "pubDate": "2026-11-01T01:05:00+00:00"
   }
  ]
 }
