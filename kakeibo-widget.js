@@ -29,37 +29,37 @@ async function main() {
 
     const head = w.addStack();
     const title = head.addText("📒 家計簿 " + d.monthLabel);
-    title.font = Font.roundedSystemFont(13);
+    title.font = Font.boldSystemFont(13);
     title.textColor = DARK;
     w.addSpacer(6);
 
     const label = w.addText("あと使える");
-    label.font = Font.roundedSystemFont(11);
+    label.font = Font.systemFont(11);
     label.textColor = GRAY;
 
     const big = w.addText(yen(d.remaining));
-    big.font = Font.roundedSystemFont(30);
+    big.font = Font.boldSystemFont(30);
     big.textColor = GREEN;
     w.addSpacer(4);
 
     const sub = w.addText("使った " + yen(d.spent) + " / 予算 " + yen(d.budget));
-    sub.font = Font.roundedSystemFont(11);
+    sub.font = Font.systemFont(11);
     sub.textColor = DARK;
 
     if (d.trip && d.trip.active) {
       w.addSpacer(6);
       const trip = w.addText("✈️ 出張手当の残り " + yen(d.trip.remaining));
-      trip.font = Font.roundedSystemFont(12);
+      trip.font = Font.systemFont(12);
       trip.textColor = DARK;
     }
 
     w.addSpacer();
     const foot = w.addText("更新 " + d.updatedLabel);
-    foot.font = Font.roundedSystemFont(9);
+    foot.font = Font.systemFont(9);
     foot.textColor = GRAY;
   } catch (e) {
     const err = w.addText("データを読み込めませんでした");
-    err.font = Font.roundedSystemFont(12);
+    err.font = Font.systemFont(12);
     err.textColor = GRAY;
   }
 
