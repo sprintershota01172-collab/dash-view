@@ -64,12 +64,12 @@
       }
       .app {
         height: 100dvh;
-        max-width: 560px;
+        max-width: 920px;
         margin: 0 auto;
-        padding: calc(10px + env(safe-area-inset-top)) 14px calc(10px + env(safe-area-inset-bottom));
+        padding: calc(8px + env(safe-area-inset-top)) 12px calc(8px + env(safe-area-inset-bottom));
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
       }
 
       /* 月切り替え */
@@ -80,12 +80,12 @@
         flex: none;
       }
       .monthbar button.nav {
-        width: 36px; height: 36px;
+        width: 32px; height: 32px;
         border: 1px solid var(--line);
         background: var(--card);
         color: var(--ink);
-        border-radius: 10px;
-        font-size: 18px;
+        border-radius: 9px;
+        font-size: 16px;
         line-height: 1;
         cursor: pointer;
         flex: none;
@@ -94,69 +94,50 @@
       .month-title {
         flex: 1;
         text-align: center;
-        font-size: 19px;
+        font-size: 17px;
         font-weight: 700;
         letter-spacing: .02em;
         white-space: normal;
         overflow: visible;
       }
-      .month-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        flex: none;
-      }
-      .month-chips button {
-        flex: 1 1 30%;
-        min-width: 0;
-        padding: 7px 4px;
-        border-radius: 999px;
-        border: 1px solid var(--line);
-        background: var(--card);
-        color: var(--ink-2);
-        font-size: 13px;
-        font-weight: 600;
-        white-space: normal;
-        overflow: visible;
-        cursor: pointer;
-      }
-      .month-chips button.on {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: var(--accent-ink);
-      }
 
-      /* ヒーロー */
+      /* ヒーロー（残り金額の帯） */
       .hero {
         flex: none;
         background: var(--accent);
         color: var(--accent-ink);
-        border-radius: 16px;
-        padding: 14px 16px 13px;
+        border-radius: 14px;
+        padding: 10px 14px 11px;
         box-shadow: var(--shadow);
       }
-      .hero .label { font-size: 12px; opacity: .85; font-weight: 600; }
-      .hero .big {
-        font-size: 40px;
-        font-weight: 800;
-        line-height: 1.1;
-        margin: 2px 0 4px;
-        letter-spacing: .01em;
-      }
-      .hero .big small { font-size: 18px; font-weight: 700; }
-      .hero .sub {
+      .hero-row {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        gap: 8px;
-        font-size: 12.5px;
-        opacity: .92;
-        flex-wrap: wrap;
+        gap: 10px;
       }
+      .hero-left { min-width: 0; }
+      .hero .label { font-size: 11.5px; opacity: .85; font-weight: 600; }
+      .hero .sub {
+        font-size: 11.5px;
+        opacity: .92;
+        margin-top: 3px;
+        white-space: normal;
+      }
+      .hero .big {
+        font-size: 32px;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: .01em;
+        white-space: nowrap;
+        flex: none;
+      }
+      .hero .big small { font-size: 15px; font-weight: 700; }
       .bar {
-        height: 7px;
+        height: 5px;
         border-radius: 99px;
         background: rgba(255,255,255,.28);
-        margin-top: 9px;
+        margin-top: 8px;
         overflow: hidden;
       }
       .bar > i {
@@ -169,13 +150,13 @@
       .bar.dark > i { background: var(--accent); }
       .bar.over > i { background: var(--warn); }
 
-      /* 出張カード */
+      /* 出張カード（帯） */
       .trip {
         flex: none;
         background: var(--card);
-        border-radius: 14px;
+        border-radius: 12px;
         box-shadow: var(--shadow);
-        padding: 11px 14px 12px;
+        padding: 9px 12px 10px;
       }
       .trip-head {
         display: flex;
@@ -184,9 +165,9 @@
         gap: 8px;
         flex-wrap: wrap;
       }
-      .trip-name { font-size: 14px; font-weight: 700; }
+      .trip-name { font-size: 13.5px; font-weight: 700; }
       .trip-name span {
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--trip);
         background: var(--trip-soft);
@@ -195,175 +176,292 @@
         margin-left: 6px;
         white-space: nowrap;
       }
-      .trip-remain { font-size: 20px; font-weight: 800; }
-      .trip-remain small { font-size: 12px; font-weight: 700; color: var(--ink-2); }
-      .trip .bar { margin-top: 8px; }
+      .trip-remain { font-size: 18px; font-weight: 800; white-space: nowrap; }
+      .trip-remain small { font-size: 11px; font-weight: 700; color: var(--ink-2); }
+      .trip .bar { margin-top: 6px; height: 5px; }
       .trip-meta {
         display: flex;
         justify-content: space-between;
-        gap: 8px;
+        gap: 4px 12px;
         flex-wrap: wrap;
-        margin-top: 7px;
-        font-size: 12px;
+        margin-top: 5px;
+        font-size: 11.5px;
         color: var(--ink-2);
       }
 
-      /* タブ */
-      .tabs {
-        flex: none;
-        display: flex;
-        background: var(--card-soft);
-        border: 1px solid var(--line);
-        border-radius: 11px;
-        padding: 3px;
-        gap: 3px;
-      }
-      .tabs button {
-        flex: 1;
-        border: none;
-        background: transparent;
-        color: var(--ink-2);
-        font-size: 14px;
-        font-weight: 700;
-        padding: 8px 4px;
-        border-radius: 8px;
-        cursor: pointer;
-        white-space: normal;
-      }
-      .tabs button.on {
-        background: var(--card);
-        color: var(--ink);
-        box-shadow: 0 1px 3px rgba(0,0,0,.12);
-      }
-      .panel {
+      /* メイン（区分＋支払いを同時表示） */
+      .main {
         flex: 1;
         min-height: 0;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
       }
-      .panel::-webkit-scrollbar { width: 0; }
+      .pane {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        min-width: 0;
+      }
+      .pay-pane { flex: 1; }
+      .pane-label {
+        flex: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--ink-2);
+        padding: 0 2px 4px;
+      }
+      .pane-label .pane-total { color: var(--ink); white-space: nowrap; }
+      @media (min-width: 720px) {
+        .main {
+          display: grid;
+          grid-template-columns: 1.15fr 1fr;
+          gap: 12px;
+        }
+        .pay-pane { flex: none; }
+        .cat-grid {
+          flex: 1;
+          grid-template-rows: repeat(5, 1fr);
+        }
+      }
 
       /* 区分グリッド */
       .cat-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        gap: 6px;
       }
       .cat {
         background: var(--card);
-        border-radius: 12px;
+        border-radius: 11px;
         box-shadow: var(--shadow);
-        padding: 10px 12px 11px;
+        padding: 8px 10px 9px;
         min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .cat-top {
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
       .cat-name {
         display: flex;
-        align-items: flex-start;
-        gap: 6px;
-        font-size: 13.5px;
+        align-items: center;
+        gap: 5px;
+        flex: 1;
+        min-width: 0;
+        font-size: 12.5px;
         font-weight: 700;
-        line-height: 1.35;
+        line-height: 1.3;
         white-space: normal;
         overflow: visible;
-        word-break: break-all;
       }
       .dot {
-        width: 9px; height: 9px;
+        width: 8px; height: 8px;
         border-radius: 50%;
         flex: none;
-        margin-top: 4px;
       }
       .cat-remain {
-        font-size: 19px;
+        font-size: 16.5px;
         font-weight: 800;
-        margin-top: 3px;
+        white-space: nowrap;
+        flex: none;
       }
-      .cat-remain small { font-size: 11.5px; font-weight: 700; color: var(--ink-2); }
+      .cat-remain small { font-size: 10.5px; font-weight: 700; color: var(--ink-2); }
       .cat.over .cat-remain { color: var(--warn); }
       .cat-sub {
-        font-size: 11.5px;
+        font-size: 11px;
         color: var(--ink-2);
-        margin-top: 1px;
+        margin-top: 2px;
         white-space: normal;
       }
-      .cat .bar { height: 5px; margin-top: 7px; }
+      .cat .bar { height: 4px; margin-top: 6px; }
 
-      /* 支払い一覧 */
-      .day { margin-bottom: 10px; }
+      /* 支払い一覧（はみ出す分は隠して件数バッジで示す。タップで全件オーバーレイ） */
+      .pay-wrap {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+      }
+      .pane-hint {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--ink-3);
+        margin-left: 6px;
+      }
+      #payList {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
       .day-head {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        font-size: 12.5px;
+        font-size: 11px;
         font-weight: 700;
         color: var(--ink-2);
-        padding: 2px 2px 6px;
+        padding: 3px 2px 3px;
       }
-      .day-head .day-total { color: var(--ink); }
+      .day-head:first-child { padding-top: 0; }
+      .day-head .day-total { color: var(--ink); white-space: nowrap; }
       .pay {
         background: var(--card);
-        border-radius: 12px;
+        border-radius: 10px;
         box-shadow: var(--shadow);
-        padding: 10px 12px;
-        display: flex;
-        gap: 10px;
-        align-items: flex-start;
-        margin-bottom: 6px;
+        padding: 6px 10px 7px;
+        margin-bottom: 4px;
       }
-      .pay-main { flex: 1; min-width: 0; }
+      .pay-line1 {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
       .pay-store {
-        font-size: 14px;
+        flex: 1;
+        min-width: 0;
+        font-size: 12.5px;
         font-weight: 700;
-        line-height: 1.35;
+        line-height: 1.3;
         white-space: normal;
         word-break: break-word;
       }
+      .pay-amount { font-size: 13px; font-weight: 800; white-space: nowrap; flex: none; }
+      .pay-line2 {
+        display: flex;
+        align-items: center;
+        gap: 2px 8px;
+        flex-wrap: wrap;
+        margin-top: 2px;
+      }
       .pay-note {
-        font-size: 12px;
+        font-size: 11px;
         color: var(--ink-2);
-        margin-top: 1px;
         white-space: normal;
         word-break: break-word;
       }
       .pay-sub {
-        font-size: 11.5px;
+        font-size: 10.5px;
         color: var(--ink-3);
-        margin-top: 2px;
         white-space: normal;
         word-break: break-word;
       }
-      .pay-right { text-align: right; flex: none; }
-      .pay-amount { font-size: 15px; font-weight: 800; white-space: nowrap; }
+      .pay-line2 .chip { margin-left: auto; }
       .chip {
         display: inline-block;
-        margin-top: 4px;
-        font-size: 10.5px;
+        font-size: 10px;
         font-weight: 700;
         border-radius: 6px;
-        padding: 2px 6px;
+        padding: 1px 5px;
         white-space: normal;
         line-height: 1.3;
       }
+      .pay-more {
+        position: absolute;
+        right: 6px;
+        bottom: 4px;
+        display: none;
+        background: var(--card);
+        border: 1px solid var(--line);
+        color: var(--ink-2);
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 4px 10px;
+        box-shadow: var(--shadow);
+        cursor: pointer;
+      }
+      .pay-more.show { display: block; }
+
+      /* 全件表示オーバーレイ */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(10, 18, 12, .5);
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .overlay.open { display: flex; }
+      .sheet {
+        background: var(--bg);
+        width: 100%;
+        max-width: 640px;
+        max-height: 88dvh;
+        border-radius: 18px 18px 0 0;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 -8px 30px rgba(0, 0, 0, .25);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      @media (min-width: 720px) {
+        .overlay { align-items: center; padding: 24px; }
+        .sheet { border-radius: 18px; max-height: 82dvh; }
+      }
+      .sheet-head {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 12px 10px 14px;
+      }
+      .sheet-title { font-size: 16px; font-weight: 800; flex: 1; min-width: 0; }
+      .sheet-total { font-size: 12.5px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
+      .sheet-close {
+        flex: none;
+        width: 32px; height: 32px;
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink);
+        border-radius: 9px;
+        font-size: 17px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .sheet-body {
+        overflow-y: auto;
+        padding: 0 12px 14px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .sheet-body .pay { padding: 8px 10px 9px; margin-bottom: 5px; }
       .empty {
         text-align: center;
         color: var(--ink-3);
         font-size: 13px;
-        padding: 26px 10px;
+        padding: 22px 10px;
         background: var(--card);
         border-radius: 12px;
       }
       .foot {
         flex: none;
         text-align: center;
-        font-size: 11px;
+        font-size: 10.5px;
         color: var(--ink-3);
       }
+      @media (max-width: 719px) {
+        .app { gap: 6px; }
+        .cat { padding: 6px 9px 7px; }
+        .cat-remain { font-size: 15px; }
+        .cat-sub { margin-top: 1px; }
+        .cat .bar { margin-top: 4px; }
+      }
       @media (max-width: 360px) {
-        .hero .big { font-size: 34px; }
-        .cat-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
-        .cat { padding: 8px 9px 9px; }
-        .cat-remain { font-size: 17px; }
+        .hero .big { font-size: 27px; }
+        .cat-grid { gap: 5px; }
+        .cat { padding: 7px 8px 8px; }
+        .cat-remain { font-size: 15px; }
       }
     </style>
   </head>
@@ -374,15 +472,14 @@
         <div class="month-title" id="monthTitle">2026年11月</div>
         <button class="nav" id="nextMonth" aria-label="次の月">›</button>
       </div>
-      <div class="month-chips" id="monthChips"></div>
 
       <section class="hero">
-        <div class="label" id="heroLabel">11月の残り</div>
-        <div class="big"><span id="heroRemain">0</span><small> 円</small></div>
-        <div class="sub">
-          <span>予算 <span id="heroBudget">0</span>円</span>
-          <span>使った <span id="heroUsed">0</span>円</span>
-          <span>使用率 <span id="heroPct">0</span>%</span>
+        <div class="hero-row">
+          <div class="hero-left">
+            <div class="label" id="heroLabel">11月の残り</div>
+            <div class="sub">予算 <span id="heroBudget">0</span>円 ・ 使った <span id="heroUsed">0</span>円 ・ 使用率 <span id="heroPct">0</span>%</div>
+          </div>
+          <div class="big"><span id="heroRemain">0</span><small> 円</small></div>
         </div>
         <div class="bar"><i id="heroBar" style="width:0%"></i></div>
       </section>
@@ -400,19 +497,32 @@
         </div>
       </section>
 
-      <div class="tabs" role="tablist">
-        <button id="tabCat" class="on" role="tab">区分ごとの収支</button>
-        <button id="tabPay" role="tab">支払い一覧</button>
-      </div>
-
-      <div class="panel" id="panelCat">
-        <div class="cat-grid" id="catGrid"></div>
-      </div>
-      <div class="panel" id="panelPay" hidden>
-        <div id="payList"></div>
+      <div class="main">
+        <div class="pane">
+          <div class="pane-label"><span>区分ごとの収支</span></div>
+          <div class="cat-grid" id="catGrid"></div>
+        </div>
+        <div class="pane pay-pane">
+          <div class="pane-label"><span>支払い一覧<span class="pane-hint">タップで全件表示</span></span><span class="pane-total" id="payMonthTotal"></span></div>
+          <div class="pay-wrap" id="payWrap" title="タップで全件表示">
+            <div id="payList"></div>
+            <button type="button" class="pay-more" id="payMore"></button>
+          </div>
+        </div>
       </div>
 
       <div class="foot">最終更新：2026年11月1日 17:19</div>
+    </div>
+
+    <div class="overlay" id="overlay">
+      <div class="sheet" role="dialog" aria-modal="true" aria-label="支払い一覧（全件）">
+        <div class="sheet-head">
+          <div class="sheet-title" id="sheetTitle">支払い一覧</div>
+          <div class="sheet-total" id="sheetTotal"></div>
+          <button type="button" class="sheet-close" id="sheetClose" aria-label="閉じる">×</button>
+        </div>
+        <div class="sheet-body" id="sheetBody"></div>
+      </div>
     </div>
 
     <script>
@@ -453,6 +563,7 @@
       var TRIP = { start: "2026-10-31", end: "2026-11-10", allowance: 43800 };
       var MONTHS = ["2026-10", "2026-11", "2026-12"];
       var cur = 1; // 2026-11
+      var curMonthPays = [];
 
       function yen(n) { return n.toLocaleString("ja-JP"); }
       function esc(s) {
@@ -477,22 +588,79 @@
         document.getElementById("tripBar").style.width = pct + "%";
       }
 
+      // 支払い一覧：画面に収まる分だけ表示し、残りは件数バッジで示す（スクロールなし）
+      function fitPayments() {
+        var list = document.getElementById("payList");
+        var more = document.getElementById("payMore");
+        var kids = list.children;
+        for (var i = 0; i < kids.length; i++) kids[i].style.display = "";
+        more.classList.remove("show");
+        var h = list.clientHeight;
+        if (!h || !kids.length) return;
+        var cut = -1;
+        for (var j = 0; j < kids.length; j++) {
+          var el = kids[j];
+          if (el.classList.contains("empty")) continue;
+          if (el.offsetTop + el.offsetHeight > h + 1) { cut = j; break; }
+        }
+        if (cut < 0) return;
+        var hidden = 0;
+        for (var k = cut; k < kids.length; k++) {
+          if (kids[k].classList.contains("pay")) hidden++;
+          kids[k].style.display = "none";
+        }
+        // 日見出しだけが最後に残る場合は見出しも隠す
+        var last = cut - 1;
+        while (last >= 0 && kids[last].classList.contains("day-head")) {
+          kids[last].style.display = "none";
+          last--;
+        }
+        if (hidden > 0) {
+          more.textContent = "他 " + hidden + " 件 ›";
+          more.classList.add("show");
+        }
+      }
+
+      // 支払い1件の行（店名＋金額／メモ・手段・区分チップの2行構成）
+      function payItemHTML(p) {
+        var color = CAT_COLORS[p.cat] || "#68707c";
+        return '<div class="pay"><div class="pay-line1">' +
+          '<span class="pay-store">' + esc(p.store) + '</span>' +
+          '<span class="pay-amount">' + yen(p.amount) + '円</span></div>' +
+          '<div class="pay-line2">' +
+          (p.note ? '<span class="pay-note">' + esc(p.note) + '</span>' : "") +
+          '<span class="pay-sub">' + esc(p.method) + (p.time ? " ・ " + esc(p.time) : "") + '</span>' +
+          '<span class="chip" style="background:' + color + '22;color:' + color + '">' + esc(p.cat) + "</span>" +
+          "</div></div>";
+      }
+
+      // 日別にグループ化した支払い一覧のHTML
+      function groupedHTML(monthPays) {
+        var days = {}, order = [];
+        monthPays.forEach(function (p) {
+          if (!days[p.date]) { days[p.date] = []; order.push(p.date); }
+          days[p.date].push(p);
+        });
+        var week = ["日", "月", "火", "水", "木", "金", "土"];
+        var html = "";
+        order.forEach(function (d) {
+          var items = days[d];
+          var sum = items.reduce(function (s, p) { return s + p.amount; }, 0);
+          var parts = d.split("-");
+          var dt = new Date(Date.UTC(+parts[0], +parts[1] - 1, +parts[2]));
+          var head = parseInt(d.slice(5, 7), 10) + "月" + parseInt(d.slice(8, 10), 10) + "日（" + week[dt.getUTCDay()] + "）";
+          html += '<div class="day-head"><span>' + head + '</span><span class="day-total">合計 ' + yen(sum) + "円</span></div>";
+          items.forEach(function (p) { html += payItemHTML(p); });
+        });
+        return html;
+      }
+
       function render() {
         var key = MONTHS[cur];
         var y = key.slice(0, 4), m = parseInt(key.slice(5, 7), 10);
         document.getElementById("monthTitle").textContent = y + "年" + m + "月";
         document.getElementById("prevMonth").disabled = cur === 0;
         document.getElementById("nextMonth").disabled = cur === MONTHS.length - 1;
-
-        var chips = document.getElementById("monthChips");
-        chips.innerHTML = "";
-        MONTHS.forEach(function (mk, i) {
-          var b = document.createElement("button");
-          b.textContent = mk.slice(0, 4) + "年" + parseInt(mk.slice(5, 7), 10) + "月";
-          if (i === cur) b.className = "on";
-          b.addEventListener("click", function () { cur = i; render(); });
-          chips.appendChild(b);
-        });
 
         var usedByCat = {};
         PAYMENTS.forEach(function (p) {
@@ -521,8 +689,7 @@
           var div = document.createElement("div");
           div.className = "cat" + (rem < 0 ? " over" : "");
           div.innerHTML =
-            '<div class="cat-name"><span class="dot" style="background:' + b.color + '"></span>' + esc(b.name) + "</div>" +
-            '<div class="cat-remain">' + yen(rem) + "<small> 円 残り</small></div>" +
+            '<div class="cat-top"><span class="cat-name"><span class="dot" style="background:' + b.color + '"></span>' + esc(b.name) + '</span><span class="cat-remain">' + yen(rem) + "<small> 円 残り</small></span></div>" +
             '<div class="cat-sub">予算 ' + yen(b.amount) + "円 ・ 使った " + yen(used) + "円</div>" +
             '<div class="bar dark' + (rem < 0 ? " over" : "") + '"><i style="width:' + p + "%;background:" + (rem < 0 ? "var(--warn)" : b.color) + '"></i></div>';
           grid.appendChild(div);
@@ -530,64 +697,45 @@
 
         // 支払い一覧（新しい順・日別）
         var list = document.getElementById("payList");
-        list.innerHTML = "";
         var monthPays = PAYMENTS.filter(function (p) { return monthKey(p.date) === key; });
         monthPays.sort(function (a, b) {
           if (a.date !== b.date) return a.date < b.date ? 1 : -1;
           return (b.time || "") < (a.time || "") ? -1 : 1;
         });
+        var monthTotal = monthPays.reduce(function (s, p) { return s + p.amount; }, 0);
+        document.getElementById("payMonthTotal").textContent = monthPays.length ? "合計 " + yen(monthTotal) + "円" : "";
+        curMonthPays = monthPays;
         if (!monthPays.length) {
           list.innerHTML = '<div class="empty">この月の支払いはまだありません</div>';
         } else {
-          var days = {}, order = [];
-          monthPays.forEach(function (p) {
-            if (!days[p.date]) { days[p.date] = []; order.push(p.date); }
-            days[p.date].push(p);
-          });
-          var week = ["日", "月", "火", "水", "木", "金", "土"];
-          order.forEach(function (d) {
-            var items = days[d];
-            var sum = items.reduce(function (s, p) { return s + p.amount; }, 0);
-            var parts = d.split("-");
-            var dt = new Date(Date.UTC(+parts[0], +parts[1] - 1, +parts[2]));
-            var head = parseInt(d.slice(5, 7), 10) + "月" + parseInt(d.slice(8, 10), 10) + "日（" + week[dt.getUTCDay()] + "）";
-            var wrap = document.createElement("div");
-            wrap.className = "day";
-            var html = '<div class="day-head"><span>' + head + '</span><span class="day-total">合計 ' + yen(sum) + "円</span></div>";
-            items.forEach(function (p) {
-              var color = CAT_COLORS[p.cat] || "#68707c";
-              html +=
-                '<div class="pay"><div class="pay-main">' +
-                '<div class="pay-store">' + esc(p.store) + "</div>" +
-                (p.note ? '<div class="pay-note">' + esc(p.note) + "</div>" : "") +
-                '<div class="pay-sub">' + esc(p.method) + (p.time ? " ・ " + esc(p.time) : "") + "</div>" +
-                '</div><div class="pay-right">' +
-                '<div class="pay-amount">' + yen(p.amount) + "円</div>" +
-                '<span class="chip" style="background:' + color + '22;color:' + color + '">' + esc(p.cat) + "</span>" +
-                "</div></div>";
-            });
-            wrap.innerHTML = html;
-            list.appendChild(wrap);
-          });
+          list.innerHTML = groupedHTML(monthPays);
         }
-        document.getElementById("panelCat").scrollTop = 0;
-        document.getElementById("panelPay").scrollTop = 0;
+        requestAnimationFrame(fitPayments);
       }
+
+      // 全件オーバーレイ（メイン画面はスクロールなしのまま、ここだけスクロール可）
+      var overlay = document.getElementById("overlay");
+      function openOverlay() {
+        if (!curMonthPays.length) return;
+        var key = MONTHS[cur];
+        var m = parseInt(key.slice(5, 7), 10);
+        var total = curMonthPays.reduce(function (s, p) { return s + p.amount; }, 0);
+        document.getElementById("sheetTitle").textContent = m + "月の支払い（全" + curMonthPays.length + "件）";
+        document.getElementById("sheetTotal").textContent = "合計 " + yen(total) + "円";
+        document.getElementById("sheetBody").innerHTML = groupedHTML(curMonthPays);
+        document.getElementById("sheetBody").scrollTop = 0;
+        overlay.classList.add("open");
+      }
+      function closeOverlay() { overlay.classList.remove("open"); }
+      document.getElementById("payWrap").addEventListener("click", openOverlay);
+      document.getElementById("sheetClose").addEventListener("click", closeOverlay);
+      overlay.addEventListener("click", function (e) { if (e.target === overlay) closeOverlay(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeOverlay(); });
 
       document.getElementById("prevMonth").addEventListener("click", function () { if (cur > 0) { cur--; render(); } });
       document.getElementById("nextMonth").addEventListener("click", function () { if (cur < MONTHS.length - 1) { cur++; render(); } });
-      document.getElementById("tabCat").addEventListener("click", function () {
-        this.classList.add("on");
-        document.getElementById("tabPay").classList.remove("on");
-        document.getElementById("panelCat").hidden = false;
-        document.getElementById("panelPay").hidden = true;
-      });
-      document.getElementById("tabPay").addEventListener("click", function () {
-        this.classList.add("on");
-        document.getElementById("tabCat").classList.remove("on");
-        document.getElementById("panelPay").hidden = false;
-        document.getElementById("panelCat").hidden = true;
-      });
+      window.addEventListener("resize", fitPayments);
+      window.addEventListener("load", fitPayments);
 
       renderTrip();
       render();
