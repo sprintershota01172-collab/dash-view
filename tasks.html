@@ -21,11 +21,16 @@
         --teal-dark:#0b5a54;
         --teal-soft:#e7f3f1;
         --bar:#0f766e;
-        --danger:#b3261e;
+        --danger:#d92d20;
+        --danger-dark:#b42318;
+        --danger-bg:rgba(217,45,32,.08);
+        --warn:#dc6803;
+        --warn-dark:#b54708;
+        --warn-bg:rgba(220,104,3,.09);
         --ring:#9db2c6;
         --today-bg:rgba(15,118,110,.10);
         --weekend-bg:rgba(22,40,63,.04);
-        --namew:46%;
+        --namew:54%;
       }
       @media (prefers-color-scheme: dark){
         :root{
@@ -39,7 +44,12 @@
           --teal-dark:#7fe0d2;
           --teal-soft:#123330;
           --bar:#1f9e8f;
-          --danger:#f0a49e;
+          --danger:#ff6b61;
+          --danger-dark:#ff8a80;
+          --danger-bg:rgba(255,107,97,.14);
+          --warn:#ffb020;
+          --warn-dark:#ffcf6b;
+          --warn-bg:rgba(255,176,32,.14);
           --ring:#54687e;
           --today-bg:rgba(47,191,174,.14);
           --weekend-bg:rgba(255,255,255,.04);
@@ -52,7 +62,7 @@
       body{
         margin:0;background:var(--bg);color:var(--ink);
         font-family:"Meiryo","メイリオ","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-        font-size:14px;line-height:1.5;
+        font-size:13px;line-height:1.4;
         -webkit-font-smoothing:antialiased;
       }
       .screen{
@@ -60,110 +70,134 @@
         max-width:680px;margin:0 auto;
         height:100vh;height:100dvh;
         display:flex;flex-direction:column;
-        padding:10px 14px calc(8px + env(safe-area-inset-bottom, 0px));
+        padding:6px 10px calc(6px + env(safe-area-inset-bottom, 0px));
       }
-      @media (min-width:900px){ .screen{max-width:1080px;padding:14px 24px calc(12px + env(safe-area-inset-bottom, 0px))} }
+      @media (min-width:900px){ .screen{max-width:1080px;padding:8px 24px calc(8px + env(safe-area-inset-bottom, 0px))} }
 
       /* Header */
-      header{display:flex;align-items:baseline;gap:10px;padding:0 2px}
-      header h1{margin:0;font-size:16px;font-weight:600;line-height:1.3;flex:0 0 auto}
-      .head-sub{flex:1 1 auto;min-width:0;font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
-      .head-sub .over{color:var(--danger);font-weight:600}
+      header{display:flex;align-items:baseline;gap:8px;padding:0 2px}
+      header h1{margin:0;font-size:14px;font-weight:700;line-height:1.25;flex:0 0 auto}
+      .head-sub{flex:1 1 auto;min-width:0;font-size:10.5px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+      .head-sub .over{color:var(--danger-dark);font-weight:700}
 
       /* Progress summary (1行) */
       .progress{
-        margin-top:8px;font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums;
+        margin-top:4px;font-size:10.5px;color:var(--sub);font-variant-numeric:tabular-nums;
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-        display:flex;align-items:center;gap:8px;
+        display:flex;align-items:center;gap:6px;
       }
-      .progress .pbar{flex:0 0 72px;height:4px;border-radius:2px;background:var(--divider);overflow:hidden}
+      .progress .pbar{flex:0 0 64px;height:4px;border-radius:2px;background:var(--divider);overflow:hidden}
       .progress .pbar i{display:block;height:100%;background:var(--teal)}
-      .progress b{color:var(--ink);font-weight:600}
-      .progress .over{color:var(--danger);font-weight:600}
-      .progress .over b{color:var(--danger)}
+      .progress b{color:var(--ink);font-weight:700}
+      .progress .over{color:var(--danger-dark);font-weight:700}
+      .progress .over b{color:var(--danger-dark)}
 
       /* Filter chips + 完了切り替え（表示確認用） */
-      .controls{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+      .controls{display:flex;align-items:center;gap:4px;margin-top:4px;flex-wrap:wrap}
       .chip{
-        flex:0 0 auto;min-height:30px;padding:0 10px;border:1px solid var(--line);border-radius:6px;
-        background:var(--surface);color:var(--sub);font:inherit;font-size:12px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;
+        flex:0 0 auto;min-height:24px;padding:0 8px;border:1px solid var(--line);border-radius:5px;
+        background:var(--surface);color:var(--sub);font:inherit;font-size:11px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;
       }
-      .chip[aria-pressed="true"]{border-color:var(--teal);color:var(--teal-dark);background:var(--teal-soft);font-weight:600}
+      .chip[aria-pressed="true"]{border-color:var(--teal);color:var(--teal-dark);background:var(--teal-soft);font-weight:700}
       .chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
       .controls .spacer{flex:1 1 auto}
       .chip.done-chip{border-style:dashed;margin-left:auto}
 
       /* Period nav */
-      .periodnav{display:flex;align-items:center;gap:6px;margin-top:8px}
-      .periodnav .rng{flex:1 1 auto;text-align:center;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .periodnav{display:flex;align-items:center;gap:4px;margin-top:4px}
+      .periodnav .rng{flex:1 1 auto;text-align:center;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .periodnav button{
-        flex:0 0 auto;min-height:32px;padding:0 9px;border:1px solid var(--line);border-radius:6px;
-        background:var(--surface);color:var(--ink);font:inherit;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;
+        flex:0 0 auto;min-height:26px;padding:0 8px;border:1px solid var(--line);border-radius:5px;
+        background:var(--surface);color:var(--ink);font:inherit;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;
       }
-      .periodnav button.cur{color:var(--teal-dark);border-color:var(--teal);font-weight:600}
+      .periodnav button.cur{color:var(--teal-dark);border-color:var(--teal);font-weight:700}
       .periodnav button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 
       /* Main */
-      main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:8px;overflow-y:auto}
+      main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:4px;overflow-y:auto}
 
       /* ---------- Gantt ---------- */
       .gantt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:0 0 auto}
       .g-head{display:flex;border-bottom:1px solid var(--line);background:var(--surface)}
       .g-name{flex:0 0 var(--namew);min-width:0;display:flex;align-items:center}
-      .g-head .g-name{padding:0 10px;font-size:11px;font-weight:600;color:var(--sub);height:30px;border-right:1px solid var(--line)}
+      .g-head .g-name{padding:0 8px;font-size:10px;font-weight:600;color:var(--sub);height:22px;border-right:1px solid var(--line)}
       .g-track{flex:1 1 auto;min-width:0;position:relative}
-      .g-days{display:flex;height:30px}
+      .g-days{display:flex;height:22px}
       .g-day{
-        flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-        font-variant-numeric:tabular-nums;line-height:1.15;
+        flex:1 1 0;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:1px;
+        font-variant-numeric:tabular-nums;line-height:1;
       }
-      .g-day .dn{font-size:11px;font-weight:500}
-      .g-day .dw{font-size:9px;color:var(--sub)}
+      .g-day .dn{font-size:10px;font-weight:600}
+      .g-day .dw{font-size:8px;color:var(--sub)}
       .g-day.today{background:var(--today-bg)}
       .g-day.today .dn{color:var(--teal-dark);font-weight:700}
       .g-day.today .dw{color:var(--teal-dark)}
       .g-day.wknd{background:var(--weekend-bg)}
-      .g-row{display:flex;height:52px}
+      .g-row{display:flex;height:30px;position:relative;cursor:pointer}
       .g-row + .g-row{border-top:1px solid var(--divider)}
       .g-row .g-name{border-right:1px solid var(--line)}
       .g-row.is-done{opacity:.55}
-      .g-namebody{flex:1 1 auto;min-width:0;cursor:pointer;padding:0 8px 0 10px}
+      /* 警告強調：左端バー＋背景 */
+      .g-row.is-over{background:var(--danger-bg)}
+      .g-row.is-over::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--danger);z-index:3}
+      .g-row.is-todaydue{background:var(--danger-bg)}
+      .g-row.is-todaydue::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--danger);z-index:3}
+      .g-row.is-tomorrow{background:var(--warn-bg)}
+      .g-row.is-tomorrow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--warn);z-index:3}
+      .g-namebody{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:5px;padding:0 6px 0 8px}
+      .g-row.is-over .g-namebody,.g-row.is-todaydue .g-namebody{padding-left:10px}
       .g-tname{
-        font-size:13px;font-weight:500;line-height:1.35;color:var(--ink);
+        flex:1 1 auto;min-width:0;
+        font-size:12px;font-weight:500;line-height:1.25;color:var(--ink);
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       }
       .g-row.is-top .g-tname{font-weight:600}
       .g-row.is-done .g-tname{text-decoration:line-through;color:var(--sub)}
-      .g-sub{margin-top:2px;font-size:11px;color:var(--sub);line-height:1.35;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .g-sub .over{color:var(--danger);font-weight:600}
-      .g-sub .pri{color:var(--teal-dark);font-weight:600}
-      .g-sub .soon{color:var(--ink);font-weight:500}
+      .g-row.is-over .g-tname{color:var(--danger-dark);font-weight:700}
+      .g-row.is-todaydue .g-tname{color:var(--danger-dark);font-weight:700}
+      .g-row.is-tomorrow .g-tname{color:var(--warn-dark);font-weight:700}
+      .g-row .pri-dot{flex:0 0 auto;font-size:9px;font-weight:700;color:var(--teal-dark);white-space:nowrap;line-height:1}
+      .g-row.is-over .pri-dot,.g-row.is-todaydue .pri-dot{color:var(--danger-dark)}
+      .g-due-inline{flex:0 0 auto;font-size:10px;font-weight:500;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.25}
+      .g-due-inline.over{color:var(--danger-dark);font-weight:700}
+      .g-due-inline.todaydue{color:var(--danger-dark);font-weight:700}
+      .g-due-inline.tomorrow{color:var(--warn-dark);font-weight:700}
       .g-track .grid{position:absolute;inset:0}
       .g-track .shade{position:absolute;top:0;bottom:0}
       .g-bar{
-        position:absolute;top:50%;transform:translateY(-50%);height:14px;border-radius:3px;
+        position:absolute;top:50%;transform:translateY(-50%);height:11px;border-radius:3px;
         background:var(--bar);cursor:pointer;min-width:6px;
         display:flex;align-items:center;justify-content:space-between;
-        color:#fff;font-size:10px;line-height:1;padding:0 1px;
+        color:#fff;font-size:9px;line-height:1;padding:0 1px;
       }
       .g-bar.done-bar{background:var(--ring)}
+      .g-bar.bar-over{background:var(--danger)}
+      .g-bar.bar-todaydue{background:var(--danger)}
+      .g-bar.bar-tomorrow{background:var(--warn)}
       .g-bar .cont{font-weight:700;opacity:.95}
       .g-due{
-        position:absolute;top:50%;width:10px;height:10px;border-radius:2px;
+        position:absolute;top:50%;width:9px;height:9px;border-radius:2px;
         transform:translate(-50%,-50%) rotate(45deg);cursor:pointer;
         background:var(--ink);
       }
       .g-due.tent{background:var(--surface);border:2px solid var(--teal)}
-      .g-due.over{background:var(--danger)}
+      .g-due.over{background:var(--danger);width:11px;height:11px;box-shadow:0 0 0 2px var(--danger-bg)}
+      .g-due.todaydue{background:var(--danger);width:11px;height:11px;box-shadow:0 0 0 2px var(--danger-bg)}
+      .g-due.tomorrow{background:var(--warn);width:10px;height:10px}
+      .g-due.tent.over{background:var(--danger-bg);border-color:var(--danger)}
+      .g-due.tent.todaydue{background:var(--danger-bg);border-color:var(--danger)}
+      .g-due.tent.tomorrow{background:var(--warn-bg);border-color:var(--warn)}
       .g-due.sameday{box-shadow:0 0 0 2px var(--surface)}
+      .g-due.over.sameday,.g-due.todaydue.sameday{box-shadow:0 0 0 2px var(--danger-bg)}
 
       .empty{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:28px 16px;text-align:center;flex:0 0 auto}
       .empty .msg{font-size:13px;font-weight:600}
       .empty .sub-msg{margin-top:4px;font-size:11px;color:var(--sub)}
 
-      /* Pager */
-      .pager{flex:0 0 auto;display:flex;align-items:center;gap:8px;margin-top:8px}
-      .pager button{min-width:84px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
+      /* Pager（20件超のときだけ表示） */
+      .pager{flex:0 0 auto;display:flex;align-items:center;gap:8px;margin-top:6px}
+      .pager[hidden]{display:none}
+      .pager button{min-width:84px;min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;font-size:12px;font-weight:500;cursor:pointer}
       .pager button:disabled{color:var(--sub);opacity:.45;cursor:default}
       .pager button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
       .pager .page-info{flex:1 1 auto;text-align:center;font-size:11.5px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -184,7 +218,9 @@
       .sheet .full-name{font-size:14px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
       .sheet .meta{margin-top:10px;font-size:12px;line-height:1.9;font-variant-numeric:tabular-nums}
       .sheet .meta .k{color:var(--sub)}
-      .sheet .meta .over{color:var(--danger);font-weight:600}
+      .sheet .meta .over{color:var(--danger-dark);font-weight:700}
+      .sheet .meta .todaydue{color:var(--danger-dark);font-weight:700}
+      .sheet .meta .tomorrow{color:var(--warn-dark);font-weight:700}
       .sheet .meta .pri{color:var(--teal-dark);font-weight:600}
       .tag-tent{display:inline-block;font-size:10px;font-weight:600;color:var(--teal-dark);border:1px solid var(--teal);border-radius:4px;padding:0 5px;line-height:1.7;vertical-align:1px}
       .sheet-actions{margin-top:20px}
@@ -293,15 +329,28 @@
         if(d === 1) return { text: "明日まで", cls: "soon" };
         return { text: md+"まで", cls: "" };
       }
-      function subParts(t){
-        if(t.done) return "完了";
-        var parts = [];
-        if(t.must) parts.push('<span class="pri">最優先</span>');
-        var seg = dueLabel(t);
-        parts.push(seg.cls ? '<span class="'+seg.cls+'">'+esc(seg.text)+'</span>' : esc(seg.text));
-        if(isTentative(t) && t.due) parts.push("目安");
-        if(!t.plan && t.due) parts.push("未計画");
-        return parts.join("・");
+      // 警告区分：over=期限超過 / todaydue=今日締切 / tomorrow=明日締切 / それ以外は通常
+      function urgency(t){
+        if(t.done || !t.due) return "";
+        var d = daysLeft(t.due);
+        if(d === null) return "";
+        if(d < 0) return "over";
+        if(d === 0) return "todaydue";
+        if(d === 1) return "tomorrow";
+        return "";
+      }
+      // 名前と同じ1行に収める締切表記（例：11/3超過・今日・明日・11/12／目安は「〜目」）
+      function dueInline(t){
+        if(t.done) return { text: "完了", cls: "" };
+        if(!t.due) return { text: "期限なし", cls: "" };
+        var d = daysLeft(t.due);
+        var dt = parseDue(t.due);
+        var md = (dt.getMonth()+1)+"/"+dt.getDate();
+        var tent = isTentative(t) ? "目安" : "";
+        if(d < 0) return { text: md+"・"+Math.abs(d)+"日超過", cls: "over" };
+        if(d === 0) return { text: md+"・今日まで", cls: "todaydue" };
+        if(d === 1) return { text: md+"・明日まで", cls: "tomorrow" };
+        return { text: md + tent, cls: "" };
       }
       function dateFull(s){
         if(!s) return "未設定";
@@ -348,12 +397,7 @@
       }
 
       function pageSize(){
-        var mainEl = document.getElementById("main");
-        var h = mainEl.clientHeight || (window.innerHeight - 300);
-        var n = Math.floor((h - 30) / 52); // ヘッダー行30px + 行52px
-        if(n < 3) n = 3;
-        if(n > 10) n = 10;
-        return n;
+        return 20; // 1画面に縦20件（行高30px＋ヘッダー22pxで収める）
       }
 
       /* ---------- Gantt rendering ---------- */
@@ -376,6 +420,7 @@
           }
           var grid = '<div class="grid" style="background-image:linear-gradient(to right, var(--divider) 1px, transparent 1px);background-size:'+(100/n)+'% 100%"></div>';
 
+          var urg = urgency(t);
           // 実施期間バー（実施予定日〜終了日。終了日未設定なら1日分）
           var bar = "";
           if(t.plan){
@@ -383,7 +428,7 @@
             var eIdx = dayDiff(t.planEnd || t.plan, r.start);
             if(eIdx >= 0 && sIdx <= n-1){
               var cs = Math.max(0, sIdx), ce = Math.min(n-1, eIdx);
-              bar = '<div class="g-bar'+(t.done ? " done-bar" : "")+'" data-act="detail" role="button" aria-label="詳細を見る：'+esc(t.name)+'" '
+              bar = '<div class="g-bar'+(t.done ? " done-bar" : "")+(urg ? " bar-"+urg : "")+'" '
                 + 'style="left:calc('+(cs*100/n)+'% + 1px);width:calc('+((ce-cs+1)*100/n)+'% - 2px)">'
                 + (sIdx < 0 ? '<span class="cont">‹</span>' : '<span></span>')
                 + (eIdx > n-1 ? '<span class="cont">›</span>' : '<span></span>')
@@ -395,16 +440,18 @@
           if(t.due){
             var dIdx = dayDiff(t.due, r.start);
             if(dIdx >= 0 && dIdx <= n-1){
-              var d = daysLeft(t.due);
-              var mc = "g-due" + (!t.done && d < 0 ? " over" : "") + (isTentative(t) ? " tent" : "") + (t.plan === t.due ? " sameday" : "");
-              marker = '<div class="'+mc+'" data-act="detail" role="button" aria-label="詳細を見る：'+esc(t.name)+'" '
+              var mc = "g-due" + (urg ? " "+urg : "") + (isTentative(t) ? " tent" : "") + (t.plan === t.due ? " sameday" : "");
+              marker = '<div class="'+mc+'" '
                 + 'style="left:'+((dIdx+0.5)*100/n)+'%"></div>';
             }
           }
-          return '<div class="g-row'+(!t.done && idx===0 ? " is-top" : "")+(t.done ? " is-done" : "")+'" data-id="'+esc(t.id)+'">'
-            + '<div class="g-name"><div class="g-namebody" data-act="detail" role="button" tabindex="0" aria-label="詳細を見る：'+esc(t.name)+'">'
-            + '<div class="g-tname">'+esc(t.name)+'</div>'
-            + '<div class="g-sub">'+subParts(t)+'</div>'
+          var di = dueInline(t);
+          var rowCls = "g-row" + (!t.done && idx===0 ? " is-top" : "") + (t.done ? " is-done" : "") + (urg ? " is-"+urg : "");
+          return '<div class="'+rowCls+'" data-id="'+esc(t.id)+'" data-act="detail" role="button" tabindex="0" aria-label="詳細を見る：'+esc(t.name)+'">'
+            + '<div class="g-name"><div class="g-namebody">'
+            + (t.must && !t.done ? '<span class="pri-dot">最優先</span>' : '')
+            + '<span class="g-tname">'+esc(t.name)+'</span>'
+            + '<span class="g-due-inline'+(di.cls ? " "+di.cls : "")+'">'+esc(di.text)+'</span>'
             + '</div></div>'
             + '<div class="g-track">' + shades + grid + bar + marker + '</div>'
             + '</div>';
@@ -477,6 +524,8 @@
           main.innerHTML = ganttHtml(pageItems, r0);
         }
 
+        var pagerEl = document.getElementById("pager");
+        pagerEl.hidden = totalPages <= 1;
         var info = document.getElementById("pageInfo");
         if(list.length){
           info.textContent = (start+1) + "〜" + (start + pageItems.length) + "件／全" + list.length + "件"
@@ -498,9 +547,11 @@
       var sheet = document.getElementById("sheet");
       function openDetail(t){
         var seg = dueLabel(t);
+        var urg = urgency(t);
         var dueTxt = "未設定";
         if(t.due){
-          dueTxt = dateFull(t.due) + "（" + seg.text + "）";
+          var inner = dateFull(t.due) + "（" + seg.text + "）";
+          dueTxt = urg ? '<span class="'+urg+'">' + esc(inner) + '</span>' : esc(inner);
           if(isTentative(t)) dueTxt += ' <span class="tag-tent">目安</span>';
         }
         var planTxt = "未設定（未計画）";
