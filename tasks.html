@@ -23,7 +23,6 @@
         --bar:#0f766e;
         --danger:#b3261e;
         --ring:#9db2c6;
-        --field-bg:#f7f9fb;
         --today-bg:rgba(15,118,110,.10);
         --weekend-bg:rgba(22,40,63,.04);
         --namew:46%;
@@ -42,7 +41,6 @@
           --bar:#1f9e8f;
           --danger:#f0a49e;
           --ring:#54687e;
-          --field-bg:#1d2c3d;
           --today-bg:rgba(47,191,174,.14);
           --weekend-bg:rgba(255,255,255,.04);
         }
@@ -57,7 +55,6 @@
         font-size:16px;line-height:1.5;
         -webkit-font-smoothing:antialiased;
       }
-      .num{font-variant-numeric:tabular-nums}
       .screen{
         position:relative;
         max-width:680px;margin:0 auto;
@@ -68,60 +65,40 @@
       @media (min-width:900px){ .screen{max-width:1080px;padding:14px 24px calc(12px + env(safe-area-inset-bottom, 0px))} }
 
       /* Header */
-      header{display:flex;align-items:center;gap:10px;padding:0 2px}
-      header .hgroup{flex:1 1 auto;min-width:0}
-      header h1{margin:0;font-size:19px;font-weight:600;line-height:1.3}
-      .head-sub{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      header{display:flex;align-items:baseline;gap:10px;padding:0 2px}
+      header h1{margin:0;font-size:19px;font-weight:600;line-height:1.3;flex:0 0 auto}
+      .head-sub{flex:1 1 auto;min-width:0;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
       .head-sub .over{color:var(--danger);font-weight:600}
-      .add-btn{
-        flex:0 0 auto;min-height:40px;padding:0 16px;border:0;border-radius:6px;
-        background:var(--teal);color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;
+
+      /* Progress summary (1行) */
+      .progress{
+        margin-top:8px;font-size:12.5px;color:var(--sub);font-variant-numeric:tabular-nums;
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+        display:flex;align-items:center;gap:8px;
       }
-      @media (prefers-color-scheme: dark){ .add-btn{color:#0c1a17} }
-      .add-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+      .progress .pbar{flex:0 0 72px;height:4px;border-radius:2px;background:var(--divider);overflow:hidden}
+      .progress .pbar i{display:block;height:100%;background:var(--teal)}
+      .progress b{color:var(--ink);font-weight:600}
+      .progress .over{color:var(--danger);font-weight:600}
+      .progress .over b{color:var(--danger)}
 
-      /* Progress summary (compact single block) */
-      .progress{margin-top:8px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px 9px}
-      .progress .bar{height:4px;border-radius:2px;background:var(--divider);overflow:hidden}
-      .progress .bar i{display:block;height:100%;background:var(--teal);transition:width .25s ease}
-      .progress .p-line{margin-top:6px;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;display:flex;gap:14px;flex-wrap:wrap}
-      .progress .p-line b{color:var(--ink);font-weight:600}
-      .progress .p-line .over{color:var(--danger);font-weight:600}
-      .progress .p-line .over b{color:var(--danger)}
-
-      /* Tabs */
-      .tabs{display:flex;margin-top:10px;border-bottom:1px solid var(--line)}
-      .tabs button{
-        flex:1 1 0;min-height:40px;border:0;background:transparent;color:var(--sub);
-        font:inherit;font-size:14px;font-weight:500;cursor:pointer;padding:0 2px;
-        border-bottom:2px solid transparent;margin-bottom:-1px;font-variant-numeric:tabular-nums;
-        transition:color .15s ease,border-color .15s ease;
-      }
-      .tabs button[aria-selected="true"]{color:var(--teal-dark);font-weight:600;border-bottom-color:var(--teal)}
-      .tabs button:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
-
-      /* Filter chips + search */
+      /* Filter chips + 完了切り替え（表示確認用） */
       .controls{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
       .chip{
         flex:0 0 auto;min-height:32px;padding:0 11px;border:1px solid var(--line);border-radius:6px;
-        background:var(--surface);color:var(--sub);font:inherit;font-size:13px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;
+        background:var(--surface);color:var(--sub);font:inherit;font-size:13px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;
       }
       .chip[aria-pressed="true"]{border-color:var(--teal);color:var(--teal-dark);background:var(--teal-soft);font-weight:600}
       .chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-      .search{
-        flex:1 1 140px;min-width:120px;height:32px;padding:0 10px;
-        border:1px solid var(--line);border-radius:6px;background:var(--surface);
-        color:var(--ink);font:inherit;font-size:13px;
-      }
-      @media (max-width:640px){ .search{flex:1 1 100%;min-width:0} }
-      .search:focus{outline:2px solid var(--teal);outline-offset:0;border-color:transparent}
+      .controls .spacer{flex:1 1 auto}
+      .chip.done-chip{border-style:dashed;margin-left:auto}
 
-      /* Period nav (gantt) */
+      /* Period nav */
       .periodnav{display:flex;align-items:center;gap:6px;margin-top:8px}
       .periodnav .rng{flex:1 1 auto;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .periodnav button{
         flex:0 0 auto;min-height:36px;padding:0 10px;border:1px solid var(--line);border-radius:6px;
-        background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:500;cursor:pointer;
+        background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;
       }
       .periodnav button.cur{color:var(--teal-dark);border-color:var(--teal);font-weight:600}
       .periodnav button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
@@ -133,9 +110,9 @@
       .gantt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:0 0 auto}
       .g-head{display:flex;border-bottom:1px solid var(--line);background:var(--surface)}
       .g-name{flex:0 0 var(--namew);min-width:0;display:flex;align-items:center}
-      .g-head .g-name{padding:0 10px;font-size:12px;font-weight:600;color:var(--sub);height:36px;border-right:1px solid var(--line)}
+      .g-head .g-name{padding:0 10px;font-size:12px;font-weight:600;color:var(--sub);height:34px;border-right:1px solid var(--line)}
       .g-track{flex:1 1 auto;min-width:0;position:relative}
-      .g-days{display:flex;height:36px}
+      .g-days{display:flex;height:34px}
       .g-day{
         flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-variant-numeric:tabular-nums;line-height:1.15;
@@ -146,17 +123,18 @@
       .g-day.today .dn{color:var(--teal-dark);font-weight:700}
       .g-day.today .dw{color:var(--teal-dark)}
       .g-day.wknd{background:var(--weekend-bg)}
-      .g-row{display:flex;height:80px;transition:opacity .18s ease}
+      .g-row{display:flex;height:60px}
       .g-row + .g-row{border-top:1px solid var(--divider)}
-      .g-row.leaving{opacity:.3}
-      .g-row .g-name{border-right:1px solid var(--line);padding-right:2px}
-      .g-namebody{flex:1 1 auto;min-width:0;cursor:pointer;padding:4px 2px 4px 0}
+      .g-row .g-name{border-right:1px solid var(--line)}
+      .g-row.is-done{opacity:.55}
+      .g-namebody{flex:1 1 auto;min-width:0;cursor:pointer;padding:0 8px 0 10px}
       .g-tname{
-        font-size:14px;font-weight:500;line-height:1.32;color:var(--ink);
-        display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;
+        font-size:14.5px;font-weight:500;line-height:1.35;color:var(--ink);
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       }
       .g-row.is-top .g-tname{font-weight:600}
-      .g-sub{margin-top:1px;font-size:12px;color:var(--sub);line-height:1.35;font-variant-numeric:tabular-nums;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+      .g-row.is-done .g-tname{text-decoration:line-through;color:var(--sub)}
+      .g-sub{margin-top:2px;font-size:12px;color:var(--sub);line-height:1.35;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .g-sub .over{color:var(--danger);font-weight:600}
       .g-sub .pri{color:var(--teal-dark);font-weight:600}
       .g-sub .soon{color:var(--ink);font-weight:500}
@@ -168,6 +146,7 @@
         display:flex;align-items:center;justify-content:space-between;
         color:#fff;font-size:11px;line-height:1;padding:0 1px;
       }
+      .g-bar.done-bar{background:var(--ring)}
       .g-bar .cont{font-weight:700;opacity:.95}
       .g-due{
         position:absolute;top:50%;width:10px;height:10px;border-radius:2px;
@@ -178,87 +157,18 @@
       .g-due.over{background:var(--danger)}
       .g-due.sameday{box-shadow:0 0 0 2px var(--surface)}
 
-      /* ---------- List rows ---------- */
-      .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:0 0 auto}
-      .row{display:flex;align-items:center;gap:2px;min-height:62px;padding:5px 6px 5px 2px;transition:opacity .18s ease}
-      .row + .row{border-top:1px solid var(--divider)}
-      .row.is-top{background:var(--teal-soft)}
-      .row.is-done .name{color:var(--sub);text-decoration:line-through;font-weight:400}
-      .row.leaving{opacity:.3}
-      .row.leaving .name{text-decoration:line-through}
-      .check{
-        flex:0 0 auto;width:44px;height:44px;border:0;background:transparent;padding:0;cursor:pointer;
-        display:flex;align-items:center;justify-content:center;border-radius:50%;
-      }
-      .check:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
-      .check .ring{
-        width:23px;height:23px;border-radius:50%;border:2px solid var(--ring);
-        display:flex;align-items:center;justify-content:center;
-        transition:background-color .15s ease,border-color .15s ease;
-      }
-      .check .ring svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.6);transition:opacity .15s ease,transform .15s ease}
-      @media (prefers-color-scheme: dark){ .check .ring svg{stroke:#0c1a17} }
-      .check[aria-pressed="true"] .ring{background:var(--teal);border-color:var(--teal)}
-      .check[aria-pressed="true"] .ring svg{opacity:1;transform:scale(1)}
-      .row .body{flex:1 1 auto;min-width:0;padding:2px 0;cursor:pointer}
-      .row .name{font-size:15px;font-weight:500;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
-      .row.is-top .name{font-weight:600}
-      .row .sub{margin-top:1px;font-size:12px;color:var(--sub);line-height:1.4;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .row .sub .over{color:var(--danger);font-weight:600}
-      .row .sub .pri{color:var(--teal-dark);font-weight:600}
-      .row .sub .soon{color:var(--ink);font-weight:500}
-      .rank{flex:0 0 auto;min-width:18px;text-align:center;font-size:13px;font-weight:700;color:var(--sub);font-variant-numeric:tabular-nums}
-      .row.is-top .rank{color:var(--teal-dark)}
-      .menu-btn{flex:0 0 auto;width:40px;height:44px;border:0;background:transparent;cursor:pointer;color:var(--sub);font-size:20px;line-height:1;border-radius:6px;padding:0}
-      .menu-btn:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
-      .empty{padding:28px 16px;text-align:center}
+      .empty{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:28px 16px;text-align:center;flex:0 0 auto}
       .empty .msg{font-size:15px;font-weight:600}
       .empty .sub-msg{margin-top:4px;font-size:13px;color:var(--sub)}
-      .empty .pick-btn{margin-top:14px;min-height:44px;padding:0 20px;border:0;border-radius:6px;background:var(--teal);color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
-      @media (prefers-color-scheme: dark){ .empty .pick-btn{color:#0c1a17} }
 
       /* Pager */
       .pager{flex:0 0 auto;display:flex;align-items:center;gap:8px;margin-top:8px}
       .pager button{min-width:84px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
       .pager button:disabled{color:var(--sub);opacity:.45;cursor:default}
       .pager button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-      .pager .page-info{flex:1 1 auto;text-align:center;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
+      .pager .page-info{flex:1 1 auto;text-align:center;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
 
-      /* Bottom quick-add bar */
-      .addbar{flex:0 0 auto;display:flex;gap:8px;margin-top:8px}
-      .addbar input{flex:1 1 auto;min-width:0;min-height:48px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;font-size:16px}
-      .addbar input:focus{outline:2px solid var(--teal);outline-offset:0;border-color:transparent}
-      .addbar button{flex:0 0 auto;min-height:48px;padding:0 18px;border:0;border-radius:6px;background:var(--teal);color:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
-      @media (prefers-color-scheme: dark){ .addbar button{color:#0c1a17} }
-      .addbar button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-
-      /* Toast */
-      .toast{
-        position:absolute;left:14px;right:14px;bottom:calc(76px + env(safe-area-inset-bottom, 0px));
-        display:none;align-items:center;gap:12px;background:var(--ink);color:var(--bg);
-        border-radius:6px;padding:10px 14px;font-size:14px;z-index:30;
-      }
-      .toast.show{display:flex}
-      .toast .tmsg{flex:1 1 auto;min-width:0}
-      .toast button{flex:0 0 auto;min-height:36px;padding:0 12px;border:0;border-radius:6px;background:transparent;color:inherit;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:underline}
-
-      /* ---------- Attendance ---------- */
-      .att-note{font-size:12px;color:var(--sub);line-height:1.55}
-      .att-box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:10px}
-      .att-box h2{margin:0 0 8px;font-size:15px;font-weight:600}
-      .att-sum{display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
-      .att-sum b{display:block;font-size:17px;color:var(--ink);font-weight:600;line-height:1.3}
-      .att-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-      .att-form .wide{grid-column:1 / -1}
-      .att-rec{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:13px;font-variant-numeric:tabular-nums}
-      .att-rec + .att-rec{border-top:1px solid var(--divider)}
-      .att-rec .d{flex:0 0 auto;font-weight:600;min-width:74px}
-      .att-rec .t{flex:1 1 auto;min-width:0;color:var(--sub)}
-      .att-rec .t b{color:var(--ink);font-weight:600}
-      .att-rec .del{flex:0 0 auto;min-height:36px;padding:0 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--sub);font:inherit;font-size:12px;cursor:pointer}
-      .tag-tent{display:inline-block;font-size:11px;font-weight:600;color:var(--teal-dark);border:1px solid var(--teal);border-radius:4px;padding:0 5px;line-height:1.7;vertical-align:1px}
-
-      /* Sheet */
+      /* Detail sheet（閲覧専用） */
       .overlay{position:fixed;inset:0;background:rgba(10,20,32,.45);z-index:40;display:none;align-items:flex-end;justify-content:center}
       .overlay.show{display:flex}
       .sheet{
@@ -270,36 +180,15 @@
       }
       @media (min-width:900px){ .sheet{max-width:560px} .overlay{align-items:center;padding:24px} .sheet{border-radius:10px} }
       @keyframes sheetIn{from{transform:translateY(10px);opacity:.5}to{transform:none;opacity:1}}
-      .sheet h2{margin:0 0 4px;font-size:17px;font-weight:600;line-height:1.4}
-      .sheet .full-name{font-size:16px;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
-      .sheet .meta{margin-top:4px;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums;line-height:1.6}
+      .sheet h2{margin:0 0 6px;font-size:13px;font-weight:600;color:var(--sub)}
+      .sheet .full-name{font-size:16px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
+      .sheet .meta{margin-top:10px;font-size:13.5px;line-height:1.9;font-variant-numeric:tabular-nums}
+      .sheet .meta .k{color:var(--sub)}
       .sheet .meta .over{color:var(--danger);font-weight:600}
-      .menu-list{display:flex;flex-direction:column;margin-top:8px}
-      .menu-list button{min-height:48px;border:0;border-top:1px solid var(--divider);background:transparent;color:var(--ink);font:inherit;font-size:15px;text-align:left;padding:0 4px;cursor:pointer}
-      .menu-list button:first-child{border-top:0}
-      .menu-list button:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
-      .field{margin-top:13px}
-      .field label{display:block;font-size:13px;font-weight:600;color:var(--sub);margin-bottom:6px}
-      .field input[type="text"],.field input[type="date"],.field input[type="time"],.field input[type="number"],.field select,.field textarea{
-        width:100%;min-height:44px;padding:8px 10px;
-        border:1px solid var(--line);border-radius:6px;background:var(--field-bg);
-        color:var(--ink);font:inherit;font-size:16px;
-      }
-      .field textarea{min-height:64px;resize:vertical}
-      .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--teal);outline-offset:0;border-color:transparent}
-      .field-row{display:flex;gap:10px}
-      .field-row .field{flex:1 1 0;min-width:0}
-      .quick{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-      .quick button{min-height:36px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:500;cursor:pointer}
-      .quick button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-      .hint{margin-top:8px;font-size:13px;color:var(--sub);line-height:1.55}
-      .form-err{display:none;margin-top:12px;font-size:14px;font-weight:600;color:var(--danger)}
-      .form-err.show{display:block}
-      .sheet-actions{display:flex;gap:8px;margin-top:20px}
-      .sheet-actions button{flex:1 1 0;min-height:48px;border-radius:6px;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
-      .btn-save{background:var(--teal);color:#fff;border:0}
-      @media (prefers-color-scheme: dark){ .btn-save{color:#0c1a17} }
-      .btn-cancel{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+      .sheet .meta .pri{color:var(--teal-dark);font-weight:600}
+      .tag-tent{display:inline-block;font-size:11px;font-weight:600;color:var(--teal-dark);border:1px solid var(--teal);border-radius:4px;padding:0 5px;line-height:1.7;vertical-align:1px}
+      .sheet-actions{margin-top:20px}
+      .sheet-actions button{width:100%;min-height:48px;border-radius:6px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
       .sheet-actions button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 
       @media (prefers-reduced-motion: reduce){
@@ -310,29 +199,19 @@
   <body>
     <div class="screen">
       <header>
-        <div class="hgroup">
-          <h1 id="todayLabel"></h1>
-          <div class="head-sub" id="headSub"></div>
-        </div>
-        <button type="button" class="add-btn" id="headAdd">＋ 追加</button>
+        <h1 id="todayLabel"></h1>
+        <div class="head-sub" id="headSub"></div>
       </header>
 
-      <section class="progress" id="progress" aria-label="進捗サマリー"></section>
-
-      <nav class="tabs" role="tablist" aria-label="表示切り替え" id="tabs">
-        <button type="button" role="tab" data-view="gantt" aria-selected="true">ガント</button>
-        <button type="button" role="tab" data-view="today" aria-selected="false"></button>
-        <button type="button" role="tab" data-view="all" aria-selected="false"></button>
-        <button type="button" role="tab" data-view="done" aria-selected="false"></button>
-        <button type="button" role="tab" data-view="work" aria-selected="false">勤務</button>
-      </nav>
+      <div class="progress" id="progress" aria-label="進捗サマリー"></div>
 
       <div class="controls" id="controls">
         <button type="button" class="chip" data-cat="all" aria-pressed="true">すべて</button>
         <button type="button" class="chip" data-cat="work" aria-pressed="false">仕事</button>
         <button type="button" class="chip" data-cat="private" aria-pressed="false">プライベート</button>
         <button type="button" class="chip" data-cat="unplanned" aria-pressed="false" id="unplannedChip"></button>
-        <input type="search" class="search" id="searchInput" placeholder="検索" aria-label="タスク名で検索" />
+        <span class="spacer"></span>
+        <button type="button" class="chip done-chip" id="doneChip" aria-pressed="false"></button>
       </div>
 
       <div class="periodnav" id="periodNav"></div>
@@ -344,26 +223,17 @@
         <div class="page-info" id="pageInfo"></div>
         <button type="button" id="nextBtn">次へ →</button>
       </div>
-
-      <form class="addbar" id="addForm">
-        <input type="text" id="quickName" placeholder="＋ タスクを追加（名前だけで登録できます）" aria-label="タスク名を入力して追加" autocomplete="off" />
-        <button type="submit">追加</button>
-      </form>
-
-      <div class="toast" id="toast" role="status">
-        <span class="tmsg" id="toastMsg"></span>
-        <button type="button" id="toastUndo">取り消す</button>
-      </div>
     </div>
 
     <div class="overlay" id="overlay">
-      <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="タスク詳細"></div>
     </div>
 
     <script>
       // 2026-11-02 時点の記録（~/workspace/work/tasks.md より）。名称・締切・仮期限・最優先は元のまま。
       // plan = 実施予定日、planEnd = 実施期間の終了日（任意）。既存タスクに期間データは無いため planEnd は全て未設定。
-      // 締切だけのタスクはガント上で締切日のマーカーとして表示する。実施予定と締切は別管理。
+      // 締切だけのタスクはガント上で締切日の◆マーカーとして表示する。実施予定と締切は別管理。
+      // このアプリは閲覧専用。追加・編集・完了の管理はチャット経由で行う。
       var TASKS = [
         { id: "trial-check",   cat: "work",    name: "工程検証トライチェックシートの作成", due: "2026-11-03", must: true, plan: "__TODAY__" },
         { id: "funakoshi-ship",cat: "work",    name: "舩越さんに臨時便に机上の天井機材を載せてもらう依頼", due: "2026-11-04", tentative: true, must: true, plan: "__TODAY__" },
@@ -381,18 +251,11 @@
       ];
       TASKS.forEach(function(t){
         if(t.planEnd === undefined) t.planEnd = null;
-        if(t.kind === undefined) t.kind = null;
-        if(t.est === undefined) t.est = "";
         if(t.memo === undefined) t.memo = "";
       });
-      // 勤務記録（出退勤・休憩）。初期状態は記録なし。
-      var ATT = [];
 
       var WD = ["日","月","火","水","木","金","土"];
-      var state = { view: "gantt", cat: "all", query: "", pages: { gantt: 0, today: 0, all: 0, done: 0, unplanned: 0 }, weekOff: 0, monthOff: 0 };
-      var lastToggle = null;
-      var toastTimer = null;
-      var sheetCtx = null;
+      var state = { cat: "all", showDone: false, page: 0, weekOff: 0, monthOff: 0 };
 
       function pad(n){ return (n<10?"0":"")+n; }
       function fmtDate(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
@@ -419,7 +282,7 @@
         TASKS.forEach(function(t){ if(t.ord == null) t.ord = 999; });
       })();
 
-      /* ---------- Labels ---------- */
+      /* ---------- Labels（1行に収まる短い表記） ---------- */
       function dueLabel(t){
         if(!t.due) return { text: "期限なし", cls: "" };
         var d = daysLeft(t.due);
@@ -430,73 +293,38 @@
         if(d === 1) return { text: "明日まで", cls: "soon" };
         return { text: md+"まで", cls: "" };
       }
-      function planLabel(t){
-        if(!t.plan) return "";
-        var d = dayDiff(t.plan, todayStr());
-        if(d === 0) return "実施：今日";
-        if(d === 1) return "実施：明日";
-        if(d === -1) return "実施：昨日";
-        var dt = parseDue(t.plan);
-        return "実施："+(dt.getMonth()+1)+"/"+dt.getDate();
+      function subParts(t){
+        if(t.done) return "完了";
+        var parts = [];
+        if(t.must) parts.push('<span class="pri">最優先</span>');
+        var seg = dueLabel(t);
+        parts.push(seg.cls ? '<span class="'+seg.cls+'">'+esc(seg.text)+'</span>' : esc(seg.text));
+        if(isTentative(t) && t.due) parts.push("目安");
+        if(!t.plan && t.due) parts.push("未計画");
+        return parts.join("・");
       }
       function dateFull(s){
         if(!s) return "未設定";
         var dt = parseDue(s);
         return (dt.getMonth()+1)+"/"+dt.getDate()+"（"+WD[dt.getDay()]+"）";
       }
-      function subParts(t, withCat){
-        var parts = [];
-        if(withCat) parts.push(t.cat === "work" ? "仕事" : "プライベート");
-        if(t.must && !t.done) parts.push('<span class="pri">最優先</span>');
-        if(t.done){
-          parts.push(t.due ? dateFull(t.due) : "期限なし");
-          return parts.join(" · ");
-        }
-        var seg = dueLabel(t);
-        parts.push(seg.cls ? '<span class="'+seg.cls+'">'+esc(seg.text)+'</span>' : esc(seg.text));
-        if(isTentative(t) && t.due) parts.push("目安");
-        return parts.join(" · ");
-      }
 
-      /* ---------- Filtering / sorting ---------- */
-      function baseFilter(list){
+      /* ---------- Filtering ---------- */
+      function viewTasks(){
+        var list = TASKS.filter(function(t){ return state.showDone ? !!t.done : !t.done; });
         if(state.cat === "work" || state.cat === "private")
           list = list.filter(function(t){ return t.cat === state.cat; });
-        if(state.query)
-          list = list.filter(function(t){ return t.name.indexOf(state.query) !== -1; });
-        return list;
-      }
-      function viewTasks(){
-        var ts = todayStr();
-        var list;
-        if(state.view === "gantt"){
-          list = TASKS.filter(function(t){ return !t.done; });
-          list.sort(function(a,b){ return a.ord - b.ord; });
-        } else if(state.view === "today"){
-          list = TASKS.filter(function(t){ return !t.done && t.plan === ts; });
-          list.sort(function(a,b){ return a.ord - b.ord; });
-        } else if(state.view === "all"){
-          list = TASKS.filter(function(t){ return !t.done; });
-          list.sort(function(a,b){
-            var da = a.due || "9999-99", db = b.due || "9999-99";
-            if(da !== db) return da<db ? -1 : 1;
-            return a.ord - b.ord;
-          });
-        } else if(state.view === "unplanned"){
-          list = TASKS.filter(function(t){ return !t.done && !t.plan; });
-          list.sort(function(a,b){
-            var da = a.due || "9999-99", db = b.due || "9999-99";
-            if(da !== db) return da<db ? -1 : 1;
-            return a.ord - b.ord;
-          });
-        } else { // done
-          list = TASKS.filter(function(t){ return t.done; });
+        if(state.cat === "unplanned")
+          list = list.filter(function(t){ return !t.plan; });
+        if(state.showDone){
           list.sort(function(a,b){
             var da = a.due || "9999-99", db = b.due || "9999-99";
             return da<db ? -1 : da>db ? 1 : 0;
           });
+        } else {
+          list.sort(function(a,b){ return a.ord - b.ord; });
         }
-        return baseFilter(list);
+        return list;
       }
       function unplannedCount(){
         return TASKS.filter(function(t){ return !t.done && !t.plan; }).length;
@@ -519,18 +347,13 @@
         return (s.getMonth()+1)+"/"+s.getDate()+"（"+WD[s.getDay()]+"）〜"+(e.getMonth()+1)+"/"+e.getDate()+"（"+WD[e.getDay()]+"）";
       }
 
-      function pageSize(rowH, extra){
+      function pageSize(){
         var mainEl = document.getElementById("main");
-        var h = mainEl.clientHeight || (window.innerHeight - 340);
-        var n = Math.floor((h - (extra||0)) / rowH);
+        var h = mainEl.clientHeight || (window.innerHeight - 300);
+        var n = Math.floor((h - 34) / 60); // ヘッダー行34px + 行60px
         if(n < 3) n = 3;
-        if(n > 9) n = 9;
+        if(n > 10) n = 10;
         return n;
-      }
-
-      function checkBtnHtml(t){
-        return '<button type="button" class="check" data-act="toggle" aria-pressed="'+(t.done?"true":"false")+'" aria-label="'+(t.done?"未完了に戻す":"完了にする")+'：'+esc(t.name)+'">'
-          + '<span class="ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span></button>';
       }
 
       /* ---------- Gantt rendering ---------- */
@@ -545,7 +368,6 @@
         head += '</div></div></div>';
 
         var rows = pageItems.map(function(t, idx){
-          // 背景シェード（週末・今日）と日グリッド線
           var shades = "";
           for(var i=0;i<n;i++){
             var ds2 = addDaysStr(r.start, i), dt2 = parseDue(ds2);
@@ -561,126 +383,34 @@
             var eIdx = dayDiff(t.planEnd || t.plan, r.start);
             if(eIdx >= 0 && sIdx <= n-1){
               var cs = Math.max(0, sIdx), ce = Math.min(n-1, eIdx);
-              bar = '<div class="g-bar" data-act="detail" role="button" aria-label="詳細を開く：'+esc(t.name)+'" '
+              bar = '<div class="g-bar'+(t.done ? " done-bar" : "")+'" data-act="detail" role="button" aria-label="詳細を見る：'+esc(t.name)+'" '
                 + 'style="left:calc('+(cs*100/n)+'% + 1px);width:calc('+((ce-cs+1)*100/n)+'% - 2px)">'
                 + (sIdx < 0 ? '<span class="cont">‹</span>' : '<span></span>')
                 + (eIdx > n-1 ? '<span class="cont">›</span>' : '<span></span>')
                 + '</div>';
             }
           }
-          // 締切マーカー（締切のみのタスクもここで拾う）
+          // 締切◆マーカー
           var marker = "";
           if(t.due){
             var dIdx = dayDiff(t.due, r.start);
             if(dIdx >= 0 && dIdx <= n-1){
               var d = daysLeft(t.due);
-              var mc = "g-due" + (d < 0 ? " over" : "") + (isTentative(t) ? " tent" : "") + (t.plan === t.due ? " sameday" : "");
-              marker = '<div class="'+mc+'" data-act="detail" role="button" aria-label="締切：'+esc(t.name)+'" '
+              var mc = "g-due" + (!t.done && d < 0 ? " over" : "") + (isTentative(t) ? " tent" : "") + (t.plan === t.due ? " sameday" : "");
+              marker = '<div class="'+mc+'" data-act="detail" role="button" aria-label="詳細を見る：'+esc(t.name)+'" '
                 + 'style="left:'+((dIdx+0.5)*100/n)+'%"></div>';
             }
           }
-          return '<div class="g-row'+(idx===0 ? " is-top" : "")+'" data-id="'+esc(t.id)+'">'
-            + '<div class="g-name">' + checkBtnHtml(t)
-            + '<div class="g-namebody" data-act="detail" role="button" tabindex="0" aria-label="詳細を開く：'+esc(t.name)+'">'
+          return '<div class="g-row'+(!t.done && idx===0 ? " is-top" : "")+(t.done ? " is-done" : "")+'" data-id="'+esc(t.id)+'">'
+            + '<div class="g-name"><div class="g-namebody" data-act="detail" role="button" tabindex="0" aria-label="詳細を見る：'+esc(t.name)+'">'
             + '<div class="g-tname">'+esc(t.name)+'</div>'
-            + '<div class="g-sub">'+subParts(t, false)+'</div>'
+            + '<div class="g-sub">'+subParts(t)+'</div>'
             + '</div></div>'
             + '<div class="g-track">' + shades + grid + bar + marker + '</div>'
             + '</div>';
         }).join("");
 
         return '<section class="gantt" aria-label="ガントチャート">' + head + rows + '</section>';
-      }
-
-      /* ---------- List rendering ---------- */
-      function rowHtml(t, idx){
-        var cls = "row" + (t.done ? " is-done" : "") + ((state.view === "today" || state.view === "gantt") && idx === 0 ? " is-top" : "");
-        var rank = state.view === "today" ? '<span class="rank" aria-label="順位'+(idx+1)+'">'+(idx+1)+'</span>' : "";
-        var subs = subParts(t, state.cat === "all" || state.cat === "unplanned");
-        if(!t.done && state.view !== "done"){
-          var pl = planLabel(t);
-          if(state.view === "all" && pl) subs += " · " + esc(pl);
-          if(state.view === "unplanned") subs += " · 実施予定日 未設定";
-          if(t.kind === "process" && state.view === "today") subs += " · 工程作業 10:15–11:00";
-        }
-        return '<div class="'+cls+'" data-id="'+esc(t.id)+'">'
-          + checkBtnHtml(t)
-          + '<div class="body" data-act="detail" role="button" tabindex="0" aria-label="詳細を開く：'+esc(t.name)+'">'
-          + '<div class="name">'+esc(t.name)+'</div>'
-          + '<div class="sub">'+subs+'</div>'
-          + '</div>'
-          + rank
-          + '<button type="button" class="menu-btn" data-act="menu" aria-label="メニュー：'+esc(t.name)+'" aria-haspopup="true">⋯</button>'
-          + '</div>';
-      }
-      function emptyHtml(){
-        if(state.view === "today" && state.cat === "all" && !state.query){
-          return '<section class="card"><div class="empty"><div class="msg">今日の予定なし</div>'
-            + '<div class="sub-msg">実施予定日が今日のタスクはありません</div>'
-            + '<button type="button" class="pick-btn" id="pickBtn">タスクを選ぶ</button></div></section>';
-        }
-        if(state.view === "unplanned")
-          return '<section class="card"><div class="empty"><div class="msg">未計画のタスクはありません</div><div class="sub-msg">実施予定日が未設定のタスクはここに表示されます</div></div></section>';
-        if(state.view === "done")
-          return '<section class="card"><div class="empty"><div class="msg">完了したタスクはありません</div></div></section>';
-        if(state.view === "gantt")
-          return '<section class="card"><div class="empty"><div class="msg">表示するタスクはありません</div></div></section>';
-        return '<section class="card"><div class="empty"><div class="msg">該当するタスクはありません</div></div></section>';
-      }
-
-      /* ---------- Attendance ---------- */
-      function hm(mins){ return Math.floor(mins/60)+"時間"+pad(mins%60)+"分"; }
-      function timeToMin(s){ if(!s) return null; var p=s.split(":"); return (+p[0])*60 + (+p[1]); }
-      function attCalc(a){
-        var i = timeToMin(a.inT), o = timeToMin(a.outT);
-        if(i === null || o === null || o <= i) return null;
-        var work = (o - i) - (a.brk || 0);
-        var late = Math.max(0, o - (17*60+30)); // 17:30以降（暫定の参考値）
-        return { work: work, late: late };
-      }
-      function attHtml(){
-        var note = '<p class="att-note">通常勤務 8:30〜17:30（生産技術）。所定実働時間・会社の集計ルールが未確認のため、17:30以降の時間は正式な残業時間ではなく <span class="tag-tent">暫定</span> の参考表示です。</p>';
-        var html = "";
-        // 月次サマリー（今月）
-        var now = new Date();
-        var ym = now.getFullYear()+"-"+pad(now.getMonth()+1);
-        var monthRecs = ATT.filter(function(a){ return a.date.indexOf(ym) === 0; });
-        var sumWork = 0, sumLate = 0;
-        monthRecs.forEach(function(a){ var c = attCalc(a); if(c){ sumWork += c.work; sumLate += c.late; } });
-        html += '<section class="att-box"><h2>'+(now.getMonth()+1)+'月の集計 <span class="tag-tent">暫定</span></h2>'
-          + '<div class="att-sum">'
-          + '<span>勤務日数<b>'+monthRecs.length+'日</b></span>'
-          + '<span>実働合計<b>'+hm(sumWork)+'</b></span>'
-          + '<span>17:30以降（暫定）<b>'+hm(sumLate)+'</b></span>'
-          + '</div>' + note + '</section>';
-        // 入力フォーム
-        html += '<section class="att-box"><h2>出退勤を入力</h2>'
-          + '<div class="att-form">'
-          + '<div class="field" style="margin-top:0"><label for="aDate">日付</label><input type="date" id="aDate" value="'+todayStr()+'" /></div>'
-          + '<div class="field" style="margin-top:0"><label for="aBrk">休憩（分）</label><input type="number" id="aBrk" value="60" min="0" step="5" inputmode="numeric" /></div>'
-          + '<div class="field" style="margin-top:0"><label for="aIn">出勤</label><input type="time" id="aIn" value="08:30" /></div>'
-          + '<div class="field" style="margin-top:0"><label for="aOut">退勤</label><input type="time" id="aOut" value="17:30" /></div>'
-          + '</div>'
-          + '<div class="form-err" id="attErr"></div>'
-          + '<div class="sheet-actions"><button type="button" class="btn-save" id="attAdd">記録する</button></div>'
-          + '</section>';
-        // 日別実績
-        html += '<section class="att-box"><h2>日別実績</h2>';
-        if(!ATT.length){
-          html += '<p class="att-note">記録はまだありません。上のフォームから出退勤・休憩を入力できます。</p>';
-        } else {
-          var sorted = ATT.slice().sort(function(a,b){ return a.date < b.date ? 1 : -1; });
-          html += sorted.map(function(a){
-            var c = attCalc(a);
-            var dt = parseDue(a.date);
-            return '<div class="att-rec"><span class="d">'+(dt.getMonth()+1)+"/"+dt.getDate()+"（"+WD[dt.getDay()]+"）</span>"
-              + '<span class="t">'+esc(a.inT)+"〜"+esc(a.outT)+" ・ 休憩 "+(a.brk||0)+"分 ・ 実働 <b>"+(c ? hm(c.work) : "―")+"</b>"
-              + (c && c.late > 0 ? " ・ 17:30以降 "+hm(c.late)+"（暫定）" : "")
-              + '</span><button type="button" class="del" data-att-del="'+a.id+'">削除</button></div>';
-          }).join("");
-        }
-        html += '</section>';
-        return html;
       }
 
       /* ---------- Render ---------- */
@@ -690,9 +420,6 @@
         var done = TASKS.filter(function(t){ return t.done; });
         var todayCount = open.filter(function(t){ return t.plan === ts; }).length;
         var overCount = open.filter(function(t){ var d = daysLeft(t.due); return d !== null && d < 0; }).length;
-        var isWork = state.view === "work";
-        // cat=unplanned は独立ビューとして扱う（state.view は直前のビューのまま、実効ビューで判定）
-        var effView = state.cat === "unplanned" ? "unplanned" : state.view;
 
         document.getElementById("headSub").innerHTML =
           "今日 " + todayCount + "件 ・ 未完了 " + open.length + "件"
@@ -702,92 +429,52 @@
         var pct = totalAll ? Math.round(done.length / totalAll * 100) : 0;
         var weekCount = open.filter(function(t){ var d = daysLeft(t.due); return d !== null && d >= 0 && d <= 7; }).length;
         document.getElementById("progress").innerHTML =
-          '<div class="bar"><i style="width:' + pct + '%"></i></div>'
-          + '<div class="p-line"><span>進捗 <b>' + pct + '%</b></span>'
+          '<span class="pbar" aria-hidden="true"><i style="width:' + pct + '%"></i></span>'
+          + '<span>進捗 <b>' + pct + '%</b></span><span>・</span>'
           + (overCount ? '<span class="over">遅れ <b>' + overCount + '件</b></span>' : '<span>遅れ <b>0件</b></span>')
-          + '<span>7日以内 <b>' + weekCount + '件</b></span>'
-          + '<span>完了 <b>' + done.length + '/' + totalAll + '件</b></span></div>';
-        document.getElementById("progress").style.display = isWork ? "none" : "";
+          + '<span>・</span><span>7日以内 <b>' + weekCount + '件</b></span>'
+          + '<span>・</span><span>完了 <b>' + done.length + '/' + totalAll + '件</b></span>';
 
-        var labels = { gantt: "ガント", today: "今日 " + todayCount, all: "すべて " + open.length, done: "完了 " + done.length, work: "勤務" };
-        var tabs = document.querySelectorAll("#tabs button");
-        for(var i=0;i<tabs.length;i++){
-          var v = tabs[i].getAttribute("data-view");
-          tabs[i].textContent = labels[v];
-          tabs[i].setAttribute("aria-selected", v === state.view && state.cat !== "unplanned" ? "true" : "false");
-        }
-        document.getElementById("controls").style.display = isWork ? "none" : "";
-        var chips = document.querySelectorAll(".chip");
+        var chips = document.querySelectorAll(".chip[data-cat]");
         for(var j=0;j<chips.length;j++){
           chips[j].setAttribute("aria-pressed", chips[j].getAttribute("data-cat") === state.cat ? "true" : "false");
         }
         document.getElementById("unplannedChip").textContent = "未計画 " + unplannedCount();
+        var doneChip = document.getElementById("doneChip");
+        doneChip.textContent = "完了 " + done.length;
+        doneChip.setAttribute("aria-pressed", state.showDone ? "true" : "false");
 
-        // 期間ナビ（ガントのみ）
+        // 期間ナビ
         var pnav = document.getElementById("periodNav");
-        if(state.view === "gantt" && !isWork && state.cat !== "unplanned"){
-          var r0 = ganttRange();
-          var unit = r0.mode === "month" ? "月" : "週";
-          var off = r0.mode === "month" ? state.monthOff : state.weekOff;
-          pnav.style.display = "";
-          pnav.innerHTML =
-            '<button type="button" id="pPrev">‹ 前の' + unit + '</button>'
-            + '<button type="button" id="pCur" class="' + (off === 0 ? "cur" : "") + '">今' + unit + '</button>'
-            + '<span class="rng">' + esc(rangeLabel(r0)) + '</span>'
-            + '<button type="button" id="pNext">次の' + unit + ' ›</button>';
-          document.getElementById("pPrev").addEventListener("click", function(){ shiftRange(-1); });
-          document.getElementById("pNext").addEventListener("click", function(){ shiftRange(1); });
-          document.getElementById("pCur").addEventListener("click", function(){ state.weekOff = 0; state.monthOff = 0; state.pages.gantt = 0; render(); });
-        } else {
-          pnav.style.display = "none";
-          pnav.innerHTML = "";
-        }
+        var r0 = ganttRange();
+        var unit = r0.mode === "month" ? "月" : "週";
+        var off = r0.mode === "month" ? state.monthOff : state.weekOff;
+        pnav.innerHTML =
+          '<button type="button" id="pPrev">‹ 前の' + unit + '</button>'
+          + '<button type="button" id="pCur" class="' + (off === 0 ? "cur" : "") + '">今' + unit + '</button>'
+          + '<span class="rng">' + esc(rangeLabel(r0)) + '</span>'
+          + '<button type="button" id="pNext">次の' + unit + ' ›</button>';
+        document.getElementById("pPrev").addEventListener("click", function(){ shiftRange(-1); });
+        document.getElementById("pNext").addEventListener("click", function(){ shiftRange(1); });
+        document.getElementById("pCur").addEventListener("click", function(){ state.weekOff = 0; state.monthOff = 0; state.page = 0; render(); });
 
         var main = document.getElementById("main");
-        var pager = document.getElementById("pager");
-        document.getElementById("addForm").style.display = isWork ? "none" : "";
-
-        if(isWork){
-          pager.style.display = "none";
-          main.innerHTML = attHtml();
-          var addBtn = document.getElementById("attAdd");
-          if(addBtn) addBtn.addEventListener("click", addAtt);
-          var dels = main.querySelectorAll("[data-att-del]");
-          for(var d=0; d<dels.length; d++){
-            dels[d].addEventListener("click", function(){
-              var id = this.getAttribute("data-att-del");
-              ATT = ATT.filter(function(a){ return String(a.id) !== String(id); });
-              render();
-            });
-          }
-          return;
-        }
-        pager.style.display = "";
-
-        // 実効ビューで一覧を取得
-        var savedView = state.view;
-        state.view = effView;
         var list = viewTasks();
-        state.view = savedView;
-
-        var isGantt = effView === "gantt";
-        var ps = isGantt ? pageSize(80, 36) : pageSize(62, 0);
+        var ps = pageSize();
         var totalPages = Math.max(1, Math.ceil(list.length / ps));
-        var page = state.pages[effView] || 0;
+        var page = state.page;
         if(page > totalPages - 1) page = totalPages - 1;
         if(page < 0) page = 0;
-        state.pages[effView] = page;
+        state.page = page;
         var start = page * ps;
         var pageItems = list.slice(start, start + ps);
 
         if(!list.length){
-          main.innerHTML = emptyHtml();
-        } else if(isGantt){
-          main.innerHTML = ganttHtml(pageItems, ganttRange());
+          main.innerHTML = '<section class="empty"><div class="msg">'
+            + (state.showDone ? "完了したタスクはありません" : "表示するタスクはありません")
+            + '</div></section>';
         } else {
-          main.innerHTML = '<section class="card">'
-            + pageItems.map(function(t,i){ return rowHtml(t, start + i); }).join("")
-            + '</section>';
+          main.innerHTML = ganttHtml(pageItems, r0);
         }
 
         var info = document.getElementById("pageInfo");
@@ -802,334 +489,81 @@
       }
       function shiftRange(d){
         if(isWide()) state.monthOff += d; else state.weekOff += d;
-        state.pages.gantt = 0;
+        state.page = 0;
         render();
-      }
-      function addAtt(){
-        var date = document.getElementById("aDate").value;
-        var inT = document.getElementById("aIn").value;
-        var outT = document.getElementById("aOut").value;
-        var brk = parseInt(document.getElementById("aBrk").value, 10);
-        var err = document.getElementById("attErr");
-        if(!date || !inT || !outT || isNaN(brk) || brk < 0 || timeToMin(outT) <= timeToMin(inT)){
-          err.textContent = "入力を確認してください（退勤は出勤より後の時刻にしてください）。記録できませんでした";
-          err.classList.add("show");
-          return;
-        }
-        ATT.push({ id: Date.now(), date: date, inT: inT, outT: outT, brk: brk });
-        render();
-        showToast("勤務を記録しました", false);
       }
 
-      /* ---------- Toast ---------- */
-      function showToast(msg, canUndo){
-        var toast = document.getElementById("toast");
-        document.getElementById("toastMsg").textContent = msg;
-        document.getElementById("toastUndo").style.display = canUndo ? "" : "none";
-        toast.classList.add("show");
-        if(toastTimer) clearTimeout(toastTimer);
-        toastTimer = setTimeout(hideToast, 5000);
-      }
-      function hideToast(){
-        document.getElementById("toast").classList.remove("show");
-        if(toastTimer){ clearTimeout(toastTimer); toastTimer = null; }
-        lastToggle = null;
-      }
-      document.getElementById("toastUndo").addEventListener("click", function(){
-        if(lastToggle){
-          var t = findTask(lastToggle.id);
-          if(t) t.done = lastToggle.wasDone;
-        }
-        hideToast();
-        render();
-      });
-
-      /* ---------- Sheet ---------- */
+      /* ---------- Detail sheet（閲覧専用） ---------- */
       var overlay = document.getElementById("overlay");
       var sheet = document.getElementById("sheet");
-      function openSheet(html){ sheet.innerHTML = html; overlay.classList.add("show"); }
-      function closeSheet(){ overlay.classList.remove("show"); sheetCtx = null; }
-      overlay.addEventListener("click", function(e){ if(e.target === overlay) closeSheet(); });
-      document.addEventListener("keydown", function(e){ if(e.key === "Escape" && overlay.classList.contains("show")) closeSheet(); });
-
-      function metaHtml(t){
+      function openDetail(t){
         var seg = dueLabel(t);
-        var dueTxt = t.due ? dateFull(t.due) + "（" + seg.text + (isTentative(t) ? "・目安" : "") + "）" : "未設定";
+        var dueTxt = "未設定";
+        if(t.due){
+          dueTxt = dateFull(t.due) + "（" + seg.text + "）";
+          if(isTentative(t)) dueTxt += ' <span class="tag-tent">目安</span>';
+        }
         var planTxt = "未設定（未計画）";
         if(t.plan){
           planTxt = dateFull(t.plan);
           if(t.planEnd && t.planEnd !== t.plan) planTxt += " 〜 " + dateFull(t.planEnd);
         }
-        return "区分：" + (t.cat === "work" ? "仕事" : "プライベート")
-          + (t.must ? " ・ 最優先" : "")
-          + "<br />締切：" + dueTxt
-          + "<br />実施予定：" + planTxt
-          + (t.kind ? "<br />作業種別：" + (t.kind === "process" ? "工程作業（平日は10:15〜11:00枠または土日）" : "準備・事務作業") : "")
-          + (t.est ? "<br />見積時間：" + esc(t.est) : "")
-          + (t.memo ? "<br />メモ：" + esc(t.memo) : "");
-      }
-
-      function openMenu(t){
-        sheetCtx = { mode: "menu", id: t.id };
-        var ts = todayStr();
-        var items = "";
-        if(!t.done){
-          if(t.plan !== ts) items += '<button type="button" data-m="today">今日やる</button>';
-          if(t.plan !== addDaysStr(ts, 1)) items += '<button type="button" data-m="tomorrow">明日に回す（締切は変わりません）</button>';
-          items += '<button type="button" data-m="edit-plan">実施予定日・期間を変更</button>';
-          items += '<button type="button" data-m="edit-due">期限を変更</button>';
-          if(state.view === "today" && state.cat !== "unplanned"){
-            items += '<button type="button" data-m="up">上へ移動</button>';
-            items += '<button type="button" data-m="down">下へ移動</button>';
-          }
-        }
-        items += '<button type="button" data-m="edit">詳細・編集</button>';
-        items += '<button type="button" data-m="close">閉じる</button>';
-        openSheet('<h2>操作</h2><div class="full-name">'+esc(t.name)+'</div>'
-          + '<div class="meta">'+metaHtml(t)+'</div><div class="menu-list">'+items+'</div>');
-      }
-
-      function openEditor(t, focusField){
-        var isNew = !t;
-        sheetCtx = { mode: isNew ? "add" : "edit", id: isNew ? null : t.id, focus: focusField || null };
-        var v = isNew
-          ? { name: "", cat: (state.cat === "private" ? "private" : "work"),
-              plan: "", planEnd: "", due: "", tentative: false, must: false, kind: "", est: "", memo: "" }
-          : { name: t.name, cat: t.cat, plan: t.plan || "", planEnd: t.planEnd || "", due: t.due || "",
-              tentative: isTentative(t), must: !!t.must, kind: t.kind || "", est: t.est || "", memo: t.memo || "" };
-        var html = '<h2>'+(isNew ? "タスクを追加" : "詳細・編集")+'</h2>';
-        if(!isNew) html += '<div class="meta">'+metaHtml(t)+'</div>';
-        html += '<div class="field"><label for="fName">タスク名</label>'
-          + '<input type="text" id="fName" value="'+esc(v.name)+'" placeholder="タスク名を入力" /></div>';
-        html += '<div class="field-row">'
-          + '<div class="field"><label for="fPlan">実施予定日（開始）</label><input type="date" id="fPlan" value="'+esc(v.plan)+'" /></div>'
-          + '<div class="field"><label for="fPlanEnd">期間の終了日（任意）</label><input type="date" id="fPlanEnd" value="'+esc(v.planEnd)+'" /></div>'
+        var html = '<h2>タスク詳細</h2>'
+          + '<div class="full-name">' + esc(t.name) + '</div>'
+          + '<div class="meta">'
+          + '<span class="k">区分：</span>' + (t.cat === "work" ? "仕事" : "プライベート")
+          + (t.must && !t.done ? ' ・ <span class="pri">最優先</span>' : "")
+          + '<br /><span class="k">状態：</span>' + (t.done ? "完了" : "未完了")
+          + '<br /><span class="k">締切：</span>' + dueTxt
+          + '<br /><span class="k">実施予定：</span>' + planTxt
+          + (t.memo ? '<br /><span class="k">メモ：</span>' + esc(t.memo) : "")
           + '</div>'
-          + '<div class="quick"><button type="button" data-q="plan-today">今日</button>'
-          + '<button type="button" data-q="plan-tomorrow">明日</button>'
-          + '<button type="button" data-q="plan-clear">未設定にする（未計画）</button></div>';
-        html += '<div class="field"><label for="fDue">締切（実施予定とは別に管理します）</label>'
-          + '<input type="date" id="fDue" value="'+esc(v.due)+'" /></div>';
-        html += '<div class="field-row">'
-          + '<div class="field"><label for="fTent">締切の扱い</label>'
-          + '<select id="fTent"><option value="fixed"'+(v.tentative ? "" : " selected")+'>確定した締切</option>'
-          + '<option value="tentative"'+(v.tentative ? " selected" : "")+'>目安（仮の期限）</option></select></div>'
-          + '<div class="field"><label for="fMust">優先度</label>'
-          + '<select id="fMust"><option value="normal"'+(v.must ? "" : " selected")+'>通常</option>'
-          + '<option value="must"'+(v.must ? " selected" : "")+'>最優先</option></select></div>'
-          + '</div>';
-        html += '<div class="field-row">'
-          + '<div class="field"><label for="fCat">区分</label>'
-          + '<select id="fCat"><option value="work"'+(v.cat === "work" ? " selected" : "")+'>仕事</option>'
-          + '<option value="private"'+(v.cat === "private" ? " selected" : "")+'>プライベート</option></select></div>'
-          + '<div class="field"><label for="fKind">作業の種別</label>'
-          + '<select id="fKind"><option value=""'+(v.kind === "" ? " selected" : "")+'>未設定</option>'
-          + '<option value="process"'+(v.kind === "process" ? " selected" : "")+'>工程作業（調整・改造）</option>'
-          + '<option value="prep"'+(v.kind === "prep" ? " selected" : "")+'>準備・事務作業</option></select></div>'
-          + '</div>'
-          + '<div class="hint" id="kindHint"'+(v.kind === "process" ? "" : ' style="display:none"')+'>福岡工場では工程の調整・改造は製造部門の休憩中（平日 10:15〜11:00、準備・動作確認・復旧・引き渡し込み）または土日のみ可能です。平日17:30以降は工程作業の枠として扱いません。</div>';
-        html += '<div class="field"><label for="fEst">見積作業時間（任意）</label>'
-          + '<input type="text" id="fEst" value="'+esc(v.est)+'" placeholder="例：45分、2時間" /></div>';
-        html += '<div class="field"><label for="fMemo">メモ（任意）</label>'
-          + '<textarea id="fMemo" placeholder="前提作業・依頼先など">'+esc(v.memo)+'</textarea></div>';
-        html += '<div class="form-err" id="formErr"></div>';
-        html += '<div class="sheet-actions"><button type="button" class="btn-cancel" data-a="cancel">キャンセル</button>'
-          + '<button type="button" class="btn-save" data-a="save">'+(isNew ? "追加する" : "保存する")+'</button></div>';
-        openSheet(html);
-        var kindSel = document.getElementById("fKind");
-        kindSel.addEventListener("change", function(){
-          document.getElementById("kindHint").style.display = kindSel.value === "process" ? "" : "none";
-        });
-        var focusEl = document.getElementById(
-          sheetCtx.focus === "plan" ? "fPlan" : sheetCtx.focus === "due" ? "fDue" : "fName");
-        if(focusEl) setTimeout(function(){ focusEl.focus(); }, 60);
+          + '<div class="sheet-actions"><button type="button" id="sheetClose">閉じる</button></div>';
+        sheet.innerHTML = html;
+        overlay.classList.add("show");
+        document.getElementById("sheetClose").addEventListener("click", closeSheet);
       }
+      function closeSheet(){ overlay.classList.remove("show"); }
+      overlay.addEventListener("click", function(e){ if(e.target === overlay) closeSheet(); });
+      document.addEventListener("keydown", function(e){ if(e.key === "Escape" && overlay.classList.contains("show")) closeSheet(); });
 
-      function saveEditor(){
-        var name = document.getElementById("fName").value.replace(/^\s+|\s+$/g, "");
-        var err = document.getElementById("formErr");
-        function fail(msg){ err.textContent = msg; err.classList.add("show"); }
-        if(!name){ fail("タスク名を入力してください（保存できませんでした）"); document.getElementById("fName").focus(); return; }
-        var plan = document.getElementById("fPlan").value || null;
-        var planEnd = document.getElementById("fPlanEnd").value || null;
-        if(planEnd && !plan){ fail("期間の終了日を設定するには、実施予定日（開始）も設定してください"); return; }
-        if(plan && planEnd && planEnd < plan){ fail("期間の終了日が開始日より前になっています"); return; }
-        if(planEnd === plan) planEnd = null;
-        try {
-          var due = document.getElementById("fDue").value || null;
-          var tentative = document.getElementById("fTent").value === "tentative";
-          var must = document.getElementById("fMust").value === "must";
-          var cat = document.getElementById("fCat").value;
-          var kind = document.getElementById("fKind").value || null;
-          var est = document.getElementById("fEst").value.replace(/^\s+|\s+$/g, "");
-          var memo = document.getElementById("fMemo").value.replace(/^\s+|\s+$/g, "");
-          if(sheetCtx.mode === "add"){
-            var maxOrd = 0;
-            TASKS.forEach(function(x){ if(x.ord > maxOrd && x.ord < 900) maxOrd = x.ord; });
-            TASKS.push({
-              id: "u" + Date.now(), cat: cat, name: name, due: due,
-              tentative: tentative, assumed: false, must: must,
-              plan: plan, planEnd: planEnd, kind: kind, est: est, memo: memo,
-              done: false, ord: maxOrd + 1
-            });
-            if(state.view === "done") state.view = "today";
-            if(state.cat === "unplanned" && plan) state.cat = "all";
-          } else {
-            var t = findTask(sheetCtx.id);
-            if(!t) throw new Error("not found");
-            t.name = name; t.plan = plan; t.planEnd = planEnd; t.due = due;
-            t.tentative = tentative; t.assumed = false; t.must = must;
-            t.cat = cat; t.kind = kind; t.est = est; t.memo = memo;
-          }
-        } catch(e) {
-          fail("保存できませんでした。入力内容を確認してください");
-          return;
-        }
-        closeSheet();
-        render();
-      }
-
-      sheet.addEventListener("click", function(e){
-        var btn = e.target.closest ? e.target.closest("button") : null;
-        if(!btn || !sheetCtx) return;
-        var t = sheetCtx.id ? findTask(sheetCtx.id) : null;
-        var q = btn.getAttribute("data-q");
-        if(q){
-          var fPlan = document.getElementById("fPlan");
-          if(q === "plan-today") fPlan.value = todayStr();
-          if(q === "plan-tomorrow") fPlan.value = addDaysStr(todayStr(), 1);
-          if(q === "plan-clear"){ fPlan.value = ""; document.getElementById("fPlanEnd").value = ""; }
-          return;
-        }
-        var a = btn.getAttribute("data-a");
-        if(a === "cancel"){ closeSheet(); return; }
-        if(a === "save"){ saveEditor(); return; }
-        var m = btn.getAttribute("data-m");
-        if(!m || !t) return;
-        if(m === "close"){ closeSheet(); return; }
-        if(m === "today"){ t.plan = todayStr(); closeSheet(); render(); return; }
-        if(m === "tomorrow"){ t.plan = addDaysStr(todayStr(), 1); closeSheet(); render(); return; }
-        if(m === "edit"){ openEditor(t); return; }
-        if(m === "edit-plan"){ openEditor(t, "plan"); return; }
-        if(m === "edit-due"){ openEditor(t, "due"); return; }
-        if(m === "up" || m === "down"){
-          var list = viewTasks();
-          var idx = -1;
-          for(var i=0;i<list.length;i++){ if(list[i].id === t.id){ idx = i; break; } }
-          var j = m === "up" ? idx - 1 : idx + 1;
-          if(idx >= 0 && j >= 0 && j < list.length){
-            var other = list[j];
-            var tmp = t.ord; t.ord = other.ord; other.ord = tmp;
-          }
-          closeSheet(); render(); return;
-        }
-      });
-
-      /* ---------- Main interactions ---------- */
-      function rowFromEvent(e){
-        var el = e.target.closest ? (e.target.closest(".g-row") || e.target.closest(".row")) : null;
-        return el;
-      }
+      /* ---------- Interactions（表示切り替えのみ） ---------- */
       document.addEventListener("click", function(e){
-        var pick = e.target.closest ? e.target.closest("#pickBtn") : null;
-        if(pick){ state.view = "all"; state.cat = "all"; render(); return; }
-
-        var chk = e.target.closest ? e.target.closest('[data-act="toggle"]') : null;
-        if(chk){
-          var row = rowFromEvent(e);
-          var t1 = row && findTask(row.getAttribute("data-id"));
-          if(!t1) return;
-          var wasDone = !!t1.done;
-          row.classList.add("leaving");
-          setTimeout(function(){
-            t1.done = !wasDone;
-            lastToggle = { id: t1.id, wasDone: wasDone };
-            render();
-            showToast(wasDone ? "未完了に戻しました" : "完了しました", true);
-          }, 170);
-          return;
-        }
-        var menuBtn = e.target.closest ? e.target.closest('[data-act="menu"]') : null;
-        if(menuBtn){
-          var t2 = findTask(menuBtn.closest(".row").getAttribute("data-id"));
-          if(t2) openMenu(t2);
-          return;
-        }
         var body = e.target.closest ? e.target.closest('[data-act="detail"]') : null;
         if(body){
-          var r2 = rowFromEvent(e);
-          var t3 = r2 && findTask(r2.getAttribute("data-id"));
-          if(t3) openMenu(t3);
-          return;
+          var row = e.target.closest(".g-row");
+          var t = row && findTask(row.getAttribute("data-id"));
+          if(t) openDetail(t);
         }
       });
       document.addEventListener("keydown", function(e){
         if(e.key !== "Enter") return;
         var body = e.target.closest ? e.target.closest('[data-act="detail"]') : null;
         if(body){
-          var r = rowFromEvent(e);
-          var t = r && findTask(r.getAttribute("data-id"));
-          if(t) openMenu(t);
+          var row = e.target.closest(".g-row");
+          var t = row && findTask(row.getAttribute("data-id"));
+          if(t) openDetail(t);
         }
       });
 
-      var tabBtns = document.querySelectorAll("#tabs button");
-      for(var i=0;i<tabBtns.length;i++){
-        tabBtns[i].addEventListener("click", function(){
-          state.view = this.getAttribute("data-view");
-          if(state.cat === "unplanned") state.cat = "all";
-          hideToast();
-          render();
-        });
-      }
-      var chipBtns = document.querySelectorAll(".chip");
+      var chipBtns = document.querySelectorAll(".chip[data-cat]");
       for(var k=0;k<chipBtns.length;k++){
         chipBtns[k].addEventListener("click", function(){
-          var c = this.getAttribute("data-cat");
-          state.cat = c;
-          if(state.view === "work") state.view = "gantt";
-          if(c === "unplanned") state.pages.unplanned = 0;
-          else state.pages[state.view] = 0;
+          state.cat = this.getAttribute("data-cat");
+          state.page = 0;
           render();
         });
       }
-      document.getElementById("searchInput").addEventListener("input", function(){
-        state.query = this.value.replace(/^\s+|\s+$/g, "");
-        state.pages[state.view] = 0;
-        state.pages.unplanned = 0;
-        state.pages.gantt = 0;
+      document.getElementById("doneChip").addEventListener("click", function(){
+        state.showDone = !state.showDone;
+        state.page = 0;
         render();
       });
       document.getElementById("prevBtn").addEventListener("click", function(){
-        var key = state.cat === "unplanned" ? "unplanned" : state.view;
-        if(state.pages[key] > 0){ state.pages[key]--; render(); }
+        if(state.page > 0){ state.page--; render(); }
       });
       document.getElementById("nextBtn").addEventListener("click", function(){
-        var key = state.cat === "unplanned" ? "unplanned" : state.view;
-        state.pages[key]++; render();
-      });
-      document.getElementById("headAdd").addEventListener("click", function(){ openEditor(null); });
-      // 下部バーからのクイック追加（名前のみ。実施予定日は未設定＝未計画に入る）
-      document.getElementById("addForm").addEventListener("submit", function(e){
-        e.preventDefault();
-        var input = document.getElementById("quickName");
-        var name = input.value.replace(/^\s+|\s+$/g, "");
-        if(!name){ input.focus(); return; }
-        var maxOrd = 0;
-        TASKS.forEach(function(x){ if(x.ord > maxOrd && x.ord < 900) maxOrd = x.ord; });
-        TASKS.push({
-          id: "u" + Date.now(),
-          cat: (state.cat === "private" ? "private" : "work"),
-          name: name, due: null, tentative: false, assumed: false, must: false,
-          plan: null, planEnd: null, kind: null, est: "", memo: "",
-          done: false, ord: maxOrd + 1
-        });
-        if(state.view === "done" || state.view === "work") state.view = "gantt";
-        input.value = "";
-        hideToast();
-        render();
-        showToast("追加しました（実施予定日は未設定です）", false);
-        input.focus();
+        state.page++; render();
       });
 
       // スワイプでもページ送り（ボタン操作も併用可能）
@@ -1143,16 +577,15 @@
         var dy = e.changedTouches[0].clientY - touchY;
         touchX = null;
         if(Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
-        var key = state.cat === "unplanned" ? "unplanned" : state.view;
-        if(dx < 0){ var n = document.getElementById("nextBtn"); if(!n.disabled){ state.pages[key]++; render(); } }
-        else { var p = document.getElementById("prevBtn"); if(!p.disabled){ state.pages[key]--; render(); } }
+        if(dx < 0){ var n = document.getElementById("nextBtn"); if(!n.disabled){ state.page++; render(); } }
+        else { var p = document.getElementById("prevBtn"); if(!p.disabled){ state.page--; render(); } }
       }, { passive: true });
 
       var resizeTimer = null, lastWide = isWide();
       window.addEventListener("resize", function(){
         if(resizeTimer) clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function(){
-          if(isWide() !== lastWide){ lastWide = isWide(); state.pages.gantt = 0; }
+          if(isWide() !== lastWide){ lastWide = isWide(); state.page = 0; }
           render();
         }, 150);
       });
