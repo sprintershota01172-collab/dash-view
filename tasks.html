@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>タスク管理</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f5f7;
+        --surface: #ffffff;
+        --surface-2: #eceef1;
+        --ink: #16181d;
+        --ink-2: #454b54;
+        --ink-3: #6b7280;
+        --line: #d9dce1;
+        --accent: #1d4ed8;
+        --accent-soft: #dbe7ff;
+        --danger: #b91c1c;
+        --danger-soft: #fde8e8;
+        --warn: #92400e;
+        --warn-soft: #fdf0da;
+        --ok: #166534;
+        --ok-soft: #e2f3e6;
+        --bar-hot: #dc2626;
+        --bar-warm: #d97706;
+        --bar-normal: #9aa3ad;
+        --bar-private: #0e7490;
+        --bar-done: #b6bcc4;
+        --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101216;
+          --surface: #1a1d23;
+          --surface-2: #23262e;
+          --ink: #f2f4f7;
+          --ink-2: #c3c9d1;
+          --ink-3: #98a0ab;
+          --line: #31353f;
+          --accent: #7aa5ff;
+          --accent-soft: #22345f;
+          --danger: #ff9c9c;
+          --danger-soft: #472323;
+          --warn: #f5c07a;
+          --warn-soft: #453311;
+          --ok: #8fd6a4;
+          --ok-soft: #1e3a28;
+          --bar-hot: #f05252;
+          --bar-warm: #f0a13c;
+          --bar-normal: #6b7280;
+          --bar-private: #38b6d3;
+          --bar-done: #4b5563;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .num { font-family: "Space Grotesk", "Zen Kaku Gothic New", sans-serif; font-variant-numeric: tabular-nums; }
+      .wrap { max-width: 860px; margin: 0 auto; padding: 20px 16px 48px; }
+
+      .dateline {
+        display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline;
+        color: var(--ink-2); font-size: 15px; margin-bottom: 18px;
+      }
+      .dateline .today { font-size: 20px; font-weight: 900; color: var(--ink); }
+      .dateline .trip { color: var(--ink-2); }
+
+      h2.section {
+        font-size: 22px; font-weight: 900; line-height: 1.35;
+        margin: 30px 0 12px; letter-spacing: .01em;
+      }
+      h2.section:first-of-type { margin-top: 6px; }
+
+      /* ---- 最優先カード ---- */
+      .focus-list { display: grid; gap: 10px; }
+      .focus {
+        display: flex; gap: 0; background: var(--surface);
+        border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .focus .bar { flex: 0 0 6px; background: var(--bar-normal); }
+      .focus.hot .bar { background: var(--bar-hot); }
+      .focus.warm .bar { background: var(--bar-warm); }
+      .focus .rank {
+        flex: 0 0 auto; align-self: flex-start; margin: 14px 0 0 14px;
+        width: 30px; height: 30px; border-radius: 50%;
+        background: var(--surface-2); color: var(--ink);
+        display: flex; align-items: center; justify-content: center;
+        font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 16px;
+      }
+      .focus.hot .rank { background: var(--danger-soft); color: var(--danger); }
+      .focus .body { flex: 1 1 auto; min-width: 0; padding: 12px 14px 12px 12px; }
+      .focus .name { font-size: 17px; font-weight: 700; line-height: 1.45; }
+      .focus .why { font-size: 14.5px; color: var(--ink-2); margin-top: 2px; line-height: 1.55; }
+      .focus .due { flex: 0 0 auto; text-align: right; padding: 12px 14px 12px 6px; }
+      .due .date { font-weight: 700; font-size: 16px; white-space: nowrap; }
+      .due .left { font-size: 14px; font-weight: 700; white-space: nowrap; }
+      .due .left.hot { color: var(--danger); }
+      .due .left.warm { color: var(--warn); }
+      .due .left.normal { color: var(--ink-3); font-weight: 500; }
+
+      /* ---- タブ ---- */
+      .tabs {
+        display: flex; gap: 4px; background: var(--surface-2);
+        border-radius: 10px; padding: 4px; margin: 4px 0 14px;
+      }
+      .tabs button {
+        flex: 1 1 0; appearance: none; border: 0; cursor: pointer;
+        background: transparent; color: var(--ink-2);
+        font: inherit; font-weight: 700; font-size: 16px;
+        padding: 9px 6px; border-radius: 7px; line-height: 1.3;
+        white-space: nowrap;
+      }
+      .tabs button[aria-selected="true"] {
+        background: var(--surface); color: var(--ink); box-shadow: var(--shadow);
+      }
+      .tabs button .cnt { font-family: "Space Grotesk", sans-serif; font-size: 14px; color: var(--ink-3); margin-left: 4px; }
+      .tabs button:focus-visible, .task .check:focus-visible, .task .head:focus-visible {
+        outline: 2px solid var(--accent); outline-offset: 2px;
+      }
+
+      /* ---- タスク一覧 ---- */
+      .tasks { display: grid; gap: 10px; }
+      .task {
+        display: flex; background: var(--surface);
+        border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .task .bar { flex: 0 0 6px; background: var(--bar-normal); }
+      .task.hot .bar { background: var(--bar-hot); }
+      .task.warm .bar { background: var(--bar-warm); }
+      .task.private .bar { background: var(--bar-private); }
+      .task.done .bar { background: var(--bar-done); }
+      .task .check {
+        flex: 0 0 auto; align-self: flex-start; margin: 14px 0 0 12px;
+        width: 28px; height: 28px; border-radius: 50%;
+        border: 2px solid var(--line); background: var(--surface);
+        cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;
+        color: transparent; font-size: 15px; line-height: 1;
+      }
+      .task .check[aria-checked="true"] { background: var(--ok); border-color: var(--ok); color: #fff; }
+      .task .main { flex: 1 1 auto; min-width: 0; }
+      .task .head {
+        display: flex; width: 100%; text-align: left; gap: 8px;
+        appearance: none; border: 0; background: transparent; cursor: pointer;
+        font: inherit; color: inherit; padding: 12px 14px 12px 10px; align-items: flex-start;
+      }
+      .task .name { flex: 1 1 auto; min-width: 0; font-size: 16.5px; font-weight: 700; line-height: 1.5; }
+      .task.done .name { color: var(--ink-3); text-decoration: line-through; }
+      .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+      .badge {
+        font-size: 12.5px; font-weight: 700; line-height: 1.4;
+        padding: 1px 8px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2);
+      }
+      .badge.must { background: var(--danger-soft); color: var(--danger); }
+      .badge.tent { background: var(--warn-soft); color: var(--warn); }
+      .badge.doneb { background: var(--ok-soft); color: var(--ok); }
+      .task .due { flex: 0 0 auto; text-align: right; }
+      .task .detail {
+        display: none; padding: 0 14px 14px 10px; font-size: 15px; color: var(--ink-2); line-height: 1.65;
+      }
+      .task.open .detail { display: block; }
+      .task .detail p { margin: 0 0 6px; }
+      .task .detail p:last-child { margin-bottom: 0; }
+      .task .detail .k { font-weight: 700; color: var(--ink); }
+      .task .chev { color: var(--ink-3); font-size: 13px; margin-left: 2px; }
+      .empty {
+        background: var(--surface); border: 1px dashed var(--line); border-radius: 10px;
+        padding: 22px 16px; text-align: center; color: var(--ink-2); font-size: 15.5px;
+      }
+
+      /* ---- 11月中旬の山 ---- */
+      .peak {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 10px; box-shadow: var(--shadow); overflow: hidden;
+      }
+      .peak .row {
+        display: flex; gap: 14px; padding: 11px 16px; align-items: baseline;
+        border-top: 1px solid var(--line);
+      }
+      .peak .row:first-child { border-top: 0; }
+      .peak .d {
+        flex: 0 0 86px; font-weight: 900; font-size: 16px; white-space: nowrap;
+      }
+      .peak .d .num { font-size: 17px; }
+      .peak .what { flex: 1 1 auto; min-width: 0; font-size: 15.5px; line-height: 1.55; }
+      .peak .what .sub { color: var(--ink-2); font-size: 14.5px; }
+      .peak-note { font-size: 15px; color: var(--ink-2); margin-top: 10px; line-height: 1.6; }
+
+      .foot {
+        margin-top: 34px; font-size: 14px; color: var(--ink-3); line-height: 1.65;
+        border-top: 1px solid var(--line); padding-top: 14px;
+      }
+      @media (max-width: 520px) {
+        .tabs button { font-size: 15px; padding: 9px 2px; }
+        .focus .due .date, .task .due .date { font-size: 15px; }
+        .peak .d { flex-basis: 74px; }
+        h2.section { font-size: 20px; }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .task .detail { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="dateline">
+        <span class="today num" id="todayLabel"></span>
+        <span class="trip">福岡出張中（〜11/10午前）／ 次の移動：11/10 東京</span>
+      </div>
+
+      <h2 class="section">最優先</h2>
+      <div class="focus-list" id="focusList"></div>
+
+      <h2 class="section">タスク一覧</h2>
+      <div class="tabs" role="tablist" aria-label="タスクの分類">
+        <button type="button" role="tab" id="tab-work" aria-selected="true" data-tab="work">仕事<span class="cnt" id="cnt-work"></span></button>
+        <button type="button" role="tab" id="tab-private" aria-selected="false" data-tab="private">プライベート<span class="cnt" id="cnt-private"></span></button>
+        <button type="button" role="tab" id="tab-done" aria-selected="false" data-tab="done">完了<span class="cnt" id="cnt-done"></span></button>
+      </div>
+      <div class="tasks" id="taskList"></div>
+      <div class="empty" id="emptyState" hidden>この分類のタスクはありません</div>
+
+      <h2 class="section">11月中旬の山</h2>
+      <div class="peak" id="peakList"></div>
+      <p class="peak-note">11/10〜11/17に期限が集中しています。評価は11/10が東京出張のため、実質11/9の夜までに仕上げる想定です。</p>
+
+      <p class="foot">
+        2026年11月2日時点の記録を表示しています。丸いボタンのチェックは、この画面を開いている間だけの表示です。正式な記録にするには、Museに「完了」と伝えてください（記録が更新されると、このページにも反映されます）。「仮」は秘書が負荷を見て割り当てた仮期限、「想定」は日程が未確定の目安です。
+      </p>
+    </div>
+
+    <script>
+      // 2026-11-02 時点の記録（~/workspace/work/tasks.md より）
+      var TASKS = [
+        {
+          id: "trial-check", cat: "work",
+          name: "工程検証トライチェックシートの作成",
+          due: "2026-11-03", dueText: "11/3（火）",
+          must: true,
+          why: "明日マスト。品質に直結する検証で、連動文書まで含めて最優先。",
+          slot: "資料作成系のため、製造稼働中の通常勤務内で進められます。",
+          note: "連動して最新化が必要：工程FMEA／コントロールプラン／工程設計開発計画書／問題点一元管理表。部品発注は全て済み（11/2確認）。"
+        },
+        {
+          id: "hm-measure", cat: "work",
+          name: "HM板厚ばらつき測定",
+          due: "2026-11-09", dueText: "11/9（月）",
+          tentative: true,
+          why: "",
+          slot: "測定の実施枠は未確認です。",
+          note: "測定にいるものを用意する必要あり。準備は11/6（金）まで（仮）。"
+        },
+        {
+          id: "cooler", cat: "work",
+          name: "クーラー管理シートの貼り付けと課内への周知",
+          due: "2026-11-11", dueText: "11/11（水）",
+          assumed: true,
+          why: "",
+          slot: "",
+          note: "福岡出張から帰った最初の出社日に実施。日付は想定で、出社日が確定したら更新します。"
+        },
+        {
+          id: "695-check", cat: "work",
+          name: "695試作品チェックシート",
+          due: "2026-11-12", dueText: "11/12（木）",
+          why: "",
+          slot: "資料作成系のため、製造稼働中の通常勤務内で進められます。",
+          note: "通常生産の2週間前には作り終えるイメージ。695試作品作製（11/17）と関連。"
+        },
+        {
+          id: "sf-eval", cat: "work",
+          name: "SuccessFactors年間評価（能力発揮時期評価）の提出",
+          due: "2026-11-13", dueText: "11/13（金）",
+          why: "期限は固定。11/10は東京出張のため、実質11/9の夜までが勝負。",
+          slot: "資料作成系のため、製造稼働中の通常勤務内で進められます。",
+          note: "本人の目標は11/10までの完了。"
+        },
+        {
+          id: "fmea-fix", cat: "work",
+          name: "量産FMEA修正",
+          due: "2026-11-16", dueText: "11/16（月）",
+          tentative: true,
+          why: "",
+          slot: "資料修正系のため、製造稼働中の通常勤務内で進められます。",
+          note: "工程検証トライの連動更新（工程FMEA）とは別物として管理しています。"
+        },
+        {
+          id: "harness-pay", cat: "work",
+          name: "ハーネス高所作業者教育の振り込み",
+          due: "2026-11-17", dueText: "11/17（火）",
+          why: "",
+          slot: "事務手続きのため、通常勤務内で対応できます。",
+          note: "支払い手続き。"
+        },
+        {
+          id: "695-make", cat: "work",
+          name: "695試作品作製",
+          due: "2026-11-17", dueText: "11/17（火）",
+          why: "",
+          slot: "工程作業を伴う場合は、福岡工場では10:15〜11:00の枠か土日が必要です（未確認）。",
+          note: "695試作品チェックシート（11/12）と関連。部品発注は全て済み（11/2確認）。"
+        },
+        {
+          id: "fire-insurance", cat: "private",
+          name: "火災保険料がいま幾らか調べる",
+          due: "2026-11-06", dueText: "11/6（金）",
+          tentative: true,
+          why: "プライベートの用事は先延ばししない方針で前倒しに設定。",
+          slot: "",
+          note: "金額を確認する用事です。"
+        },
+        {
+          id: "eguchi-980", cat: "work",
+          name: "江口さんへ980のデータを送る",
+          due: "2026-11-02", dueText: "11/2（月）",
+          done: true, doneText: "11/2 完了",
+          why: "", slot: "", note: "本人報告で送信済み。"
+        }
+      ];
+
+      var PEAK = [
+        { d: "11/10", wd: "火", what: "東京出張", sub: "SKY006便（福岡10:20発→羽田11:55着）／14:00 アイオイショールーム／16:30 STARBOARD見学。評価の本人目標日でもあります" },
+        { d: "11/11", wd: "水", what: "クーラー管理シートの貼り付けと課内への周知", sub: "帰任後最初の出社日（想定）" },
+        { d: "11/12", wd: "木", what: "695試作品チェックシート", sub: "" },
+        { d: "11/13", wd: "金", what: "SuccessFactors年間評価（能力発揮時期評価）の提出期限", sub: "" },
+        { d: "11/17", wd: "火", what: "695試作品作製／ハーネス高所作業者教育の振り込み", sub: "同日に2件" }
+      ];
+
+      function todayLocal() {
+        var n = new Date();
+        return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+      }
+      function parseDue(s) {
+        var p = s.split("-");
+        return new Date(+p[0], +p[1] - 1, +p[2]);
+      }
+      function daysLeft(dueStr) {
+        var ms = parseDue(dueStr) - todayLocal();
+        return Math.round(ms / 86400000);
+      }
+      function leftInfo(d) {
+        if (d < 0) return { text: Math.abs(d) + "日超過", cls: "hot" };
+        if (d === 0) return { text: "今日まで", cls: "hot" };
+        if (d === 1) return { text: "あと1日（明日）", cls: "hot" };
+        if (d <= 3) return { text: "あと" + d + "日", cls: "warm" };
+        return { text: "あと" + d + "日", cls: "normal" };
+      }
+      function urgCls(d) { return d <= 1 ? "hot" : (d <= 3 ? "warm" : ""); }
+
+      var sessionDone = {}; // この画面を開いている間だけのチェック状態
+      function isDone(t) { return !!t.done || !!sessionDone[t.id]; }
+
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+
+      // 今日の日付表示
+      (function () {
+        var wd = ["日", "月", "火", "水", "木", "金", "土"];
+        var n = new Date();
+        document.getElementById("todayLabel").textContent =
+          (n.getMonth() + 1) + "月" + n.getDate() + "日（" + wd[n.getDay()] + "）";
+      })();
+
+      // 最優先（未完了・期限順の上位3件）
+      function renderFocus() {
+        var open = TASKS.filter(function (t) { return !isDone(t); })
+          .sort(function (a, b) { return a.due < b.due ? -1 : a.due > b.due ? 1 : 0; })
+          .slice(0, 3);
+        var html = "";
+        open.forEach(function (t, i) {
+          var d = daysLeft(t.due), li = leftInfo(d), uc = urgCls(d);
+          html += '<div class="focus ' + uc + '">'
+            + '<div class="bar"></div>'
+            + '<div class="rank num">' + (i + 1) + '</div>'
+            + '<div class="body"><div class="name">' + esc(t.name) + '</div>'
+            + (t.why ? '<div class="why">' + esc(t.why) + '</div>' : '')
+            + '</div>'
+            + '<div class="due"><div class="date num">' + esc(t.dueText) + '</div>'
+            + '<div class="left ' + li.cls + '">' + esc(li.text) + '</div></div>'
+            + '</div>';
+        });
+        document.getElementById("focusList").innerHTML = html;
+      }
+
+      // タスク一覧
+      var currentTab = "work";
+      function badges(t) {
+        var b = "";
+        if (isDone(t)) b += '<span class="badge doneb">' + esc(t.doneText || "完了（この画面のみ）") + '</span>';
+        if (t.must) b += '<span class="badge must">マスト</span>';
+        if (t.tentative) b += '<span class="badge tent">仮期限</span>';
+        if (t.assumed) b += '<span class="badge tent">日程は想定</span>';
+        return b ? '<div class="badges">' + b + '</div>' : '';
+      }
+      function renderTasks() {
+        var list = TASKS.filter(function (t) {
+          if (currentTab === "done") return isDone(t);
+          return t.cat === currentTab && !isDone(t);
+        }).sort(function (a, b) { return a.due < b.due ? -1 : a.due > b.due ? 1 : 0; });
+
+        var html = "";
+        list.forEach(function (t) {
+          var d = daysLeft(t.due), li = leftInfo(d), uc = urgCls(d);
+          var done = isDone(t);
+          var detail = "";
+          if (t.slot) detail += '<p><span class="k">作業できる時間帯：</span>' + esc(t.slot) + '</p>';
+          if (t.note) detail += '<p><span class="k">備考：</span>' + esc(t.note) + '</p>';
+          if (!detail) detail = '<p>追加の情報はまだありません。</p>';
+          html += '<div class="task ' + uc + (t.cat === "private" && !uc ? " private" : "") + (done ? " done" : "") + '" data-id="' + t.id + '">'
+            + '<div class="bar"></div>'
+            + '<button type="button" class="check" role="checkbox" aria-checked="' + done + '" aria-label="' + esc(t.name) + 'を完了にする" data-check="' + t.id + '">✓</button>'
+            + '<div class="main">'
+            + '<button type="button" class="head" data-toggle="' + t.id + '" aria-expanded="false">'
+            + '<span class="name">' + esc(t.name) + badges(t) + '</span>'
+            + '<span class="due"><span class="date num">' + esc(t.dueText) + '</span><br>'
+            + '<span class="left ' + (done ? "normal" : li.cls) + '">' + (done ? esc(t.doneText || "完了") : esc(li.text)) + '</span></span>'
+            + '<span class="chev" aria-hidden="true">▽</span>'
+            + '</button>'
+            + '<div class="detail">' + detail + '</div>'
+            + '</div></div>';
+        });
+        document.getElementById("taskList").innerHTML = html;
+        document.getElementById("emptyState").hidden = list.length > 0;
+
+        // 件数
+        document.getElementById("cnt-work").textContent = TASKS.filter(function (t) { return t.cat === "work" && !isDone(t); }).length;
+        document.getElementById("cnt-private").textContent = TASKS.filter(function (t) { return t.cat === "private" && !isDone(t); }).length;
+        document.getElementById("cnt-done").textContent = TASKS.filter(function (t) { return isDone(t); }).length;
+      }
+
+      function renderPeak() {
+        var html = "";
+        PEAK.forEach(function (p) {
+          html += '<div class="row"><div class="d"><span class="num">' + esc(p.d) + '</span>（' + esc(p.wd) + '）</div>'
+            + '<div class="what">' + esc(p.what)
+            + (p.sub ? '<div class="sub">' + esc(p.sub) + '</div>' : '')
+            + '</div></div>';
+        });
+        document.getElementById("peakList").innerHTML = html;
+      }
+
+      function renderAll() { renderFocus(); renderTasks(); }
+
+      document.querySelectorAll(".tabs button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          currentTab = btn.getAttribute("data-tab");
+          document.querySelectorAll(".tabs button").forEach(function (b) {
+            b.setAttribute("aria-selected", b === btn ? "true" : "false");
+          });
+          renderTasks();
+        });
+      });
+
+      document.getElementById("taskList").addEventListener("click", function (ev) {
+        var checkBtn = ev.target.closest("[data-check]");
+        if (checkBtn) {
+          var id = checkBtn.getAttribute("data-check");
+          var t = TASKS.filter(function (x) { return x.id === id; })[0];
+          if (t && !t.done) {
+            if (sessionDone[id]) { delete sessionDone[id]; }
+            else { sessionDone[id] = true; t.doneText = undefined; }
+            renderAll();
+          }
+          return;
+        }
+        var head = ev.target.closest("[data-toggle]");
+        if (head) {
+          var card = head.closest(".task");
+          var open = card.classList.toggle("open");
+          head.setAttribute("aria-expanded", open ? "true" : "false");
+          head.querySelector(".chev").textContent = open ? "△" : "▽";
+        }
+      });
+
+      renderAll();
+      renderPeak();
+    </script>
+  </body>
+</html>
