@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="data:," />
+    <link rel="apple-touch-icon" href="tasks-icon.png" />
+    <link rel="icon" type="image/png" href="tasks-icon.png" />
     <title>タスク管理</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -55,7 +56,7 @@
           --weekend-bg:rgba(255,255,255,.04);
         }
       }
-      @media (min-width:900px){ :root{ --namew:264px } }
+      @media (min-width:900px){ :root{ --namew:368px } }
       *{box-sizing:border-box;touch-action:manipulation}
       html,body{height:100%}
       html{-webkit-text-size-adjust:100%}
@@ -76,13 +77,13 @@
 
       /* Header */
       header{display:flex;align-items:baseline;gap:8px;padding:0 2px}
-      header h1{margin:0;font-size:14px;font-weight:700;line-height:1.25;flex:0 0 auto}
-      .head-sub{flex:1 1 auto;min-width:0;font-size:10.5px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+      header h1{margin:0;font-size:13px;font-weight:700;line-height:1.25;flex:0 0 auto}
+      .head-sub{flex:1 1 auto;min-width:0;font-size:10px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
       .head-sub .over{color:var(--danger-dark);font-weight:700}
 
       /* Progress summary (1行) */
       .progress{
-        margin-top:4px;font-size:10.5px;color:var(--sub);font-variant-numeric:tabular-nums;
+        margin-top:4px;font-size:10px;color:var(--sub);font-variant-numeric:tabular-nums;
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
         display:flex;align-items:center;gap:6px;
       }
@@ -96,7 +97,7 @@
       .controls{display:flex;align-items:center;gap:4px;margin-top:4px;flex-wrap:wrap}
       .chip{
         flex:0 0 auto;min-height:24px;padding:0 8px;border:1px solid var(--line);border-radius:5px;
-        background:var(--surface);color:var(--sub);font:inherit;font-size:11px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;
+        background:var(--surface);color:var(--sub);font:inherit;font-size:10.5px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;
       }
       .chip[aria-pressed="true"]{border-color:var(--teal);color:var(--teal-dark);background:var(--teal-soft);font-weight:700}
       .chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
@@ -105,10 +106,10 @@
 
       /* Period nav */
       .periodnav{display:flex;align-items:center;gap:4px;margin-top:4px}
-      .periodnav .rng{flex:1 1 auto;text-align:center;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .periodnav .rng{flex:1 1 auto;text-align:center;font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .periodnav button{
         flex:0 0 auto;min-height:26px;padding:0 8px;border:1px solid var(--line);border-radius:5px;
-        background:var(--surface);color:var(--ink);font:inherit;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;
+        background:var(--surface);color:var(--ink);font:inherit;font-size:10.5px;font-weight:500;cursor:pointer;white-space:nowrap;
       }
       .periodnav button.cur{color:var(--teal-dark);border-color:var(--teal);font-weight:700}
       .periodnav button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
@@ -120,7 +121,7 @@
       .gantt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:0 0 auto}
       .g-head{display:flex;border-bottom:1px solid var(--line);background:var(--surface)}
       .g-name{flex:0 0 var(--namew);min-width:0;display:flex;align-items:center}
-      .g-head .g-name{padding:0 8px;font-size:10px;font-weight:600;color:var(--sub);height:22px;border-right:1px solid var(--line)}
+      .g-head .g-name{padding:0 8px;font-size:9.5px;font-weight:600;color:var(--sub);height:22px;border-right:1px solid var(--line)}
       .g-track{flex:1 1 auto;min-width:0;position:relative}
       .g-days{display:flex;height:22px}
       .g-day{
@@ -148,7 +149,7 @@
       .g-row.is-over .g-namebody,.g-row.is-todaydue .g-namebody{padding-left:10px}
       .g-tname{
         flex:1 1 auto;min-width:0;
-        font-size:12px;font-weight:500;line-height:1.25;color:var(--ink);
+        font-size:10.5px;font-weight:500;line-height:1.25;color:var(--ink);
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       }
       .g-row.is-top .g-tname{font-weight:600}
@@ -156,9 +157,9 @@
       .g-row.is-over .g-tname{color:var(--danger-dark);font-weight:700}
       .g-row.is-todaydue .g-tname{color:var(--danger-dark);font-weight:700}
       .g-row.is-tomorrow .g-tname{color:var(--warn-dark);font-weight:700}
-      .g-row .pri-dot{flex:0 0 auto;font-size:9px;font-weight:700;color:var(--teal-dark);white-space:nowrap;line-height:1}
+      .g-row .pri-dot{flex:0 0 auto;font-size:8.5px;font-weight:700;color:var(--teal-dark);white-space:nowrap;line-height:1}
       .g-row.is-over .pri-dot,.g-row.is-todaydue .pri-dot{color:var(--danger-dark)}
-      .g-due-inline{flex:0 0 auto;font-size:10px;font-weight:500;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.25}
+      .g-due-inline{flex:0 0 auto;font-size:9px;font-weight:500;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.25}
       .g-due-inline.over{color:var(--danger-dark);font-weight:700}
       .g-due-inline.todaydue{color:var(--danger-dark);font-weight:700}
       .g-due-inline.tomorrow{color:var(--warn-dark);font-weight:700}
@@ -214,9 +215,9 @@
       }
       @media (min-width:900px){ .sheet{max-width:560px} .overlay{align-items:center;padding:24px} .sheet{border-radius:10px} }
       @keyframes sheetIn{from{transform:translateY(10px);opacity:.5}to{transform:none;opacity:1}}
-      .sheet h2{margin:0 0 6px;font-size:12px;font-weight:600;color:var(--sub)}
-      .sheet .full-name{font-size:14px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
-      .sheet .meta{margin-top:10px;font-size:12px;line-height:1.9;font-variant-numeric:tabular-nums}
+      .sheet h2{margin:0 0 6px;font-size:11px;font-weight:600;color:var(--sub)}
+      .sheet .full-name{font-size:13px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
+      .sheet .meta{margin-top:10px;font-size:11.5px;line-height:1.9;font-variant-numeric:tabular-nums}
       .sheet .meta .k{color:var(--sub)}
       .sheet .meta .over{color:var(--danger-dark);font-weight:700}
       .sheet .meta .todaydue{color:var(--danger-dark);font-weight:700}
@@ -227,6 +228,22 @@
       .sheet-actions button{width:100%;min-height:48px;border-radius:6px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
       .sheet-actions button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 
+      /* Mid widths: give the name column more room */
+      @media (min-width:561px) and (max-width:899px){ :root{ --namew:62% } }
+      /* Phones (390px target): name column takes all but a slim 58px date axis,
+         so a 25-char formal name fits on one line at 10px with no ellipsis.
+         The priority label compacts to a single "優" mark; full text stays in the detail sheet. */
+      @media (max-width:560px){
+        :root{ --namew:calc(100% - 58px) }
+        .g-day{flex-direction:column;gap:0}
+        .g-day .dn{font-size:8px}
+        .g-day .dw{font-size:6px}
+        .g-namebody{gap:3px;padding:0 3px 0 6px}
+        .g-tname{font-size:10px}
+        .g-due-inline{font-size:8px}
+        .g-row .pri-dot{font-size:0;line-height:1}
+        .g-row .pri-dot::after{content:"優";font-size:8px;font-weight:700}
+      }
       @media (prefers-reduced-motion: reduce){
         *,*::before,*::after{animation:none !important;transition:none !important}
       }
