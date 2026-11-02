@@ -6,302 +6,322 @@
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="data:," />
     <title>タスク管理</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..600,0..1,0&display=swap" rel="stylesheet" />
     <style>
       :root{
-        --surface:#fef7ff;
-        --surface-low:#f7f2fa;
-        --surface-container:#f3edf7;
-        --surface-high:#ece6f0;
-        --surface-highest:#e6e0e9;
-        --on-surface:#1d1b20;
-        --on-variant:#49454f;
-        --outline-variant:#cac4d0;
-        --primary:#6750a4;
-        --on-primary:#fff;
-        --primary-container:#eaddff;
-        --on-primary-container:#21005d;
-        --secondary-container:#e8def8;
-        --on-secondary-container:#1d192b;
-        --tertiary-container:#ffd8e4;
-        --on-tertiary-container:#31111d;
-        --error:#ba1a1a;
-        --error-container:#f9dedc;
-        --on-error-container:#410e0b;
-        --tertiary:#7d5260;
-        --warn-container:#ffdcbe;
-        --on-warn-container:#2e1500;
+        --bg:#f4f4f6;
+        --surface:#ffffff;
+        --border:#e2e2e8;
+        --divider:#ececf0;
+        --text:#1c1c22;
+        --sub:#6d6d78;
+        --accent:#6750a4;
+        --accent-soft:#f3effa;
+        --accent-ink:#4a3585;
+        --danger:#b3261e;
+        --ring:#b6b6c0;
+        --seg-bg:#e8e8ed;
       }
       @media (prefers-color-scheme: dark){
         :root{
-          --surface:#141218;
-          --surface-low:#1d1b20;
-          --surface-container:#211f26;
-          --surface-high:#2b2930;
-          --surface-highest:#36343b;
-          --on-surface:#e6e0e9;
-          --on-variant:#cac4d0;
-          --outline-variant:#49454f;
-          --primary:#d0bcff;
-          --on-primary:#381e72;
-          --primary-container:#4f378b;
-          --on-primary-container:#eaddff;
-          --secondary-container:#4a4458;
-          --on-secondary-container:#e8def8;
-          --tertiary-container:#633b48;
-          --on-tertiary-container:#ffd8e4;
-          --error:#f2b8b5;
-          --error-container:#8c1d18;
-          --on-error-container:#f9dedc;
-          --warn-container:#653e00;
-          --on-warn-container:#ffdcbe;
+          --bg:#121215;
+          --surface:#1e1e23;
+          --border:#34343c;
+          --divider:#2b2b32;
+          --text:#ededf2;
+          --sub:#a2a2ad;
+          --accent:#c3b2f5;
+          --accent-soft:#2b2145;
+          --accent-ink:#d8ccff;
+          --danger:#f0a49e;
+          --ring:#55555f;
+          --seg-bg:#26262d;
         }
       }
       *{box-sizing:border-box}
-      html,body{height:100%;overflow:hidden}
       html{-webkit-text-size-adjust:100%}
       body{
-        margin:0;background:var(--surface);color:var(--on-surface);
-        font-family:"Noto Sans JP",system-ui,sans-serif;
+        margin:0;background:var(--bg);color:var(--text);
+        font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif;
         font-size:16px;line-height:1.5;
         -webkit-font-smoothing:antialiased;
       }
-      .msym{
-        font-family:"Material Symbols Rounded";
-        font-weight:normal;font-style:normal;line-height:1;
-        letter-spacing:normal;text-transform:none;display:inline-flex;
-        align-items:center;justify-content:center;white-space:nowrap;
-        direction:ltr;-webkit-font-smoothing:antialiased;
-        font-variation-settings:"FILL" 0,"wght" 500,"GRAD" 0,"opsz" 24;
-      }
       .screen{
-        height:100dvh;max-width:896px;margin:0 auto;
-        padding:16px 16px 16px;
-        display:flex;flex-direction:column;gap:8px;overflow:hidden;
+        max-width:680px;margin:0 auto;
+        padding:20px 16px 48px;
       }
-      /* Header — Google Calendar / Tasks style */
-      .dateline{flex:0 0 auto;padding:8px 8px 0;display:flex;align-items:baseline;gap:12px}
-      .dateline .today{
-        font-family:"Zen Maru Gothic","Noto Sans JP",sans-serif;
-        font-size:28px;font-weight:900;line-height:1.2;letter-spacing:.01em;
-      }
-      .dateline .sub{font-size:14px;color:var(--on-variant);font-weight:500}
 
+      /* Header */
+      header{display:flex;align-items:baseline;gap:12px;padding:4px 4px 0}
+      header h1{
+        margin:0;font-size:23px;font-weight:700;line-height:1.3;letter-spacing:.01em;
+      }
+      header .app-name{font-size:14px;font-weight:500;color:var(--sub)}
+      .head-sub{margin:4px 4px 0;font-size:13px;color:var(--sub)}
+
+      /* Segmented filter */
+      .seg{
+        display:flex;gap:4px;margin:16px 0 4px;padding:4px;
+        background:var(--seg-bg);border-radius:999px;
+      }
+      .seg button{
+        flex:1 1 0;min-height:40px;border:0;border-radius:999px;
+        background:transparent;color:var(--sub);
+        font:inherit;font-size:14px;font-weight:500;cursor:pointer;
+        transition:background-color .18s ease,color .18s ease;
+      }
+      .seg button[aria-selected="true"]{background:var(--accent);color:#fff;font-weight:600}
+      @media (prefers-color-scheme: dark){
+        .seg button[aria-selected="true"]{color:#221647}
+      }
+      .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+      /* Sections */
       .sect-label{
-        flex:0 0 auto;font-size:14px;font-weight:700;color:var(--on-variant);
-        padding:8px 8px 0;letter-spacing:.02em;
+        margin:24px 4px 8px;font-size:13px;font-weight:600;color:var(--sub);
+        display:flex;align-items:baseline;gap:8px;
       }
+      .sect-label .count{font-weight:500;font-variant-numeric:tabular-nums}
 
-      /* Focus cards — Google Calendar event cards */
-      .focus{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-      .fcard{
-        border-radius:24px;padding:16px;
-        display:flex;flex-direction:column;gap:12px;min-width:0;
-        background:var(--surface-container);
+      .card{
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:14px;
+        overflow:hidden;
+        animation:cardIn .18s ease;
       }
-      .fcard.c-pri{background:var(--primary-container);color:var(--on-primary-container)}
-      .fcard.c-sec{background:var(--secondary-container);color:var(--on-secondary-container)}
-      .fcard.c-ter{background:var(--tertiary-container);color:var(--on-tertiary-container)}
-      .fcard .top{display:flex;align-items:center;justify-content:space-between}
-      .fcard .name{font-size:16px;font-weight:700;line-height:1.5;min-height:3em}
-      .fcard .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;align-items:center}
-      .rank{
-        font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:13px;
+      @keyframes cardIn{from{opacity:.35}to{opacity:1}}
+
+      /* Task row: left = complete toggle, center = name + due line */
+      .row{
+        display:flex;align-items:flex-start;gap:4px;
+        padding:8px 12px 8px 4px;
+        transition:opacity .19s ease;
+      }
+      .row + .row{border-top:1px solid var(--divider)}
+      .row.is-top{background:var(--accent-soft)}
+      .row.is-done .name{color:var(--sub);text-decoration:line-through;font-weight:400}
+      .row.leaving{opacity:.3}
+      .row.leaving .name{text-decoration:line-through}
+
+      .check{
+        flex:0 0 auto;width:44px;height:44px;margin-top:1px;
+        border:0;background:transparent;padding:0;cursor:pointer;
+        display:flex;align-items:center;justify-content:center;
+        border-radius:50%;
+      }
+      .check:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+      .check .ring{
         width:24px;height:24px;border-radius:50%;
-        background:color-mix(in srgb, currentColor 14%, transparent);
+        border:2px solid var(--ring);
         display:flex;align-items:center;justify-content:center;
+        transition:background-color .18s ease,border-color .18s ease;
       }
-
-      /* Avatar — secondary container circle, tonal only */
-      .avatar{
-        flex:0 0 auto;border-radius:50%;
-        display:flex;align-items:center;justify-content:center;
-        background:var(--secondary-container);color:var(--on-secondary-container);
+      .check .ring svg{
+        width:14px;height:14px;fill:none;stroke:#fff;stroke-width:3;
+        stroke-linecap:round;stroke-linejoin:round;
+        opacity:0;transform:scale(.6);
+        transition:opacity .18s ease,transform .18s ease;
       }
-      .avatar.big{width:48px;height:48px}
-      .avatar.big .msym{font-size:24px}
-      .avatar.sm{width:40px;height:40px}
-      .avatar.sm .msym{font-size:20px}
-      .fcard .avatar{background:color-mix(in srgb, currentColor 12%, transparent);color:inherit}
-      .avatar.c-pri{background:var(--primary-container);color:var(--on-primary-container)}
-      .avatar.c-ter{background:var(--tertiary-container);color:var(--on-tertiary-container)}
-      .avatar.c-sec{background:var(--secondary-container);color:var(--on-secondary-container)}
-      .avatar.is-tentative{outline:2px dashed var(--outline-variant);outline-offset:-4px}
+      .check[aria-pressed="true"] .ring{background:var(--accent);border-color:var(--accent)}
+      .check[aria-pressed="true"] .ring svg{opacity:1;transform:scale(1)}
 
-      /* Due chip — surface container high + calendar icon */
-      .dchip{
-        display:inline-flex;align-items:center;gap:4px;
-        background:var(--surface-high);color:var(--on-surface);
-        border-radius:999px;padding:4px 10px 4px 8px;
-        font-size:13px;font-weight:500;line-height:1.2;white-space:nowrap;
+      .row .body{flex:1 1 auto;min-width:0;padding:9px 0 7px}
+      .row .name{
+        font-size:16px;font-weight:500;line-height:1.45;cursor:pointer;
+        display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+      }
+      .row.is-top .name{font-weight:600}
+      .row .name.open{display:block;overflow:visible}
+      .row .sub{
+        margin-top:2px;font-size:13px;color:var(--sub);line-height:1.45;
         font-variant-numeric:tabular-nums;
       }
-      .fcard .dchip{background:color-mix(in srgb, currentColor 10%, transparent);color:inherit}
-      .dchip .msym{font-size:16px}
-      .left{
-        display:inline-flex;align-items:center;
-        font-size:12px;font-weight:700;line-height:1.2;white-space:nowrap;
-        border-radius:999px;padding:4px 8px;
-        background:transparent;color:var(--on-variant);
-      }
-      .left.hot{background:var(--error-container);color:var(--on-error-container)}
-      .fcard .left.hot{background:var(--error-container);color:var(--on-error-container)}
-      .left.warm{background:var(--warn-container);color:var(--on-warn-container)}
-      .left.normal{background:transparent}
+      .row .sub.over{color:var(--danger);font-weight:600}
+      .row .sub.soon{color:var(--text);font-weight:500}
 
-      /* List panel — tonal surface, no shadow, large radius */
-      .panel{
-        flex:0 1 auto;min-height:0;
-        background:var(--surface-low);
-        border-radius:24px;padding:8px;overflow:hidden;
+      .rank{
+        flex:0 0 auto;padding-top:11px;min-width:20px;text-align:right;
+        font-size:13px;font-weight:700;color:var(--sub);font-variant-numeric:tabular-nums;
       }
-      .trow{
-        display:flex;align-items:center;gap:16px;
-        padding:8px 8px;border-radius:16px;min-height:56px;
-      }
-      .trow + .trow{margin-top:0}
-      .trow .name{flex:1 1 auto;min-width:0;font-size:16px;font-weight:500;line-height:1.45}
-      .trow .meta{flex:0 0 auto;display:flex;align-items:center;gap:8px}
-      .trow.done{opacity:.56}
-      .trow.done .name{text-decoration:line-through;font-weight:400}
-      .done-icon{
-        width:24px;height:24px;border-radius:50%;flex:0 0 auto;
-        background:var(--primary);color:var(--on-primary);
-        display:flex;align-items:center;justify-content:center;
-      }
-      .done-icon .msym{font-size:16px;font-variation-settings:"FILL" 1,"wght" 600}
+      .row.is-top .rank{color:var(--accent-ink)}
 
-      @media (max-width:560px){
-        .screen{padding:8px 16px 16px;gap:0}
-        .dateline{padding-top:8px}
-        .dateline .today{font-size:24px}
-        .sect-label{padding-top:8px;font-size:13px}
-        .focus{grid-template-columns:1fr;gap:8px;margin-top:8px}
-        .fcard{flex-direction:row;align-items:center;gap:12px;padding:12px 16px;border-radius:20px}
-        .fcard .top{order:0}
-        .fcard .avatar.big{width:40px;height:40px}
-        .fcard .avatar.big .msym{font-size:20px}
-        .fcard .rank{display:none}
-        .fcard .name{flex:1 1 auto;min-height:0;font-size:15px}
-        .fcard .chips{margin-top:0;flex-direction:column;align-items:flex-end;gap:4px}
-        .panel{border-radius:20px;padding:4px 8px;margin-top:8px}
-        .trow{gap:12px;padding:6px 4px;min-height:48px}
-        .trow .name{font-size:14px}
-        .avatar.sm{width:36px;height:36px}
-        .avatar.sm .msym{font-size:18px}
-        .dchip{font-size:12px;padding:3px 8px 3px 6px}
-        .left{font-size:11px;padding:3px 6px}
+      .empty{
+        padding:20px 16px;font-size:14px;color:var(--sub);text-align:center;
       }
-      @media (max-height:700px){
-        .trow{min-height:44px;padding-top:4px;padding-bottom:4px}
-        .fcard{padding-top:12px;padding-bottom:12px}
+
+      @media (min-width:561px){
+        .screen{padding:28px 24px 56px}
+        header h1{font-size:24px}
+      }
+      @media (prefers-reduced-motion: reduce){
+        *,*::before,*::after{animation:none !important;transition:none !important}
       }
     </style>
   </head>
   <body>
     <div class="screen">
-      <div class="dateline">
-        <span class="today" id="todayLabel"></span>
-        <span class="sub">タスク</span>
-      </div>
+      <header>
+        <h1 id="todayLabel"></h1>
+        <span class="app-name">タスク</span>
+      </header>
+      <p class="head-sub" id="headSub"></p>
 
-      <div class="sect-label">最優先</div>
-      <div class="focus" id="focusList" role="list" aria-label="最優先のタスク"></div>
+      <nav class="seg" role="tablist" aria-label="カテゴリ切り替え">
+        <button type="button" role="tab" data-filter="all" aria-selected="true">すべて</button>
+        <button type="button" role="tab" data-filter="work" aria-selected="false">仕事</button>
+        <button type="button" role="tab" data-filter="private" aria-selected="false">プライベート</button>
+      </nav>
 
-      <div class="sect-label">仕事</div>
-      <section class="panel" aria-label="仕事のタスク">
-        <div id="workList"></div>
-      </section>
-
-      <div class="sect-label">プライベート</div>
-      <section class="panel" aria-label="プライベートのタスク">
-        <div id="privateList"></div>
-      </section>
+      <main id="main"></main>
     </div>
 
     <script>
       // 2026-11-02 時点の記録（~/workspace/work/tasks.md より）
-      // icon: Material Symbols Rounded 名 / tone: container トーン
       var TASKS = [
-        { id: "trial-check", cat: "work", name: "工程検証トライチェックシートの作成", due: "2026-11-03", icon: "fact_check", tone: "c-pri", must: true },
-        { id: "funakoshi-ship", cat: "work", name: "舩越さんに臨時便に机上の天井機材を載せてもらう依頼", due: "2026-11-04", icon: "local_shipping", tone: "c-pri", tentative: true, must: true },
-        { id: "lift-request", cat: "work", name: "試作管理表に、リフトの操作依頼を書く", due: "2026-11-04", icon: "forklift", tone: "c-sec", tentative: true, must: true },
-        { id: "fire-insurance", cat: "private", name: "火災保険料がいま幾らか調べる", due: "2026-11-06", icon: "local_fire_department", tone: "c-ter", tentative: true },
-        { id: "pet-brkt", cat: "work", name: "PET BRKTで接着性確認", due: "2026-11-08", icon: "science", tone: "c-ter" },
-        { id: "hm-measure", cat: "work", name: "HM板厚ばらつき測定", due: "2026-11-09", icon: "straighten", tone: "c-sec", tentative: true },
-        { id: "cooler", cat: "work", name: "クーラー管理シートの貼り付けと課内への周知", due: "2026-11-11", icon: "ac_unit", tone: "c-sec", assumed: true },
-        { id: "695-check", cat: "work", name: "695試作品チェックシート", due: "2026-11-12", icon: "manage_search", tone: "c-pri" },
-        { id: "sf-eval", cat: "work", name: "SuccessFactors年間評価（能力発揮時期評価）の提出", due: "2026-11-13", icon: "star", tone: "c-ter" },
-        { id: "fmea-fix", cat: "work", name: "量産FMEA修正", due: "2026-11-16", icon: "build", tone: "c-sec", tentative: true },
-        { id: "harness-pay", cat: "work", name: "ハーネス高所作業者教育の振り込み", due: "2026-11-17", icon: "payments", tone: "c-ter" },
-        { id: "695-make", cat: "work", name: "695試作品作製", due: "2026-11-17", icon: "precision_manufacturing", tone: "c-pri" },
-        { id: "eguchi-980", cat: "work", name: "江口さんへ980のデータを送る", due: "2026-11-02", icon: "send", tone: "c-sec", done: true }
+        { id: "trial-check", cat: "work", name: "工程検証トライチェックシートの作成", due: "2026-11-03", must: true },
+        { id: "funakoshi-ship", cat: "work", name: "舩越さんに臨時便に机上の天井機材を載せてもらう依頼", due: "2026-11-04", tentative: true, must: true },
+        { id: "lift-request", cat: "work", name: "試作管理表に、リフトの操作依頼を書く", due: "2026-11-04", tentative: true, must: true },
+        { id: "fire-insurance", cat: "private", name: "火災保険料がいま幾らか調べる", due: "2026-11-06", tentative: true },
+        { id: "pet-brkt", cat: "work", name: "PET BRKTで接着性確認", due: "2026-11-08" },
+        { id: "hm-measure", cat: "work", name: "HM板厚ばらつき測定", due: "2026-11-09", tentative: true },
+        { id: "cooler", cat: "work", name: "クーラー管理シートの貼り付けと課内への周知", due: "2026-11-11", assumed: true },
+        { id: "695-check", cat: "work", name: "695試作品チェックシート", due: "2026-11-12" },
+        { id: "sf-eval", cat: "work", name: "SuccessFactors年間評価（能力発揮時期評価）の提出", due: "2026-11-13" },
+        { id: "fmea-fix", cat: "work", name: "量産FMEA修正", due: "2026-11-16", tentative: true },
+        { id: "harness-pay", cat: "work", name: "ハーネス高所作業者教育の振り込み", due: "2026-11-17" },
+        { id: "695-make", cat: "work", name: "695試作品作製", due: "2026-11-17" },
+        { id: "eguchi-980", cat: "work", name: "江口さんへ980のデータを送る", due: "2026-11-02", done: true }
       ];
+
+      var state = { filter: "all" };
+      var WD = ["日","月","火","水","木","金","土"];
 
       function todayLocal(){ var n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
       function parseDue(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
       function daysLeft(s){ return Math.round((parseDue(s)-todayLocal())/86400000); }
-      function dateChip(s){ var p=s.split("-"); return (+p[1])+"/"+(+p[2]); }
-      function leftBadge(d){
-        if(d<0) return {text:Math.abs(d)+"日超過",cls:"hot"};
-        if(d===0) return {text:"今日",cls:"hot"};
-        if(d===1) return {text:"あと1日",cls:"hot"};
-        if(d<=3) return {text:"あと"+d+"日",cls:"warm"};
-        return {text:"あと"+d+"日",cls:"normal"};
-      }
       function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
       function byDue(a,b){ return a.due<b.due?-1:a.due>b.due?1:0; }
-      function avatarHtml(t,size){
-        var cls="avatar "+size+" "+t.tone;
-        if(t.tentative||t.assumed) cls+=" is-tentative";
-        return '<span class="'+cls+'" aria-hidden="true"><span class="msym">'+esc(t.icon)+'</span></span>';
+      function findTask(id){ for(var i=0;i<TASKS.length;i++){ if(TASKS[i].id===id) return TASKS[i]; } return null; }
+
+      // 期限表示は一か所にまとめる：「明日 · 11/3（火）」「あと6日 · 11/8（日）」「3日超過 · 10/30（金）」
+      function dueSegment(t){
+        var d = daysLeft(t.due);
+        var dt = parseDue(t.due);
+        var dateStr = (dt.getMonth()+1)+"/"+dt.getDate()+"（"+WD[dt.getDay()]+"）";
+        var label, cls = "";
+        if(d<0){ label = Math.abs(d)+"日超過"; cls = "over"; }
+        else if(d===0){ label = "今日"; cls = "soon"; }
+        else if(d===1){ label = "明日"; cls = "soon"; }
+        else { label = "あと"+d+"日"; }
+        return { text: label+" · "+dateStr, cls: cls };
       }
-      function chipsHtml(t){
-        var due='<span class="dchip"><span class="msym" aria-hidden="true">calendar_month</span>'+dateChip(t.due)+'</span>';
+      function subHtml(t, showCat){
+        var parts = [];
+        if(showCat) parts.push(t.cat==="work" ? "仕事" : "プライベート");
         if(t.done){
-          return due+'<span class="done-icon" aria-label="完了"><span class="msym">check</span></span>';
+          var dt = parseDue(t.due);
+          parts.push((dt.getMonth()+1)+"/"+dt.getDate()+"（"+WD[dt.getDay()]+"）");
+          return '<div class="sub">'+esc(parts.join(" · "))+'</div>';
         }
-        var lb=leftBadge(daysLeft(t.due));
-        return due+'<span class="left '+lb.cls+'">'+esc(lb.text)+'</span>';
+        var seg = dueSegment(t);
+        parts.push(seg.text);
+        if(t.tentative || t.assumed) parts.push("仮期限");
+        return '<div class="sub '+seg.cls+'">'+esc(parts.join(" · "))+'</div>';
       }
-      function rowHtml(t){
-        return '<div class="trow'+(t.done?" done":"")+'">'
-          + avatarHtml(t,"sm")
-          + '<span class="name">'+esc(t.name)+'</span>'
-          + '<span class="meta">'+chipsHtml(t)+'</span>'
+
+      function rowHtml(t, opts){
+        opts = opts || {};
+        var cls = "row" + (t.done ? " is-done" : "") + (opts.top ? " is-top" : "");
+        var rank = opts.rank ? '<span class="rank" aria-label="優先順位'+opts.rank+'">'+opts.rank+'</span>' : "";
+        return '<div class="'+cls+'" data-id="'+esc(t.id)+'">'
+          + '<button type="button" class="check" data-act="toggle" aria-pressed="'+(t.done?"true":"false")+'" aria-label="'+(t.done?"未完了に戻す":"完了にする")+'：'+esc(t.name)+'">'
+          + '<span class="ring"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l5 5L19.5 7"/></svg></span>'
+          + '</button>'
+          + '<div class="body">'
+          + '<div class="name" data-act="expand" title="タップで全文を表示">'+esc(t.name)+'</div>'
+          + subHtml(t, opts.showCat)
+          + '</div>'
+          + rank
           + '</div>';
       }
 
+      function sectionHtml(label, count, inner){
+        return '<div class="sect-label">'+esc(label)+(count!=null?'<span class="count">'+count+'件</span>':"")+'</div>'
+          + '<section class="card">'+inner+'</section>';
+      }
+
+      function render(){
+        var open = TASKS.filter(function(t){ return !t.done; });
+        var done = TASKS.filter(function(t){ return t.done; });
+        document.getElementById("headSub").textContent =
+          "未完了 " + open.length + "件" + (done.length ? " ・ 完了 " + done.length + "件" : "");
+
+        // 最優先：人への依頼など must を期限順に先頭固定し、残りを期限順で補って最大3件
+        var pinned = open.filter(function(t){ return t.must; }).sort(byDue);
+        var restByDue = open.filter(function(t){ return !t.must; }).sort(byDue);
+        var priority = pinned.concat(restByDue).slice(0,3);
+        var priorityIds = {};
+        priority.forEach(function(t){ priorityIds[t.id] = true; });
+
+        var html = "";
+        if(state.filter === "all"){
+          var pHtml = priority.map(function(t,i){
+            return rowHtml(t, { rank: i+1, top: i===0, showCat: true });
+          }).join("");
+          html += sectionHtml("今日の優先", null, pHtml);
+
+          var others = open.filter(function(t){ return !priorityIds[t.id]; }).sort(byDue);
+          html += sectionHtml("その他のタスク", others.length,
+            others.length
+              ? others.map(function(t){ return rowHtml(t, { showCat: true }); }).join("")
+              : '<div class="empty">その他のタスクはありません</div>');
+        } else {
+          var catOpen = open.filter(function(t){ return t.cat===state.filter; }).sort(byDue);
+          var label = state.filter==="work" ? "仕事のタスク" : "プライベートのタスク";
+          html += sectionHtml(label, catOpen.length,
+            catOpen.length
+              ? catOpen.map(function(t){ return rowHtml(t, {}); }).join("")
+              : '<div class="empty">未完了のタスクはありません</div>');
+        }
+
+        var catDone = done.filter(function(t){ return state.filter==="all" || t.cat===state.filter; }).sort(byDue);
+        if(catDone.length){
+          html += sectionHtml("完了", catDone.length,
+            catDone.map(function(t){ return rowHtml(t, { showCat: state.filter==="all" }); }).join(""));
+        }
+
+        document.getElementById("main").innerHTML = html;
+      }
+
+      document.addEventListener("click", function(e){
+        var tab = e.target.closest ? e.target.closest(".seg button") : null;
+        if(tab){
+          state.filter = tab.getAttribute("data-filter");
+          var btns = document.querySelectorAll(".seg button");
+          for(var i=0;i<btns.length;i++){
+            btns[i].setAttribute("aria-selected", btns[i]===tab ? "true" : "false");
+          }
+          render();
+          return;
+        }
+        var chk = e.target.closest ? e.target.closest('[data-act="toggle"]') : null;
+        if(chk){
+          var row = chk.closest(".row");
+          var t = findTask(row.getAttribute("data-id"));
+          if(!t) return;
+          row.classList.add("leaving");
+          setTimeout(function(){ t.done = !t.done; render(); }, 190);
+          return;
+        }
+        var nm = e.target.closest ? e.target.closest('[data-act="expand"]') : null;
+        if(nm){ nm.classList.toggle("open"); }
+      });
+
       (function(){
-        var wd=["日","月","火","水","木","金","土"];
-        var n=new Date();
-        document.getElementById("todayLabel").textContent=(n.getMonth()+1)+"月"+n.getDate()+"日（"+wd[n.getDay()]+"）";
-
-        var open=TASKS.filter(function(t){return !t.done;}).sort(byDue);
-        // 人への依頼など must のタスクは期限順より優先して最優先に固定する
-        var pinned=open.filter(function(t){return t.must;});
-        var rest=open.filter(function(t){return !t.must;});
-        var focus=pinned.concat(rest).slice(0,3);
-        var tones=["c-pri","c-sec","c-ter"];
-        var fHtml="";
-        focus.forEach(function(t,i){
-          fHtml+='<div class="fcard '+tones[i]+'" role="listitem">'
-            +'<div class="top">'+avatarHtml(t,"big")+'<span class="rank">'+(i+1)+'</span></div>'
-            +'<div class="name">'+esc(t.name)+'</div>'
-            +'<div class="chips">'+chipsHtml(t)+'</div>'
-            +'</div>';
-        });
-        document.getElementById("focusList").innerHTML=fHtml;
-
-        var work=TASKS.filter(function(t){return t.cat==="work"&&!t.done;}).sort(byDue)
-          .concat(TASKS.filter(function(t){return t.cat==="work"&&t.done;}).sort(byDue));
-        document.getElementById("workList").innerHTML=work.map(rowHtml).join("");
-
-        var priv=TASKS.filter(function(t){return t.cat==="private"&&!t.done;}).sort(byDue)
-          .concat(TASKS.filter(function(t){return t.cat==="private"&&t.done;}).sort(byDue));
-        document.getElementById("privateList").innerHTML=priv.map(rowHtml).join("");
+        var n = new Date();
+        document.getElementById("todayLabel").textContent =
+          (n.getMonth()+1)+"月"+n.getDate()+"日（"+WD[n.getDay()]+"）";
+        render();
       })();
     </script>
   </body>
