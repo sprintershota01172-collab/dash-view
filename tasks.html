@@ -56,7 +56,7 @@
           --weekend-bg:rgba(255,255,255,.04);
         }
       }
-      @media (min-width:900px){ :root{ --namew:368px } }
+      @media (min-width:900px){ :root{ --namew:330px } }
       *{box-sizing:border-box;touch-action:manipulation}
       html,body{height:100%}
       html{-webkit-text-size-adjust:100%}
@@ -121,15 +121,15 @@
       .gantt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:0 0 auto}
       .g-head{display:flex;border-bottom:1px solid var(--line);background:var(--surface)}
       .g-name{flex:0 0 var(--namew);min-width:0;display:flex;align-items:center}
-      .g-head .g-name{padding:0 8px;font-size:9.5px;font-weight:600;color:var(--sub);height:22px;border-right:1px solid var(--line)}
+      .g-head .g-name{padding:0 8px;font-size:10.5px;font-weight:600;color:var(--sub);height:24px;border-right:1px solid var(--line)}
       .g-track{flex:1 1 auto;min-width:0;position:relative}
-      .g-days{display:flex;height:22px}
+      .g-days{display:flex;height:24px}
       .g-day{
-        flex:1 1 0;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:1px;
+        flex:1 1 0;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:2px;
         font-variant-numeric:tabular-nums;line-height:1;
       }
-      .g-day .dn{font-size:10px;font-weight:600}
-      .g-day .dw{font-size:8px;color:var(--sub)}
+      .g-day .dn{font-size:11px;font-weight:600}
+      .g-day .dw{font-size:9px;color:var(--sub)}
       .g-day.today{background:var(--today-bg)}
       .g-day.today .dn{color:var(--teal-dark);font-weight:700}
       .g-day.today .dw{color:var(--teal-dark)}
@@ -149,7 +149,7 @@
       .g-row.is-over .g-namebody,.g-row.is-todaydue .g-namebody{padding-left:10px}
       .g-tname{
         flex:1 1 auto;min-width:0;
-        font-size:10.5px;font-weight:500;line-height:1.25;color:var(--ink);
+        font-size:12px;font-weight:500;line-height:1.3;color:var(--ink);
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       }
       .g-row.is-top .g-tname{font-weight:600}
@@ -157,19 +157,19 @@
       .g-row.is-over .g-tname{color:var(--danger-dark);font-weight:700}
       .g-row.is-todaydue .g-tname{color:var(--danger-dark);font-weight:700}
       .g-row.is-tomorrow .g-tname{color:var(--warn-dark);font-weight:700}
-      .g-row .pri-dot{flex:0 0 auto;font-size:8.5px;font-weight:700;color:var(--teal-dark);white-space:nowrap;line-height:1}
+      .g-row .pri-dot{flex:0 0 auto;font-size:9.5px;font-weight:700;color:var(--teal-dark);white-space:nowrap;line-height:1}
       .g-row.is-over .pri-dot,.g-row.is-todaydue .pri-dot{color:var(--danger-dark)}
-      .g-due-inline{flex:0 0 auto;font-size:9px;font-weight:500;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.25}
+      .g-due-inline{flex:0 0 auto;font-size:10px;font-weight:500;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.25}
       .g-due-inline.over{color:var(--danger-dark);font-weight:700}
       .g-due-inline.todaydue{color:var(--danger-dark);font-weight:700}
       .g-due-inline.tomorrow{color:var(--warn-dark);font-weight:700}
       .g-track .grid{position:absolute;inset:0}
       .g-track .shade{position:absolute;top:0;bottom:0}
       .g-bar{
-        position:absolute;top:50%;transform:translateY(-50%);height:11px;border-radius:3px;
-        background:var(--bar);cursor:pointer;min-width:6px;
+        position:absolute;top:50%;transform:translateY(-50%);height:13px;border-radius:3px;
+        background:var(--bar);cursor:pointer;min-width:7px;
         display:flex;align-items:center;justify-content:space-between;
-        color:#fff;font-size:9px;line-height:1;padding:0 1px;
+        color:#fff;font-size:10px;line-height:1;padding:0 1px;
       }
       .g-bar.done-bar{background:var(--ring)}
       .g-bar.bar-over{background:var(--danger)}
@@ -177,14 +177,14 @@
       .g-bar.bar-tomorrow{background:var(--warn)}
       .g-bar .cont{font-weight:700;opacity:.95}
       .g-due{
-        position:absolute;top:50%;width:9px;height:9px;border-radius:2px;
+        position:absolute;top:50%;width:11px;height:11px;border-radius:2px;
         transform:translate(-50%,-50%) rotate(45deg);cursor:pointer;
         background:var(--ink);
       }
       .g-due.tent{background:var(--surface);border:2px solid var(--teal)}
-      .g-due.over{background:var(--danger);width:11px;height:11px;box-shadow:0 0 0 2px var(--danger-bg)}
-      .g-due.todaydue{background:var(--danger);width:11px;height:11px;box-shadow:0 0 0 2px var(--danger-bg)}
-      .g-due.tomorrow{background:var(--warn);width:10px;height:10px}
+      .g-due.over{background:var(--danger);width:13px;height:13px;box-shadow:0 0 0 2px var(--danger-bg)}
+      .g-due.todaydue{background:var(--danger);width:13px;height:13px;box-shadow:0 0 0 2px var(--danger-bg)}
+      .g-due.tomorrow{background:var(--warn);width:12px;height:12px}
       .g-due.tent.over{background:var(--danger-bg);border-color:var(--danger)}
       .g-due.tent.todaydue{background:var(--danger-bg);border-color:var(--danger)}
       .g-due.tent.tomorrow{background:var(--warn-bg);border-color:var(--warn)}
@@ -216,8 +216,10 @@
       @media (min-width:900px){ .sheet{max-width:560px} .overlay{align-items:center;padding:24px} .sheet{border-radius:10px} }
       @keyframes sheetIn{from{transform:translateY(10px);opacity:.5}to{transform:none;opacity:1}}
       .sheet h2{margin:0 0 6px;font-size:11px;font-weight:600;color:var(--sub)}
-      .sheet .full-name{font-size:13px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
-      .sheet .meta{margin-top:10px;font-size:11.5px;line-height:1.9;font-variant-numeric:tabular-nums}
+      .sheet .full-name{font-size:14px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
+      .sheet .short-name{margin-top:4px;font-size:12px;color:var(--sub)}
+      .sheet .short-name .k{color:var(--sub)}
+      .sheet .meta{margin-top:10px;font-size:12px;line-height:1.9;font-variant-numeric:tabular-nums}
       .sheet .meta .k{color:var(--sub)}
       .sheet .meta .over{color:var(--danger-dark);font-weight:700}
       .sheet .meta .todaydue{color:var(--danger-dark);font-weight:700}
@@ -228,21 +230,22 @@
       .sheet-actions button{width:100%;min-height:48px;border-radius:6px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
       .sheet-actions button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 
-      /* Mid widths: give the name column more room */
-      @media (min-width:561px) and (max-width:899px){ :root{ --namew:62% } }
-      /* Phones (390px target): name column takes all but a slim 58px date axis,
-         so a 25-char formal name fits on one line at 10px with no ellipsis.
-         The priority label compacts to a single "優" mark; full text stays in the detail sheet. */
+      /* Mid widths: short display names leave room for a readable date axis */
+      @media (min-width:561px) and (max-width:899px){ :root{ --namew:56% } }
+      /* Phones (390px target): short display names (max 12 chars) fit at 11.5px
+         while the 7-day axis keeps ~132px (about 19px/day) so bars, ◆ markers
+         and day numbers stay readable. Full formal names live in the detail sheet.
+         The priority label compacts to a single "優" mark on phones. */
       @media (max-width:560px){
-        :root{ --namew:calc(100% - 58px) }
-        .g-day{flex-direction:column;gap:0}
-        .g-day .dn{font-size:8px}
-        .g-day .dw{font-size:6px}
-        .g-namebody{gap:3px;padding:0 3px 0 6px}
-        .g-tname{font-size:10px}
-        .g-due-inline{font-size:8px}
+        :root{ --namew:calc(100% - 132px) }
+        .g-day{flex-direction:column;gap:1px}
+        .g-day .dn{font-size:10px}
+        .g-day .dw{font-size:7.5px}
+        .g-namebody{gap:4px;padding:0 4px 0 6px}
+        .g-tname{font-size:11.5px}
+        .g-due-inline{font-size:9px}
         .g-row .pri-dot{font-size:0;line-height:1}
-        .g-row .pri-dot::after{content:"優";font-size:8px;font-weight:700}
+        .g-row .pri-dot::after{content:"優";font-size:9px;font-weight:700}
       }
       @media (prefers-reduced-motion: reduce){
         *,*::before,*::after{animation:none !important;transition:none !important}
@@ -284,23 +287,24 @@
 
     <script>
       // 2026-11-02 時点の記録（~/workspace/work/tasks.md より）。名称・締切・仮期限・最優先は元のまま。
+      // name = 正式名称（詳細表示で全文を確認できる）。short = ガント表示用の短い表示名。
       // plan = 実施予定日、planEnd = 実施期間の終了日（任意）。既存タスクに期間データは無いため planEnd は全て未設定。
       // 締切だけのタスクはガント上で締切日の◆マーカーとして表示する。実施予定と締切は別管理。
       // このアプリは閲覧専用。追加・編集・完了の管理はチャット経由で行う。
       var TASKS = [
-        { id: "trial-check",   cat: "work",    name: "工程検証トライチェックシートの作成", due: "2026-11-03", must: true, plan: "__TODAY__" },
-        { id: "funakoshi-ship",cat: "work",    name: "舩越さんに臨時便に机上の天井機材を載せてもらう依頼", due: "2026-11-04", tentative: true, must: true, plan: "__TODAY__" },
-        { id: "lift-request",  cat: "work",    name: "試作管理表に、リフトの操作依頼を書く", due: "2026-11-04", tentative: true, must: true, plan: "__TODAY__" },
-        { id: "fire-insurance",cat: "private", name: "火災保険料がいま幾らか調べる", due: "2026-11-06", tentative: true, plan: null },
-        { id: "pet-brkt",      cat: "work",    name: "PET BRKTで接着性確認", due: "2026-11-08", plan: null },
-        { id: "hm-measure",    cat: "work",    name: "HM板厚ばらつき測定", due: "2026-11-09", tentative: true, plan: null },
-        { id: "cooler",        cat: "work",    name: "クーラー管理シートの貼り付けと課内への周知", due: "2026-11-11", assumed: true, plan: null },
-        { id: "695-check",     cat: "work",    name: "695試作品チェックシート", due: "2026-11-12", plan: null },
-        { id: "sf-eval",       cat: "work",    name: "SuccessFactors年間評価（能力発揮時期評価）の提出", due: "2026-11-13", plan: null },
-        { id: "fmea-fix",      cat: "work",    name: "量産FMEA修正", due: "2026-11-16", tentative: true, plan: null },
-        { id: "harness-pay",   cat: "work",    name: "ハーネス高所作業者教育の振り込み", due: "2026-11-17", plan: null },
-        { id: "695-make",      cat: "work",    name: "695試作品作製", due: "2026-11-17", plan: null },
-        { id: "eguchi-980",    cat: "work",    name: "江口さんへ980のデータを送る", due: "2026-11-02", done: true, plan: null }
+        { id: "trial-check",   cat: "work",    name: "工程検証トライチェックシートの作成", short: "工程検証トライシート作成", due: "2026-11-03", must: true, plan: "__TODAY__" },
+        { id: "funakoshi-ship",cat: "work",    name: "舩越さんに臨時便に机上の天井機材を載せてもらう依頼", short: "舩越さんへ積載依頼", due: "2026-11-04", tentative: true, must: true, plan: "__TODAY__" },
+        { id: "lift-request",  cat: "work",    name: "試作管理表に、リフトの操作依頼を書く", short: "試作管理表へ操作依頼", due: "2026-11-04", tentative: true, must: true, plan: "__TODAY__" },
+        { id: "fire-insurance",cat: "private", name: "火災保険料がいま幾らか調べる", short: "火災保険料の確認", due: "2026-11-06", tentative: true, plan: null },
+        { id: "pet-brkt",      cat: "work",    name: "PET BRKTで接着性確認", short: "PET BRKT接着確認", due: "2026-11-08", plan: null },
+        { id: "hm-measure",    cat: "work",    name: "HM板厚ばらつき測定", short: "HM板厚測定", due: "2026-11-09", tentative: true, plan: null },
+        { id: "cooler",        cat: "work",    name: "クーラー管理シートの貼り付けと課内への周知", short: "クーラー管理シート掲示", due: "2026-11-11", assumed: true, plan: null },
+        { id: "695-check",     cat: "work",    name: "695試作品チェックシート", short: "695試作チェックシート", due: "2026-11-12", plan: null },
+        { id: "sf-eval",       cat: "work",    name: "SuccessFactors年間評価（能力発揮時期評価）の提出", short: "年間評価の提出", due: "2026-11-13", plan: null },
+        { id: "fmea-fix",      cat: "work",    name: "量産FMEA修正", short: "量産FMEA修正", due: "2026-11-16", tentative: true, plan: null },
+        { id: "harness-pay",   cat: "work",    name: "ハーネス高所作業者教育の振り込み", short: "ハーネス教育の振込", due: "2026-11-17", plan: null },
+        { id: "695-make",      cat: "work",    name: "695試作品作製", short: "695試作品作製", due: "2026-11-17", plan: null },
+        { id: "eguchi-980",    cat: "work",    name: "江口さんへ980のデータを送る", short: "980データ送付", due: "2026-11-02", done: true, plan: null }
       ];
       TASKS.forEach(function(t){
         if(t.planEnd === undefined) t.planEnd = null;
@@ -320,6 +324,7 @@
       function dayDiff(a, b){ return Math.round((parseDue(a)-parseDue(b))/86400000); } // a-b 日数
       function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
       function findTask(id){ for(var i=0;i<TASKS.length;i++){ if(TASKS[i].id===id) return TASKS[i]; } return null; }
+      function displayName(t){ return t.short || t.name; }
       function isTentative(t){ return !!(t.tentative || t.assumed); }
       function isWide(){ return window.innerWidth >= 900; }
 
@@ -467,7 +472,7 @@
           return '<div class="'+rowCls+'" data-id="'+esc(t.id)+'" data-act="detail" role="button" tabindex="0" aria-label="詳細を見る：'+esc(t.name)+'">'
             + '<div class="g-name"><div class="g-namebody">'
             + (t.must && !t.done ? '<span class="pri-dot">最優先</span>' : '')
-            + '<span class="g-tname">'+esc(t.name)+'</span>'
+            + '<span class="g-tname">'+esc(displayName(t))+'</span>'
             + '<span class="g-due-inline'+(di.cls ? " "+di.cls : "")+'">'+esc(di.text)+'</span>'
             + '</div></div>'
             + '<div class="g-track">' + shades + grid + bar + marker + '</div>'
@@ -578,6 +583,7 @@
         }
         var html = '<h2>タスク詳細</h2>'
           + '<div class="full-name">' + esc(t.name) + '</div>'
+          + (displayName(t) !== t.name ? '<div class="short-name"><span class="k">表示名：</span>' + esc(displayName(t)) + '</div>' : '')
           + '<div class="meta">'
           + '<span class="k">区分：</span>' + (t.cat === "work" ? "仕事" : "プライベート")
           + (t.must && !t.done ? ' ・ <span class="pri">最優先</span>' : "")
