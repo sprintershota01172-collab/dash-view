@@ -11,23 +11,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #e9ebee;
+        --bg: #f0f2f5;
         --surface: #ffffff;
         --surface-2: #eef0f3;
         --ink: #14171c;
         --ink-2: #454b54;
-        --ink-3: #6d747e;
-        --line: #d4d8de;
-        --line-soft: #e6e9ed;
-        --danger: #b42318;
-        --danger-soft: #fbeae8;
-        --warn: #8a5a06;
-        --warn-soft: #faf0d7;
-        --teal: #0b6e7e;
-        --teal-soft: #e0f1f4;
+        --ink-3: #8a919c;
+        --line: #e2e5ea;
+        --danger: #d92d20;
+        --danger-soft: #fdecea;
+        --warn-bg: #fdb022;
+        --warn-ink: #5c3a00;
         --ok: #1c7c43;
         --ok-soft: #e2f2e7;
-        --shadow: 0 1px 2px rgba(16, 24, 40, .05);
+        --shadow: 0 1px 3px rgba(16, 24, 40, .08);
       }
       @media (prefers-color-scheme: dark) {
         :root {
@@ -36,18 +33,15 @@
           --surface-2: #23262d;
           --ink: #f2f4f7;
           --ink-2: #c3c9d1;
-          --ink-3: #98a0ab;
-          --line: #30343d;
-          --line-soft: #262a31;
+          --ink-3: #7d8590;
+          --line: #262a31;
           --danger: #ff9c94;
           --danger-soft: #46231f;
-          --warn: #f2c069;
-          --warn-soft: #42330f;
-          --teal: #4fc3d4;
-          --teal-soft: #173a40;
+          --warn-bg: #b97f10;
+          --warn-ink: #ffe9bd;
           --ok: #8fd6a4;
           --ok-soft: #1d3826;
-          --shadow: 0 1px 2px rgba(0,0,0,.4);
+          --shadow: 0 1px 3px rgba(0,0,0,.45);
         }
       }
       * { box-sizing: border-box; }
@@ -63,123 +57,171 @@
       }
       .num { font-family: "Space Grotesk", "Zen Kaku Gothic New", sans-serif; font-variant-numeric: tabular-nums; }
 
-      /* 画面固定：ページ全体を 100dvh に収め、スクロールさせない */
+      /* 画面固定：100dvh に収め、スクロールさせない */
       .screen {
         height: 100dvh;
         max-width: 880px;
         margin: 0 auto;
-        padding: clamp(10px, 2vh, 20px) 14px clamp(8px, 1.6vh, 16px);
+        padding: clamp(10px, 2vh, 18px) 14px clamp(8px, 1.6vh, 14px);
         display: flex;
         flex-direction: column;
-        gap: clamp(8px, 1.5vh, 14px);
+        gap: clamp(8px, 1.4vh, 12px);
         overflow: hidden;
       }
 
-      .dateline {
-        flex: 0 0 auto;
-        display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px;
-        padding: 0 2px;
-      }
-      .dateline .today { font-size: clamp(20px, 3.2vh, 26px); font-weight: 900; line-height: 1.3; }
-      .dateline .trip { font-size: 14.5px; color: var(--ink-2); font-weight: 500; }
+      .dateline { flex: 0 0 auto; padding: 0 4px; }
+      .dateline .today { font-size: clamp(21px, 3.2vh, 27px); font-weight: 900; line-height: 1.25; }
 
+      .sect-label {
+        flex: 0 0 auto;
+        font-size: 13px; font-weight: 900; color: var(--ink-3);
+        letter-spacing: .08em;
+        padding: 0 4px;
+        margin-bottom: -2px;
+      }
+
+      /* ===== 最優先：大きなカード3件 ===== */
+      .focus {
+        flex: 0 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .fcard {
+        background: var(--surface);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 12px 13px 11px;
+        display: flex; flex-direction: column; gap: 8px;
+        min-width: 0;
+      }
+      .fcard .top { display: flex; align-items: flex-start; justify-content: space-between; }
+      .rank {
+        flex: 0 0 auto;
+        min-width: 24px; height: 24px; padding: 0 6px;
+        border-radius: 999px;
+        background: var(--surface-2); color: var(--ink-2);
+        display: flex; align-items: center; justify-content: center;
+        font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14px;
+      }
+      .fcard:first-child .rank { background: var(--danger); color: #fff; }
+      @media (prefers-color-scheme: dark) {
+        .fcard:first-child .rank { color: #191c21; }
+      }
+      .fcard .name {
+        font-size: 16.5px; font-weight: 900; line-height: 1.45;
+        min-height: 2.9em;
+      }
+      .fcard .chips { display: flex; align-items: center; gap: 6px; margin-top: auto; }
+
+      /* アイコンバッジ（色付きの丸） */
+      .badge {
+        flex: 0 0 auto;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        line-height: 1;
+      }
+      .badge.big { width: 46px; height: 46px; font-size: 24px; }
+      .badge.sm { width: 34px; height: 34px; font-size: 18px; }
+      .b-red    { background: #fde3e0; }
+      .b-blue   { background: #e1ecfd; }
+      .b-teal   { background: #d9f2ee; }
+      .b-amber  { background: #fdf0d3; }
+      .b-green  { background: #dff3e2; }
+      .b-violet { background: #ece7fb; }
+      .b-pink   { background: #fde4ef; }
+      .b-gray   { background: #e8eaed; }
+      @media (prefers-color-scheme: dark) {
+        .b-red    { background: #4a2622; }
+        .b-blue   { background: #22354f; }
+        .b-teal   { background: #173d38; }
+        .b-amber  { background: #453511; }
+        .b-green  { background: #1e3a26; }
+        .b-violet { background: #322a4e; }
+        .b-pink   { background: #472635; }
+        .b-gray   { background: #2b2f36; }
+      }
+      .badge.tentative { outline: 2px dashed var(--ink-3); outline-offset: -5px; }
+      .badge.must { box-shadow: 0 0 0 2px var(--danger); }
+
+      /* 期限チップ＋残りバッジ */
+      .dchip {
+        font-family: "Space Grotesk", "Zen Kaku Gothic New", sans-serif;
+        font-weight: 700; font-size: 15px;
+        background: var(--surface-2); color: var(--ink);
+        border-radius: 8px; padding: 1px 9px;
+        white-space: nowrap;
+      }
+      .left {
+        font-size: 12.5px; font-weight: 900;
+        border-radius: 999px; padding: 1px 8px;
+        white-space: nowrap;
+      }
+      .left.hot { background: var(--danger); color: #fff; }
+      @media (prefers-color-scheme: dark) { .left.hot { color: #191c21; } }
+      .left.warm { background: var(--warn-bg); color: var(--warn-ink); }
+      .left.normal { background: transparent; color: var(--ink-3); padding-left: 2px; }
+
+      /* ===== 一覧パネル ===== */
       .panel {
         flex: 0 1 auto;
         min-height: 0;
         background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 6px;
+        border-radius: 14px;
         box-shadow: var(--shadow);
+        padding: 4px 6px;
         overflow: hidden;
       }
-      .panel > h2 {
-        margin: 0;
-        display: flex; align-items: baseline; gap: 8px;
-        padding: 7px 14px 6px;
-        font-size: 19px; font-weight: 900; line-height: 1.4; color: var(--ink);
-        border-bottom: 2px solid var(--ink);
+      .trow {
+        display: flex; align-items: center; gap: 11px;
+        padding: 5px 10px;
+        border-radius: 10px;
       }
-      .panel > h2 .cnt { font-size: 13.5px; font-weight: 700; color: var(--ink-3); }
-      .panel.private > h2 { border-bottom-color: var(--teal); }
+      .trow + .trow { border-top: 1px solid var(--line); }
+      .trow .name {
+        flex: 1 1 auto; min-width: 0;
+        font-size: 16px; font-weight: 700; line-height: 1.45;
+      }
+      .trow .meta { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; }
 
-      /* 表形式の行：名前 1fr / 期限 / 残り を右列に揃える */
-      .trow, .frow, .colhead {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 92px 84px;
-        column-gap: 10px;
-        align-items: center;
-        padding: 5px 14px;
-      }
-      .colhead {
-        padding-top: 3px; padding-bottom: 3px;
-        font-size: 12.5px; font-weight: 700; color: var(--ink-3);
-        border-bottom: 1px solid var(--line-soft);
-      }
-      .colhead .r { text-align: right; }
-      .trow + .trow, .frow + .frow { border-top: 1px solid var(--line-soft); }
-
-      .name {
-        min-width: 0;
-        font-size: 16px; font-weight: 700; line-height: 1.5;
-        display: flex; align-items: center; gap: 7px;
-      }
-      .name .txt { min-width: 0; }
-      .tag {
+      .trow.done { opacity: .55; }
+      .trow.done .name { text-decoration: line-through; font-weight: 500; }
+      .done-badge {
         flex: 0 0 auto;
-        font-size: 11.5px; font-weight: 700; line-height: 1.5;
-        padding: 0 6px; border-radius: 999px;
-        background: var(--warn-soft); color: var(--warn);
-        white-space: nowrap;
-      }
-      .tag.must { background: var(--danger-soft); color: var(--danger); }
-      .tag.assumed { background: var(--surface-2); color: var(--ink-2); }
-      .date { text-align: right; font-weight: 700; font-size: 15.5px; white-space: nowrap; }
-      .left { text-align: right; font-size: 14.5px; font-weight: 700; white-space: nowrap; }
-      .left.hot { color: var(--danger); }
-      .left.warm { color: var(--warn); }
-      .left.normal { color: var(--ink-3); font-weight: 500; }
-
-      .trow.done .name .txt { color: var(--ink-3); text-decoration: line-through; font-weight: 500; }
-      .trow.done .date { color: var(--ink-3); font-weight: 500; }
-      .trow.done .left { color: var(--ok); }
-
-      /* 最優先：順位つきの1行リスト */
-      .frow { grid-template-columns: 30px minmax(0, 1fr) 92px 84px; }
-      .rank {
-        width: 25px; height: 25px; border-radius: 4px;
-        background: var(--surface-2); color: var(--ink);
+        width: 22px; height: 22px; border-radius: 50%;
+        background: var(--ok); color: #fff;
         display: flex; align-items: center; justify-content: center;
-        font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14.5px;
+        font-size: 13px; font-weight: 900; line-height: 1;
       }
-      .frow:first-child .rank { background: var(--danger); color: #fff; }
-      @media (prefers-color-scheme: dark) {
-        .frow:first-child .rank { color: #191c21; }
-      }
+      @media (prefers-color-scheme: dark) { .done-badge { color: #191c21; } }
 
       @media (max-width: 560px) {
-        .screen { padding: 10px 10px 8px; gap: 8px; }
-        .trow, .frow { grid-template-columns: minmax(0, 1fr) 84px 62px; column-gap: 7px; padding: 3px 11px; }
-        .frow { grid-template-columns: 27px minmax(0, 1fr) 84px 62px; }
-        .colhead { display: none; }
-        .panel > h2 { padding: 5px 11px 4px; font-size: 17.5px; }
-        .name { font-size: 14px; line-height: 1.4; gap: 5px; }
-        .tag { font-size: 10.5px; padding: 0 5px; }
-        .date { font-size: 14px; }
-        .left { font-size: 13px; }
-        .rank { width: 22px; height: 22px; font-size: 13px; }
+        .screen { padding: 10px 10px 8px; gap: 7px; }
+        /* 最優先は横並びのコンパクトカードに切り替え */
+        .focus { grid-template-columns: 1fr; gap: 7px; }
+        .fcard {
+          flex-direction: row; align-items: center; gap: 10px;
+          padding: 8px 11px;
+        }
+        .fcard .top { order: 0; }
+        .fcard .badge.big { width: 38px; height: 38px; font-size: 20px; }
+        .fcard .name { flex: 1 1 auto; min-height: 0; font-size: 15px; }
+        .fcard .chips { margin-top: 0; flex-direction: column; align-items: flex-end; gap: 3px; }
+        .fcard .rank { position: absolute; }
+        .fcard { position: relative; }
+        .fcard .top .rank { position: static; }
+        .trow { gap: 9px; padding: 4px 8px; }
+        .trow .name { font-size: 14px; line-height: 1.4; }
+        .badge.sm { width: 30px; height: 30px; font-size: 16px; }
+        .dchip { font-size: 13.5px; padding: 1px 7px; }
+        .left { font-size: 11.5px; padding: 1px 6px; }
+        .sect-label { font-size: 12px; }
         .dateline .today { font-size: 20px; }
-        .dateline .trip { font-size: 13px; }
       }
-      /* 背の低い画面では余白と見出しを詰めて収める */
-      @media (max-height: 780px) {
-        .trow, .frow { padding-top: 3.5px; padding-bottom: 3.5px; }
-        .panel > h2 { padding-top: 5px; padding-bottom: 4px; font-size: 18px; }
-        .name { line-height: 1.45; }
-      }
-      @media (max-height: 660px) {
-        .trow, .frow { padding-top: 2.5px; padding-bottom: 2.5px; }
-        .name { font-size: 15px; }
-        .colhead { display: none; }
+      @media (max-height: 700px) {
+        .trow { padding-top: 3.5px; padding-bottom: 3.5px; }
+        .fcard { padding-top: 9px; padding-bottom: 8px; }
+        .badge.big { width: 40px; height: 40px; font-size: 21px; }
       }
     </style>
   </head>
@@ -187,39 +229,36 @@
     <div class="screen">
       <div class="dateline">
         <span class="today num" id="todayLabel"></span>
-        <span class="trip">福岡出張中（〜11/10午前）・次の移動は11/10 東京</span>
       </div>
 
-      <section class="panel" aria-label="最優先">
-        <h2>最優先</h2>
-        <div id="focusList"></div>
-      </section>
+      <div class="sect-label">最優先</div>
+      <div class="focus" id="focusList" role="list" aria-label="最優先のタスク"></div>
 
+      <div class="sect-label">仕事</div>
       <section class="panel" aria-label="仕事のタスク">
-        <h2>仕事<span class="cnt" id="cntWork"></span></h2>
-        <div class="colhead" aria-hidden="true"><span>タスク</span><span class="r">期限</span><span class="r">残り</span></div>
         <div id="workList"></div>
       </section>
 
-      <section class="panel private" aria-label="プライベートのタスク">
-        <h2>プライベート<span class="cnt" id="cntPrivate"></span></h2>
+      <div class="sect-label">プライベート</div>
+      <section class="panel" aria-label="プライベートのタスク">
         <div id="privateList"></div>
       </section>
     </div>
 
     <script>
       // 2026-11-02 時点の記録（~/workspace/work/tasks.md より）
+      // icon: 内容を表す絵文字 / color: バッジの色
       var TASKS = [
-        { id: "trial-check", cat: "work", name: "工程検証トライチェックシートの作成", due: "2026-11-03", dueText: "11/3（火）", must: true },
-        { id: "fire-insurance", cat: "private", name: "火災保険料がいま幾らか調べる", due: "2026-11-06", dueText: "11/6（金）", tentative: true },
-        { id: "hm-measure", cat: "work", name: "HM板厚ばらつき測定", due: "2026-11-09", dueText: "11/9（月）", tentative: true },
-        { id: "cooler", cat: "work", name: "クーラー管理シートの貼り付けと課内への周知", due: "2026-11-11", dueText: "11/11（水）", assumed: true },
-        { id: "695-check", cat: "work", name: "695試作品チェックシート", due: "2026-11-12", dueText: "11/12（木）" },
-        { id: "sf-eval", cat: "work", name: "SuccessFactors年間評価（能力発揮時期評価）の提出", due: "2026-11-13", dueText: "11/13（金）" },
-        { id: "fmea-fix", cat: "work", name: "量産FMEA修正", due: "2026-11-16", dueText: "11/16（月）", tentative: true },
-        { id: "harness-pay", cat: "work", name: "ハーネス高所作業者教育の振り込み", due: "2026-11-17", dueText: "11/17（火）" },
-        { id: "695-make", cat: "work", name: "695試作品作製", due: "2026-11-17", dueText: "11/17（火）" },
-        { id: "eguchi-980", cat: "work", name: "江口さんへ980のデータを送る", due: "2026-11-02", dueText: "11/2（月）", done: true }
+        { id: "trial-check", cat: "work", name: "工程検証トライチェックシートの作成", due: "2026-11-03", icon: "📋", color: "b-red", must: true },
+        { id: "fire-insurance", cat: "private", name: "火災保険料がいま幾らか調べる", due: "2026-11-06", icon: "🔥", color: "b-amber", tentative: true },
+        { id: "hm-measure", cat: "work", name: "HM板厚ばらつき測定", due: "2026-11-09", icon: "📏", color: "b-blue", tentative: true },
+        { id: "cooler", cat: "work", name: "クーラー管理シートの貼り付けと課内への周知", due: "2026-11-11", icon: "❄️", color: "b-teal", assumed: true },
+        { id: "695-check", cat: "work", name: "695試作品チェックシート", due: "2026-11-12", icon: "🔍", color: "b-violet" },
+        { id: "sf-eval", cat: "work", name: "SuccessFactors年間評価（能力発揮時期評価）の提出", due: "2026-11-13", icon: "⭐", color: "b-amber" },
+        { id: "fmea-fix", cat: "work", name: "量産FMEA修正", due: "2026-11-16", icon: "🛠️", color: "b-gray", tentative: true },
+        { id: "harness-pay", cat: "work", name: "ハーネス高所作業者教育の振り込み", due: "2026-11-17", icon: "⛑️", color: "b-pink" },
+        { id: "695-make", cat: "work", name: "695試作品作製", due: "2026-11-17", icon: "🔧", color: "b-green" },
+        { id: "eguchi-980", cat: "work", name: "江口さんへ980のデータを送る", due: "2026-11-02", icon: "✉️", color: "b-gray", done: true }
       ];
 
       function todayLocal() {
@@ -233,9 +272,13 @@
       function daysLeft(dueStr) {
         return Math.round((parseDue(dueStr) - todayLocal()) / 86400000);
       }
-      function leftInfo(d) {
+      function dateChip(dueStr) {
+        var p = dueStr.split("-");
+        return (+p[1]) + "/" + (+p[2]);
+      }
+      function leftBadge(d) {
         if (d < 0) return { text: Math.abs(d) + "日超過", cls: "hot" };
-        if (d === 0) return { text: "今日まで", cls: "hot" };
+        if (d === 0) return { text: "今日", cls: "hot" };
         if (d === 1) return { text: "あと1日", cls: "hot" };
         if (d <= 3) return { text: "あと" + d + "日", cls: "warm" };
         return { text: "あと" + d + "日", cls: "normal" };
@@ -246,24 +289,27 @@
         });
       }
       function byDue(a, b) { return a.due < b.due ? -1 : a.due > b.due ? 1 : 0; }
-      function tagHtml(t) {
-        if (t.must) return '<span class="tag must">マスト</span>';
-        if (t.tentative) return '<span class="tag">仮期限</span>';
-        if (t.assumed) return '<span class="tag assumed">日程は想定</span>';
-        return "";
+      function badgeHtml(t, size) {
+        var cls = "badge " + size + " " + t.color;
+        if (t.must) cls += " must";
+        else if (t.tentative || t.assumed) cls += " tentative";
+        return '<span class="' + cls + '" aria-hidden="true">' + t.icon + '</span>';
       }
-      function dueCells(t) {
+      function chipsHtml(t) {
         if (t.done) {
-          return '<span class="date num">' + esc(t.dueText) + '</span><span class="left">完了</span>';
+          return '<span class="dchip num">' + dateChip(t.due) + '</span>'
+            + '<span class="done-badge" aria-label="完了">✓</span>';
         }
-        var li = leftInfo(daysLeft(t.due));
-        return '<span class="date num">' + esc(t.dueText) + '</span>'
-          + '<span class="left ' + li.cls + '">' + esc(li.text) + '</span>';
+        var lb = leftBadge(daysLeft(t.due));
+        return '<span class="dchip num">' + dateChip(t.due) + '</span>'
+          + '<span class="left ' + lb.cls + '">' + esc(lb.text) + '</span>';
       }
-      function rowHtml(t, cls) {
-        return '<div class="' + cls + (t.done ? " done" : "") + '">'
-          + '<span class="name"><span class="txt">' + esc(t.name) + '</span>' + tagHtml(t) + '</span>'
-          + dueCells(t) + '</div>';
+      function rowHtml(t) {
+        return '<div class="trow' + (t.done ? " done" : "") + '">'
+          + badgeHtml(t, "sm")
+          + '<span class="name">' + esc(t.name) + '</span>'
+          + '<span class="meta">' + chipsHtml(t) + '</span>'
+          + '</div>';
       }
 
       (function () {
@@ -274,15 +320,14 @@
 
         var open = TASKS.filter(function (t) { return !t.done; }).sort(byDue);
 
-        // 最優先：期限順トップ3を1行ずつ
+        // 最優先：大きなカード3件
         var fHtml = "";
         open.slice(0, 3).forEach(function (t, i) {
-          var li = leftInfo(daysLeft(t.due));
-          fHtml += '<div class="frow">'
-            + '<span class="rank num">' + (i + 1) + '</span>'
-            + '<span class="name"><span class="txt">' + esc(t.name) + '</span>' + tagHtml(t) + '</span>'
-            + '<span class="date num">' + esc(t.dueText) + '</span>'
-            + '<span class="left ' + li.cls + '">' + esc(li.text) + '</span>'
+          fHtml += '<div class="fcard" role="listitem">'
+            + '<div class="top">' + badgeHtml(t, "big")
+            + '<span class="rank num">' + (i + 1) + '</span></div>'
+            + '<div class="name">' + esc(t.name) + '</div>'
+            + '<div class="chips">' + chipsHtml(t) + '</div>'
             + '</div>';
         });
         document.getElementById("focusList").innerHTML = fHtml;
@@ -291,17 +336,13 @@
         var work = TASKS.filter(function (t) { return t.cat === "work" && !t.done; }).sort(byDue)
           .concat(TASKS.filter(function (t) { return t.cat === "work" && t.done; }).sort(byDue));
         document.getElementById("workList").innerHTML =
-          work.map(function (t) { return rowHtml(t, "trow"); }).join("");
-        document.getElementById("cntWork").textContent =
-          work.filter(function (t) { return !t.done; }).length + "件";
+          work.map(rowHtml).join("");
 
         // プライベート
         var priv = TASKS.filter(function (t) { return t.cat === "private" && !t.done; }).sort(byDue)
           .concat(TASKS.filter(function (t) { return t.cat === "private" && t.done; }).sort(byDue));
         document.getElementById("privateList").innerHTML =
-          priv.map(function (t) { return rowHtml(t, "trow"); }).join("");
-        document.getElementById("cntPrivate").textContent =
-          priv.filter(function (t) { return !t.done; }).length + "件";
+          priv.map(rowHtml).join("");
       })();
     </script>
   </body>
