@@ -8,227 +8,203 @@
     <title>タスク管理</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..600,0..1,0&display=swap" rel="stylesheet" />
     <style>
-      :root {
-        --bg: #f0f2f5;
-        --surface: #ffffff;
-        --surface-2: #eef0f3;
-        --ink: #14171c;
-        --ink-2: #454b54;
-        --ink-3: #8a919c;
-        --line: #e2e5ea;
-        --danger: #d92d20;
-        --danger-soft: #fdecea;
-        --warn-bg: #fdb022;
-        --warn-ink: #5c3a00;
-        --ok: #1c7c43;
-        --ok-soft: #e2f2e7;
-        --shadow: 0 1px 3px rgba(16, 24, 40, .08);
+      :root{
+        --surface:#fef7ff;
+        --surface-low:#f7f2fa;
+        --surface-container:#f3edf7;
+        --surface-high:#ece6f0;
+        --surface-highest:#e6e0e9;
+        --on-surface:#1d1b20;
+        --on-variant:#49454f;
+        --outline-variant:#cac4d0;
+        --primary:#6750a4;
+        --on-primary:#fff;
+        --primary-container:#eaddff;
+        --on-primary-container:#21005d;
+        --secondary-container:#e8def8;
+        --on-secondary-container:#1d192b;
+        --tertiary-container:#ffd8e4;
+        --on-tertiary-container:#31111d;
+        --error:#ba1a1a;
+        --error-container:#f9dedc;
+        --on-error-container:#410e0b;
+        --tertiary:#7d5260;
+        --warn-container:#ffdcbe;
+        --on-warn-container:#2e1500;
       }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #0e1013;
-          --surface: #191c21;
-          --surface-2: #23262d;
-          --ink: #f2f4f7;
-          --ink-2: #c3c9d1;
-          --ink-3: #7d8590;
-          --line: #262a31;
-          --danger: #ff9c94;
-          --danger-soft: #46231f;
-          --warn-bg: #b97f10;
-          --warn-ink: #ffe9bd;
-          --ok: #8fd6a4;
-          --ok-soft: #1d3826;
-          --shadow: 0 1px 3px rgba(0,0,0,.45);
+      @media (prefers-color-scheme: dark){
+        :root{
+          --surface:#141218;
+          --surface-low:#1d1b20;
+          --surface-container:#211f26;
+          --surface-high:#2b2930;
+          --surface-highest:#36343b;
+          --on-surface:#e6e0e9;
+          --on-variant:#cac4d0;
+          --outline-variant:#49454f;
+          --primary:#d0bcff;
+          --on-primary:#381e72;
+          --primary-container:#4f378b;
+          --on-primary-container:#eaddff;
+          --secondary-container:#4a4458;
+          --on-secondary-container:#e8def8;
+          --tertiary-container:#633b48;
+          --on-tertiary-container:#ffd8e4;
+          --error:#f2b8b5;
+          --error-container:#8c1d18;
+          --on-error-container:#f9dedc;
+          --warn-container:#653e00;
+          --on-warn-container:#ffdcbe;
         }
       }
-      * { box-sizing: border-box; }
-      html, body { height: 100%; overflow: hidden; }
-      html { -webkit-text-size-adjust: 100%; }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
+      *{box-sizing:border-box}
+      html,body{height:100%;overflow:hidden}
+      html{-webkit-text-size-adjust:100%}
+      body{
+        margin:0;background:var(--surface);color:var(--on-surface);
+        font-family:"Noto Sans JP",system-ui,sans-serif;
+        font-size:16px;line-height:1.5;
+        -webkit-font-smoothing:antialiased;
       }
-      .num { font-family: "Space Grotesk", "Zen Kaku Gothic New", sans-serif; font-variant-numeric: tabular-nums; }
+      .msym{
+        font-family:"Material Symbols Rounded";
+        font-weight:normal;font-style:normal;line-height:1;
+        letter-spacing:normal;text-transform:none;display:inline-flex;
+        align-items:center;justify-content:center;white-space:nowrap;
+        direction:ltr;-webkit-font-smoothing:antialiased;
+        font-variation-settings:"FILL" 0,"wght" 500,"GRAD" 0,"opsz" 24;
+      }
+      .screen{
+        height:100dvh;max-width:896px;margin:0 auto;
+        padding:16px 16px 16px;
+        display:flex;flex-direction:column;gap:8px;overflow:hidden;
+      }
+      /* Header — Google Calendar / Tasks style */
+      .dateline{flex:0 0 auto;padding:8px 8px 0;display:flex;align-items:baseline;gap:12px}
+      .dateline .today{
+        font-family:"Zen Maru Gothic","Noto Sans JP",sans-serif;
+        font-size:28px;font-weight:900;line-height:1.2;letter-spacing:.01em;
+      }
+      .dateline .sub{font-size:14px;color:var(--on-variant);font-weight:500}
 
-      /* 画面固定：100dvh に収め、スクロールさせない */
-      .screen {
-        height: 100dvh;
-        max-width: 880px;
-        margin: 0 auto;
-        padding: clamp(10px, 2vh, 18px) 14px clamp(8px, 1.6vh, 14px);
-        display: flex;
-        flex-direction: column;
-        gap: clamp(8px, 1.4vh, 12px);
-        overflow: hidden;
+      .sect-label{
+        flex:0 0 auto;font-size:14px;font-weight:700;color:var(--on-variant);
+        padding:8px 8px 0;letter-spacing:.02em;
       }
 
-      .dateline { flex: 0 0 auto; padding: 0 4px; }
-      .dateline .today { font-size: clamp(21px, 3.2vh, 27px); font-weight: 900; line-height: 1.25; }
-
-      .sect-label {
-        flex: 0 0 auto;
-        font-size: 13px; font-weight: 900; color: var(--ink-3);
-        letter-spacing: .08em;
-        padding: 0 4px;
-        margin-bottom: -2px;
+      /* Focus cards — Google Calendar event cards */
+      .focus{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+      .fcard{
+        border-radius:24px;padding:16px;
+        display:flex;flex-direction:column;gap:12px;min-width:0;
+        background:var(--surface-container);
+      }
+      .fcard.c-pri{background:var(--primary-container);color:var(--on-primary-container)}
+      .fcard.c-sec{background:var(--secondary-container);color:var(--on-secondary-container)}
+      .fcard.c-ter{background:var(--tertiary-container);color:var(--on-tertiary-container)}
+      .fcard .top{display:flex;align-items:center;justify-content:space-between}
+      .fcard .name{font-size:16px;font-weight:700;line-height:1.5;min-height:3em}
+      .fcard .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;align-items:center}
+      .rank{
+        font-family:"Zen Maru Gothic",sans-serif;font-weight:900;font-size:13px;
+        width:24px;height:24px;border-radius:50%;
+        background:color-mix(in srgb, currentColor 14%, transparent);
+        display:flex;align-items:center;justify-content:center;
       }
 
-      /* ===== 最優先：大きなカード3件 ===== */
-      .focus {
-        flex: 0 0 auto;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+      /* Avatar — secondary container circle, tonal only */
+      .avatar{
+        flex:0 0 auto;border-radius:50%;
+        display:flex;align-items:center;justify-content:center;
+        background:var(--secondary-container);color:var(--on-secondary-container);
       }
-      .fcard {
-        background: var(--surface);
-        border-radius: 14px;
-        box-shadow: var(--shadow);
-        padding: 12px 13px 11px;
-        display: flex; flex-direction: column; gap: 8px;
-        min-width: 0;
-      }
-      .fcard .top { display: flex; align-items: flex-start; justify-content: space-between; }
-      .rank {
-        flex: 0 0 auto;
-        min-width: 24px; height: 24px; padding: 0 6px;
-        border-radius: 999px;
-        background: var(--surface-2); color: var(--ink-2);
-        display: flex; align-items: center; justify-content: center;
-        font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 14px;
-      }
-      .fcard:first-child .rank { background: var(--danger); color: #fff; }
-      @media (prefers-color-scheme: dark) {
-        .fcard:first-child .rank { color: #191c21; }
-      }
-      .fcard .name {
-        font-size: 16.5px; font-weight: 900; line-height: 1.45;
-        min-height: 2.9em;
-      }
-      .fcard .chips { display: flex; align-items: center; gap: 6px; margin-top: auto; }
+      .avatar.big{width:48px;height:48px}
+      .avatar.big .msym{font-size:24px}
+      .avatar.sm{width:40px;height:40px}
+      .avatar.sm .msym{font-size:20px}
+      .fcard .avatar{background:color-mix(in srgb, currentColor 12%, transparent);color:inherit}
+      .avatar.c-pri{background:var(--primary-container);color:var(--on-primary-container)}
+      .avatar.c-ter{background:var(--tertiary-container);color:var(--on-tertiary-container)}
+      .avatar.c-sec{background:var(--secondary-container);color:var(--on-secondary-container)}
+      .avatar.is-tentative{outline:2px dashed var(--outline-variant);outline-offset:-4px}
 
-      /* アイコンバッジ（色付きの丸） */
-      .badge {
-        flex: 0 0 auto;
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        line-height: 1;
+      /* Due chip — surface container high + calendar icon */
+      .dchip{
+        display:inline-flex;align-items:center;gap:4px;
+        background:var(--surface-high);color:var(--on-surface);
+        border-radius:999px;padding:4px 10px 4px 8px;
+        font-size:13px;font-weight:500;line-height:1.2;white-space:nowrap;
+        font-variant-numeric:tabular-nums;
       }
-      .badge.big { width: 46px; height: 46px; font-size: 24px; }
-      .badge.sm { width: 34px; height: 34px; font-size: 18px; }
-      .b-red    { background: #fde3e0; }
-      .b-blue   { background: #e1ecfd; }
-      .b-teal   { background: #d9f2ee; }
-      .b-amber  { background: #fdf0d3; }
-      .b-green  { background: #dff3e2; }
-      .b-violet { background: #ece7fb; }
-      .b-pink   { background: #fde4ef; }
-      .b-gray   { background: #e8eaed; }
-      @media (prefers-color-scheme: dark) {
-        .b-red    { background: #4a2622; }
-        .b-blue   { background: #22354f; }
-        .b-teal   { background: #173d38; }
-        .b-amber  { background: #453511; }
-        .b-green  { background: #1e3a26; }
-        .b-violet { background: #322a4e; }
-        .b-pink   { background: #472635; }
-        .b-gray   { background: #2b2f36; }
+      .fcard .dchip{background:color-mix(in srgb, currentColor 10%, transparent);color:inherit}
+      .dchip .msym{font-size:16px}
+      .left{
+        display:inline-flex;align-items:center;
+        font-size:12px;font-weight:700;line-height:1.2;white-space:nowrap;
+        border-radius:999px;padding:4px 8px;
+        background:transparent;color:var(--on-variant);
       }
-      .badge.tentative { outline: 2px dashed var(--ink-3); outline-offset: -5px; }
-      .badge.must { box-shadow: 0 0 0 2px var(--danger); }
+      .left.hot{background:var(--error-container);color:var(--on-error-container)}
+      .fcard .left.hot{background:var(--error-container);color:var(--on-error-container)}
+      .left.warm{background:var(--warn-container);color:var(--on-warn-container)}
+      .left.normal{background:transparent}
 
-      /* 期限チップ＋残りバッジ */
-      .dchip {
-        font-family: "Space Grotesk", "Zen Kaku Gothic New", sans-serif;
-        font-weight: 700; font-size: 15px;
-        background: var(--surface-2); color: var(--ink);
-        border-radius: 8px; padding: 1px 9px;
-        white-space: nowrap;
+      /* List panel — tonal surface, no shadow, large radius */
+      .panel{
+        flex:0 1 auto;min-height:0;
+        background:var(--surface-low);
+        border-radius:24px;padding:8px;overflow:hidden;
       }
-      .left {
-        font-size: 12.5px; font-weight: 900;
-        border-radius: 999px; padding: 1px 8px;
-        white-space: nowrap;
+      .trow{
+        display:flex;align-items:center;gap:16px;
+        padding:8px 8px;border-radius:16px;min-height:56px;
       }
-      .left.hot { background: var(--danger); color: #fff; }
-      @media (prefers-color-scheme: dark) { .left.hot { color: #191c21; } }
-      .left.warm { background: var(--warn-bg); color: var(--warn-ink); }
-      .left.normal { background: transparent; color: var(--ink-3); padding-left: 2px; }
+      .trow + .trow{margin-top:0}
+      .trow .name{flex:1 1 auto;min-width:0;font-size:16px;font-weight:500;line-height:1.45}
+      .trow .meta{flex:0 0 auto;display:flex;align-items:center;gap:8px}
+      .trow.done{opacity:.56}
+      .trow.done .name{text-decoration:line-through;font-weight:400}
+      .done-icon{
+        width:24px;height:24px;border-radius:50%;flex:0 0 auto;
+        background:var(--primary);color:var(--on-primary);
+        display:flex;align-items:center;justify-content:center;
+      }
+      .done-icon .msym{font-size:16px;font-variation-settings:"FILL" 1,"wght" 600}
 
-      /* ===== 一覧パネル ===== */
-      .panel {
-        flex: 0 1 auto;
-        min-height: 0;
-        background: var(--surface);
-        border-radius: 14px;
-        box-shadow: var(--shadow);
-        padding: 4px 6px;
-        overflow: hidden;
+      @media (max-width:560px){
+        .screen{padding:8px 16px 16px;gap:0}
+        .dateline{padding-top:8px}
+        .dateline .today{font-size:24px}
+        .sect-label{padding-top:8px;font-size:13px}
+        .focus{grid-template-columns:1fr;gap:8px;margin-top:8px}
+        .fcard{flex-direction:row;align-items:center;gap:12px;padding:12px 16px;border-radius:20px}
+        .fcard .top{order:0}
+        .fcard .avatar.big{width:40px;height:40px}
+        .fcard .avatar.big .msym{font-size:20px}
+        .fcard .rank{display:none}
+        .fcard .name{flex:1 1 auto;min-height:0;font-size:15px}
+        .fcard .chips{margin-top:0;flex-direction:column;align-items:flex-end;gap:4px}
+        .panel{border-radius:20px;padding:4px 8px;margin-top:8px}
+        .trow{gap:12px;padding:6px 4px;min-height:48px}
+        .trow .name{font-size:14px}
+        .avatar.sm{width:36px;height:36px}
+        .avatar.sm .msym{font-size:18px}
+        .dchip{font-size:12px;padding:3px 8px 3px 6px}
+        .left{font-size:11px;padding:3px 6px}
       }
-      .trow {
-        display: flex; align-items: center; gap: 11px;
-        padding: 5px 10px;
-        border-radius: 10px;
-      }
-      .trow + .trow { border-top: 1px solid var(--line); }
-      .trow .name {
-        flex: 1 1 auto; min-width: 0;
-        font-size: 16px; font-weight: 700; line-height: 1.45;
-      }
-      .trow .meta { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; }
-
-      .trow.done { opacity: .55; }
-      .trow.done .name { text-decoration: line-through; font-weight: 500; }
-      .done-badge {
-        flex: 0 0 auto;
-        width: 22px; height: 22px; border-radius: 50%;
-        background: var(--ok); color: #fff;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 13px; font-weight: 900; line-height: 1;
-      }
-      @media (prefers-color-scheme: dark) { .done-badge { color: #191c21; } }
-
-      @media (max-width: 560px) {
-        .screen { padding: 10px 10px 8px; gap: 7px; }
-        /* 最優先は横並びのコンパクトカードに切り替え */
-        .focus { grid-template-columns: 1fr; gap: 7px; }
-        .fcard {
-          flex-direction: row; align-items: center; gap: 10px;
-          padding: 8px 11px;
-        }
-        .fcard .top { order: 0; }
-        .fcard .badge.big { width: 38px; height: 38px; font-size: 20px; }
-        .fcard .name { flex: 1 1 auto; min-height: 0; font-size: 15px; }
-        .fcard .chips { margin-top: 0; flex-direction: column; align-items: flex-end; gap: 3px; }
-        .fcard .rank { position: absolute; }
-        .fcard { position: relative; }
-        .fcard .top .rank { position: static; }
-        .trow { gap: 9px; padding: 4px 8px; }
-        .trow .name { font-size: 14px; line-height: 1.4; }
-        .badge.sm { width: 30px; height: 30px; font-size: 16px; }
-        .dchip { font-size: 13.5px; padding: 1px 7px; }
-        .left { font-size: 11.5px; padding: 1px 6px; }
-        .sect-label { font-size: 12px; }
-        .dateline .today { font-size: 20px; }
-      }
-      @media (max-height: 700px) {
-        .trow { padding-top: 3.5px; padding-bottom: 3.5px; }
-        .fcard { padding-top: 9px; padding-bottom: 8px; }
-        .badge.big { width: 40px; height: 40px; font-size: 21px; }
+      @media (max-height:700px){
+        .trow{min-height:44px;padding-top:4px;padding-bottom:4px}
+        .fcard{padding-top:12px;padding-bottom:12px}
       }
     </style>
   </head>
   <body>
     <div class="screen">
       <div class="dateline">
-        <span class="today num" id="todayLabel"></span>
+        <span class="today" id="todayLabel"></span>
+        <span class="sub">タスク</span>
       </div>
 
       <div class="sect-label">最優先</div>
@@ -247,102 +223,78 @@
 
     <script>
       // 2026-11-02 時点の記録（~/workspace/work/tasks.md より）
-      // icon: 内容を表す絵文字 / color: バッジの色
+      // icon: Material Symbols Rounded 名 / tone: container トーン
       var TASKS = [
-        { id: "trial-check", cat: "work", name: "工程検証トライチェックシートの作成", due: "2026-11-03", icon: "📋", color: "b-red", must: true },
-        { id: "fire-insurance", cat: "private", name: "火災保険料がいま幾らか調べる", due: "2026-11-06", icon: "🔥", color: "b-amber", tentative: true },
-        { id: "hm-measure", cat: "work", name: "HM板厚ばらつき測定", due: "2026-11-09", icon: "📏", color: "b-blue", tentative: true },
-        { id: "cooler", cat: "work", name: "クーラー管理シートの貼り付けと課内への周知", due: "2026-11-11", icon: "❄️", color: "b-teal", assumed: true },
-        { id: "695-check", cat: "work", name: "695試作品チェックシート", due: "2026-11-12", icon: "🔍", color: "b-violet" },
-        { id: "sf-eval", cat: "work", name: "SuccessFactors年間評価（能力発揮時期評価）の提出", due: "2026-11-13", icon: "⭐", color: "b-amber" },
-        { id: "fmea-fix", cat: "work", name: "量産FMEA修正", due: "2026-11-16", icon: "🛠️", color: "b-gray", tentative: true },
-        { id: "harness-pay", cat: "work", name: "ハーネス高所作業者教育の振り込み", due: "2026-11-17", icon: "⛑️", color: "b-pink" },
-        { id: "695-make", cat: "work", name: "695試作品作製", due: "2026-11-17", icon: "🔧", color: "b-green" },
-        { id: "eguchi-980", cat: "work", name: "江口さんへ980のデータを送る", due: "2026-11-02", icon: "✉️", color: "b-gray", done: true }
+        { id: "trial-check", cat: "work", name: "工程検証トライチェックシートの作成", due: "2026-11-03", icon: "fact_check", tone: "c-pri", must: true },
+        { id: "fire-insurance", cat: "private", name: "火災保険料がいま幾らか調べる", due: "2026-11-06", icon: "local_fire_department", tone: "c-ter", tentative: true },
+        { id: "hm-measure", cat: "work", name: "HM板厚ばらつき測定", due: "2026-11-09", icon: "straighten", tone: "c-sec", tentative: true },
+        { id: "cooler", cat: "work", name: "クーラー管理シートの貼り付けと課内への周知", due: "2026-11-11", icon: "ac_unit", tone: "c-sec", assumed: true },
+        { id: "695-check", cat: "work", name: "695試作品チェックシート", due: "2026-11-12", icon: "manage_search", tone: "c-pri" },
+        { id: "sf-eval", cat: "work", name: "SuccessFactors年間評価（能力発揮時期評価）の提出", due: "2026-11-13", icon: "star", tone: "c-ter" },
+        { id: "fmea-fix", cat: "work", name: "量産FMEA修正", due: "2026-11-16", icon: "build", tone: "c-sec", tentative: true },
+        { id: "harness-pay", cat: "work", name: "ハーネス高所作業者教育の振り込み", due: "2026-11-17", icon: "payments", tone: "c-ter" },
+        { id: "695-make", cat: "work", name: "695試作品作製", due: "2026-11-17", icon: "precision_manufacturing", tone: "c-pri" },
+        { id: "eguchi-980", cat: "work", name: "江口さんへ980のデータを送る", due: "2026-11-02", icon: "send", tone: "c-sec", done: true }
       ];
 
-      function todayLocal() {
-        var n = new Date();
-        return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+      function todayLocal(){ var n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+      function parseDue(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+      function daysLeft(s){ return Math.round((parseDue(s)-todayLocal())/86400000); }
+      function dateChip(s){ var p=s.split("-"); return (+p[1])+"/"+(+p[2]); }
+      function leftBadge(d){
+        if(d<0) return {text:Math.abs(d)+"日超過",cls:"hot"};
+        if(d===0) return {text:"今日",cls:"hot"};
+        if(d===1) return {text:"あと1日",cls:"hot"};
+        if(d<=3) return {text:"あと"+d+"日",cls:"warm"};
+        return {text:"あと"+d+"日",cls:"normal"};
       }
-      function parseDue(s) {
-        var p = s.split("-");
-        return new Date(+p[0], +p[1] - 1, +p[2]);
+      function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+      function byDue(a,b){ return a.due<b.due?-1:a.due>b.due?1:0; }
+      function avatarHtml(t,size){
+        var cls="avatar "+size+" "+t.tone;
+        if(t.tentative||t.assumed) cls+=" is-tentative";
+        return '<span class="'+cls+'" aria-hidden="true"><span class="msym">'+esc(t.icon)+'</span></span>';
       }
-      function daysLeft(dueStr) {
-        return Math.round((parseDue(dueStr) - todayLocal()) / 86400000);
-      }
-      function dateChip(dueStr) {
-        var p = dueStr.split("-");
-        return (+p[1]) + "/" + (+p[2]);
-      }
-      function leftBadge(d) {
-        if (d < 0) return { text: Math.abs(d) + "日超過", cls: "hot" };
-        if (d === 0) return { text: "今日", cls: "hot" };
-        if (d === 1) return { text: "あと1日", cls: "hot" };
-        if (d <= 3) return { text: "あと" + d + "日", cls: "warm" };
-        return { text: "あと" + d + "日", cls: "normal" };
-      }
-      function esc(s) {
-        return String(s).replace(/[&<>"']/g, function (c) {
-          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-        });
-      }
-      function byDue(a, b) { return a.due < b.due ? -1 : a.due > b.due ? 1 : 0; }
-      function badgeHtml(t, size) {
-        var cls = "badge " + size + " " + t.color;
-        if (t.must) cls += " must";
-        else if (t.tentative || t.assumed) cls += " tentative";
-        return '<span class="' + cls + '" aria-hidden="true">' + t.icon + '</span>';
-      }
-      function chipsHtml(t) {
-        if (t.done) {
-          return '<span class="dchip num">' + dateChip(t.due) + '</span>'
-            + '<span class="done-badge" aria-label="完了">✓</span>';
+      function chipsHtml(t){
+        var due='<span class="dchip"><span class="msym" aria-hidden="true">calendar_month</span>'+dateChip(t.due)+'</span>';
+        if(t.done){
+          return due+'<span class="done-icon" aria-label="完了"><span class="msym">check</span></span>';
         }
-        var lb = leftBadge(daysLeft(t.due));
-        return '<span class="dchip num">' + dateChip(t.due) + '</span>'
-          + '<span class="left ' + lb.cls + '">' + esc(lb.text) + '</span>';
+        var lb=leftBadge(daysLeft(t.due));
+        return due+'<span class="left '+lb.cls+'">'+esc(lb.text)+'</span>';
       }
-      function rowHtml(t) {
-        return '<div class="trow' + (t.done ? " done" : "") + '">'
-          + badgeHtml(t, "sm")
-          + '<span class="name">' + esc(t.name) + '</span>'
-          + '<span class="meta">' + chipsHtml(t) + '</span>'
+      function rowHtml(t){
+        return '<div class="trow'+(t.done?" done":"")+'">'
+          + avatarHtml(t,"sm")
+          + '<span class="name">'+esc(t.name)+'</span>'
+          + '<span class="meta">'+chipsHtml(t)+'</span>'
           + '</div>';
       }
 
-      (function () {
-        var wd = ["日", "月", "火", "水", "木", "金", "土"];
-        var n = new Date();
-        document.getElementById("todayLabel").textContent =
-          (n.getMonth() + 1) + "月" + n.getDate() + "日（" + wd[n.getDay()] + "）";
+      (function(){
+        var wd=["日","月","火","水","木","金","土"];
+        var n=new Date();
+        document.getElementById("todayLabel").textContent=(n.getMonth()+1)+"月"+n.getDate()+"日（"+wd[n.getDay()]+"）";
 
-        var open = TASKS.filter(function (t) { return !t.done; }).sort(byDue);
-
-        // 最優先：大きなカード3件
-        var fHtml = "";
-        open.slice(0, 3).forEach(function (t, i) {
-          fHtml += '<div class="fcard" role="listitem">'
-            + '<div class="top">' + badgeHtml(t, "big")
-            + '<span class="rank num">' + (i + 1) + '</span></div>'
-            + '<div class="name">' + esc(t.name) + '</div>'
-            + '<div class="chips">' + chipsHtml(t) + '</div>'
-            + '</div>';
+        var open=TASKS.filter(function(t){return !t.done;}).sort(byDue);
+        var tones=["c-pri","c-sec","c-ter"];
+        var fHtml="";
+        open.slice(0,3).forEach(function(t,i){
+          fHtml+='<div class="fcard '+tones[i]+'" role="listitem">'
+            +'<div class="top">'+avatarHtml(t,"big")+'<span class="rank">'+(i+1)+'</span></div>'
+            +'<div class="name">'+esc(t.name)+'</div>'
+            +'<div class="chips">'+chipsHtml(t)+'</div>'
+            +'</div>';
         });
-        document.getElementById("focusList").innerHTML = fHtml;
+        document.getElementById("focusList").innerHTML=fHtml;
 
-        // 仕事：未完了を期限順、完了は末尾に
-        var work = TASKS.filter(function (t) { return t.cat === "work" && !t.done; }).sort(byDue)
-          .concat(TASKS.filter(function (t) { return t.cat === "work" && t.done; }).sort(byDue));
-        document.getElementById("workList").innerHTML =
-          work.map(rowHtml).join("");
+        var work=TASKS.filter(function(t){return t.cat==="work"&&!t.done;}).sort(byDue)
+          .concat(TASKS.filter(function(t){return t.cat==="work"&&t.done;}).sort(byDue));
+        document.getElementById("workList").innerHTML=work.map(rowHtml).join("");
 
-        // プライベート
-        var priv = TASKS.filter(function (t) { return t.cat === "private" && !t.done; }).sort(byDue)
-          .concat(TASKS.filter(function (t) { return t.cat === "private" && t.done; }).sort(byDue));
-        document.getElementById("privateList").innerHTML =
-          priv.map(rowHtml).join("");
+        var priv=TASKS.filter(function(t){return t.cat==="private"&&!t.done;}).sort(byDue)
+          .concat(TASKS.filter(function(t){return t.cat==="private"&&t.done;}).sort(byDue));
+        document.getElementById("privateList").innerHTML=priv.map(rowHtml).join("");
       })();
     </script>
   </body>
