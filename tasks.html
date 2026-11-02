@@ -124,7 +124,7 @@
       main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:4px;overflow-y:auto}
 
       /* ---------- Gantt ---------- */
-      .gantt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:0 0 auto}
+      .gantt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;overflow-x:auto;overflow-y:hidden;flex:0 0 auto}
       .g-head{display:flex;border-bottom:1px solid var(--line);background:var(--surface)}
       .g-name{flex:0 0 var(--namew);min-width:0;display:flex;align-items:center}
       .g-head .g-name{padding:0 8px;font-size:10.5px;font-weight:600;color:var(--sub);height:24px;border-right:1px solid var(--line)}
@@ -239,16 +239,26 @@
 
       /* Mid widths: short display names leave room for a readable date axis */
       @media (min-width:561px) and (max-width:899px){ :root{ --namew:56% } }
-      /* Phones (390px target): short display names (max 12 chars) fit at 11.5px
-         while the 7-day axis keeps ~132px (about 19px/day) so bars, ◆ markers
-         and day numbers stay readable. Full formal names live in the detail sheet.
+      /* Phones (390px target): task names are short display names at 8px. The
+         name column is a fixed 198px so a 12-character display name fits on
+         one line next to the "優" mark and the shortened due label without
+         ellipsis; the time axis keeps at least 30px per day (axis >= 210px).
+         When the screen is too narrow for 198px + 210px = 408px, the axis
+         scrolls sideways while the name column stays pinned (sticky) so
+         names never scroll away.
+         Full formal names live in the detail sheet.
          The priority label compacts to a single "優" mark on phones. */
       @media (max-width:560px){
-        :root{ --namew:calc(100% - 132px) }
+        :root{ --namew:198px }
+        .g-head,.g-row{min-width:calc(var(--namew) + 210px)}
+        .g-name{position:sticky;left:0;z-index:4;background:var(--surface)}
+        .g-head .g-name{z-index:6}
+        .g-row.is-over .g-name,.g-row.is-todaydue .g-name{background:var(--surface);background:color-mix(in srgb, var(--danger) 8%, var(--surface));box-shadow:inset 4px 0 0 var(--danger)}
+        .g-row.is-tomorrow .g-name{background:var(--surface);background:color-mix(in srgb, var(--warn) 9%, var(--surface));box-shadow:inset 3px 0 0 var(--warn)}
         .g-day{flex-direction:column;gap:1px}
         .g-day .dn{font-size:10px}
         .g-day .dw{font-size:7.5px}
-        .g-namebody{gap:4px;padding:0 4px 0 6px}
+        .g-namebody{gap:3px;padding:0 3px 0 5px}
         .g-tname{font-size:8px}
         .g-due-inline{font-size:9px}
         .g-row .pri-dot{font-size:0;line-height:1}
@@ -380,7 +390,8 @@
         if(d === 1) return "tomorrow";
         return "";
       }
-      // 名前と同じ1行に収める締切表記（例：11/3超過・今日・明日・11/12／目安は「〜目」）
+      // 名前と同じ1行に収める短い締切表記（例：11/2超過・11/3今日・11/4明日・11/12／目安は末尾に付く）。
+      // 12文字の表示名が省略されないよう「・今日まで」等は詰めた形にし、全文は詳細画面の表記で確認できる。
       function dueInline(t){
         if(t.done) return { text: "完了", cls: "" };
         if(!t.due) return { text: "期限なし", cls: "" };
@@ -388,9 +399,9 @@
         var dt = parseDue(t.due);
         var md = (dt.getMonth()+1)+"/"+dt.getDate();
         var tent = isTentative(t) ? "目安" : "";
-        if(d < 0) return { text: md+"・"+Math.abs(d)+"日超過", cls: "over" };
-        if(d === 0) return { text: md+"・今日まで", cls: "todaydue" };
-        if(d === 1) return { text: md+"・明日まで", cls: "tomorrow" };
+        if(d < 0) return { text: md+"超過", cls: "over" };
+        if(d === 0) return { text: md+"今日", cls: "todaydue" };
+        if(d === 1) return { text: md+"明日", cls: "tomorrow" };
         return { text: md + tent, cls: "" };
       }
       function dateFull(s){
