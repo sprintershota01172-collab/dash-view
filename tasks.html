@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="data:," />
     <title>タスク管理</title>
@@ -46,13 +46,13 @@
         }
       }
       @media (min-width:900px){ :root{ --namew:264px } }
-      *{box-sizing:border-box}
+      *{box-sizing:border-box;touch-action:manipulation}
       html,body{height:100%}
       html{-webkit-text-size-adjust:100%}
       body{
         margin:0;background:var(--bg);color:var(--ink);
         font-family:"Inter","Noto Sans JP",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic",sans-serif;
-        font-size:16px;line-height:1.5;
+        font-size:14px;line-height:1.5;
         -webkit-font-smoothing:antialiased;
       }
       .screen{
@@ -66,13 +66,13 @@
 
       /* Header */
       header{display:flex;align-items:baseline;gap:10px;padding:0 2px}
-      header h1{margin:0;font-size:19px;font-weight:600;line-height:1.3;flex:0 0 auto}
-      .head-sub{flex:1 1 auto;min-width:0;font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+      header h1{margin:0;font-size:16px;font-weight:600;line-height:1.3;flex:0 0 auto}
+      .head-sub{flex:1 1 auto;min-width:0;font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
       .head-sub .over{color:var(--danger);font-weight:600}
 
       /* Progress summary (1行) */
       .progress{
-        margin-top:8px;font-size:12.5px;color:var(--sub);font-variant-numeric:tabular-nums;
+        margin-top:8px;font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums;
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
         display:flex;align-items:center;gap:8px;
       }
@@ -85,8 +85,8 @@
       /* Filter chips + 完了切り替え（表示確認用） */
       .controls{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
       .chip{
-        flex:0 0 auto;min-height:32px;padding:0 11px;border:1px solid var(--line);border-radius:6px;
-        background:var(--surface);color:var(--sub);font:inherit;font-size:13px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;
+        flex:0 0 auto;min-height:30px;padding:0 10px;border:1px solid var(--line);border-radius:6px;
+        background:var(--surface);color:var(--sub);font:inherit;font-size:12px;font-weight:500;cursor:pointer;font-variant-numeric:tabular-nums;white-space:nowrap;
       }
       .chip[aria-pressed="true"]{border-color:var(--teal);color:var(--teal-dark);background:var(--teal-soft);font-weight:600}
       .chip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
@@ -95,10 +95,10 @@
 
       /* Period nav */
       .periodnav{display:flex;align-items:center;gap:6px;margin-top:8px}
-      .periodnav .rng{flex:1 1 auto;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .periodnav .rng{flex:1 1 auto;text-align:center;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .periodnav button{
-        flex:0 0 auto;min-height:36px;padding:0 10px;border:1px solid var(--line);border-radius:6px;
-        background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;
+        flex:0 0 auto;min-height:32px;padding:0 9px;border:1px solid var(--line);border-radius:6px;
+        background:var(--surface);color:var(--ink);font:inherit;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;
       }
       .periodnav button.cur{color:var(--teal-dark);border-color:var(--teal);font-weight:600}
       .periodnav button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
@@ -110,41 +110,41 @@
       .gantt{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;flex:0 0 auto}
       .g-head{display:flex;border-bottom:1px solid var(--line);background:var(--surface)}
       .g-name{flex:0 0 var(--namew);min-width:0;display:flex;align-items:center}
-      .g-head .g-name{padding:0 10px;font-size:12px;font-weight:600;color:var(--sub);height:34px;border-right:1px solid var(--line)}
+      .g-head .g-name{padding:0 10px;font-size:11px;font-weight:600;color:var(--sub);height:30px;border-right:1px solid var(--line)}
       .g-track{flex:1 1 auto;min-width:0;position:relative}
-      .g-days{display:flex;height:34px}
+      .g-days{display:flex;height:30px}
       .g-day{
         flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
         font-variant-numeric:tabular-nums;line-height:1.15;
       }
-      .g-day .dn{font-size:12px;font-weight:500}
-      .g-day .dw{font-size:10px;color:var(--sub)}
+      .g-day .dn{font-size:11px;font-weight:500}
+      .g-day .dw{font-size:9px;color:var(--sub)}
       .g-day.today{background:var(--today-bg)}
       .g-day.today .dn{color:var(--teal-dark);font-weight:700}
       .g-day.today .dw{color:var(--teal-dark)}
       .g-day.wknd{background:var(--weekend-bg)}
-      .g-row{display:flex;height:60px}
+      .g-row{display:flex;height:52px}
       .g-row + .g-row{border-top:1px solid var(--divider)}
       .g-row .g-name{border-right:1px solid var(--line)}
       .g-row.is-done{opacity:.55}
       .g-namebody{flex:1 1 auto;min-width:0;cursor:pointer;padding:0 8px 0 10px}
       .g-tname{
-        font-size:14.5px;font-weight:500;line-height:1.35;color:var(--ink);
+        font-size:13px;font-weight:500;line-height:1.35;color:var(--ink);
         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
       }
       .g-row.is-top .g-tname{font-weight:600}
       .g-row.is-done .g-tname{text-decoration:line-through;color:var(--sub)}
-      .g-sub{margin-top:2px;font-size:12px;color:var(--sub);line-height:1.35;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .g-sub{margin-top:2px;font-size:11px;color:var(--sub);line-height:1.35;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .g-sub .over{color:var(--danger);font-weight:600}
       .g-sub .pri{color:var(--teal-dark);font-weight:600}
       .g-sub .soon{color:var(--ink);font-weight:500}
       .g-track .grid{position:absolute;inset:0}
       .g-track .shade{position:absolute;top:0;bottom:0}
       .g-bar{
-        position:absolute;top:50%;transform:translateY(-50%);height:16px;border-radius:3px;
+        position:absolute;top:50%;transform:translateY(-50%);height:14px;border-radius:3px;
         background:var(--bar);cursor:pointer;min-width:6px;
         display:flex;align-items:center;justify-content:space-between;
-        color:#fff;font-size:11px;line-height:1;padding:0 1px;
+        color:#fff;font-size:10px;line-height:1;padding:0 1px;
       }
       .g-bar.done-bar{background:var(--ring)}
       .g-bar .cont{font-weight:700;opacity:.95}
@@ -158,15 +158,15 @@
       .g-due.sameday{box-shadow:0 0 0 2px var(--surface)}
 
       .empty{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:28px 16px;text-align:center;flex:0 0 auto}
-      .empty .msg{font-size:15px;font-weight:600}
-      .empty .sub-msg{margin-top:4px;font-size:13px;color:var(--sub)}
+      .empty .msg{font-size:13px;font-weight:600}
+      .empty .sub-msg{margin-top:4px;font-size:11px;color:var(--sub)}
 
       /* Pager */
       .pager{flex:0 0 auto;display:flex;align-items:center;gap:8px;margin-top:8px}
-      .pager button{min-width:84px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;font-size:14px;font-weight:500;cursor:pointer}
+      .pager button{min-width:84px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;font-size:12.5px;font-weight:500;cursor:pointer}
       .pager button:disabled{color:var(--sub);opacity:.45;cursor:default}
       .pager button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-      .pager .page-info{flex:1 1 auto;text-align:center;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
+      .pager .page-info{flex:1 1 auto;text-align:center;font-size:11.5px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
 
       /* Detail sheet（閲覧専用） */
       .overlay{position:fixed;inset:0;background:rgba(10,20,32,.45);z-index:40;display:none;align-items:flex-end;justify-content:center}
@@ -180,15 +180,15 @@
       }
       @media (min-width:900px){ .sheet{max-width:560px} .overlay{align-items:center;padding:24px} .sheet{border-radius:10px} }
       @keyframes sheetIn{from{transform:translateY(10px);opacity:.5}to{transform:none;opacity:1}}
-      .sheet h2{margin:0 0 6px;font-size:13px;font-weight:600;color:var(--sub)}
-      .sheet .full-name{font-size:16px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
-      .sheet .meta{margin-top:10px;font-size:13.5px;line-height:1.9;font-variant-numeric:tabular-nums}
+      .sheet h2{margin:0 0 6px;font-size:12px;font-weight:600;color:var(--sub)}
+      .sheet .full-name{font-size:14px;font-weight:600;line-height:1.55;overflow-wrap:anywhere}
+      .sheet .meta{margin-top:10px;font-size:12px;line-height:1.9;font-variant-numeric:tabular-nums}
       .sheet .meta .k{color:var(--sub)}
       .sheet .meta .over{color:var(--danger);font-weight:600}
       .sheet .meta .pri{color:var(--teal-dark);font-weight:600}
-      .tag-tent{display:inline-block;font-size:11px;font-weight:600;color:var(--teal-dark);border:1px solid var(--teal);border-radius:4px;padding:0 5px;line-height:1.7;vertical-align:1px}
+      .tag-tent{display:inline-block;font-size:10px;font-weight:600;color:var(--teal-dark);border:1px solid var(--teal);border-radius:4px;padding:0 5px;line-height:1.7;vertical-align:1px}
       .sheet-actions{margin-top:20px}
-      .sheet-actions button{width:100%;min-height:48px;border-radius:6px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+      .sheet-actions button{width:100%;min-height:48px;border-radius:6px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
       .sheet-actions button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 
       @media (prefers-reduced-motion: reduce){
@@ -350,7 +350,7 @@
       function pageSize(){
         var mainEl = document.getElementById("main");
         var h = mainEl.clientHeight || (window.innerHeight - 300);
-        var n = Math.floor((h - 34) / 60); // ヘッダー行34px + 行60px
+        var n = Math.floor((h - 30) / 52); // ヘッダー行30px + 行52px
         if(n < 3) n = 3;
         if(n > 10) n = 10;
         return n;
