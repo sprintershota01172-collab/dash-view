@@ -62,12 +62,20 @@
       header h1{margin:0;font-size:22px;font-weight:700;line-height:1.25;letter-spacing:.01em}
       .head-sub{margin-top:1px;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .head-sub .over{color:var(--danger);font-weight:600}
-      .add-btn{
-        flex:0 0 auto;min-height:44px;padding:0 16px;border:0;border-radius:999px;
-        background:var(--accent);color:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer;
+      /* Progress summary (compact, white surface) */
+      .progress{
+        margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;
+        padding:10px 14px 12px;
       }
-      @media (prefers-color-scheme: dark){ .add-btn{color:#221647} }
-      .add-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+      .progress .p-row{display:flex;align-items:baseline;gap:10px}
+      .progress .p-label{font-size:13px;font-weight:600;color:var(--sub)}
+      .progress .p-pct{font-size:20px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums}
+      .progress .bar{margin-top:8px;height:6px;border-radius:999px;background:var(--seg-bg);overflow:hidden}
+      .progress .bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .25s ease}
+      .progress .p-counts{margin-top:9px;display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
+      .progress .p-counts b{color:var(--text);font-weight:600}
+      .progress .p-counts .over{color:var(--danger);font-weight:600}
+      .progress .p-counts .over b{color:var(--danger)}
 
       /* View tabs */
       .seg{display:flex;gap:4px;margin:10px 0 0;padding:4px;background:var(--seg-bg);border-radius:999px}
@@ -98,10 +106,32 @@
       /* List */
       main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:10px}
       .card{
+        flex:1 1 auto;min-height:0;
         background:var(--surface);border:1px solid var(--border);border-radius:14px;
         overflow-y:auto;overflow-x:hidden;
         animation:cardIn .18s ease;
       }
+
+      /* Upcoming (today view, next 7 days) */
+      .upcoming{
+        flex:0 0 auto;margin-top:10px;
+        background:var(--surface);border:1px solid var(--border);border-radius:14px;
+        padding:10px 14px 8px;
+        animation:cardIn .18s ease;
+      }
+      .upcoming h2{margin:0;font-size:14px;font-weight:700;line-height:1.4}
+      .upcoming h2 .cnt{margin-left:4px;font-size:13px;font-weight:500;color:var(--sub);font-variant-numeric:tabular-nums}
+      .up-row{
+        display:flex;align-items:center;gap:10px;width:100%;min-height:38px;padding:4px 0;
+        border:0;background:transparent;color:var(--text);
+        font:inherit;text-align:left;cursor:pointer;
+      }
+      .up-row + .up-row{border-top:1px solid var(--divider)}
+      .up-row:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+      .up-date{flex:0 0 auto;min-width:52px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+      .up-kind{flex:0 0 auto;font-size:12px;color:var(--sub)}
+      .up-name{flex:1 1 auto;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .up-more{padding:4px 0 6px;font-size:12px;color:var(--sub)}
       @keyframes cardIn{from{opacity:.35}to{opacity:1}}
       .row{
         display:flex;align-items:center;gap:2px;
@@ -183,9 +213,24 @@
         flex:1 1 auto;text-align:center;font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums;
       }
 
+      /* Bottom quick-add bar */
+      .addbar{flex:0 0 auto;display:flex;gap:8px;margin-top:10px}
+      .addbar input{
+        flex:1 1 auto;min-width:0;min-height:48px;padding:0 14px;
+        border:1px solid var(--border);border-radius:999px;background:var(--surface);
+        color:var(--text);font:inherit;font-size:16px;
+      }
+      .addbar input:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+      .addbar button{
+        flex:0 0 auto;min-height:48px;padding:0 18px;border:0;border-radius:999px;
+        background:var(--accent);color:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer;
+      }
+      @media (prefers-color-scheme: dark){ .addbar button{color:#221647} }
+      .addbar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
       /* Toast */
       .toast{
-        position:absolute;left:16px;right:16px;bottom:calc(66px + env(safe-area-inset-bottom, 0px));
+        position:absolute;left:16px;right:16px;bottom:calc(128px + env(safe-area-inset-bottom, 0px));
         display:none;align-items:center;gap:12px;
         background:var(--text);color:var(--bg);
         border-radius:12px;padding:10px 14px;font-size:14px;
@@ -269,8 +314,9 @@
           <h1 id="todayLabel"></h1>
           <div class="head-sub" id="headSub"></div>
         </div>
-        <button type="button" class="add-btn" id="addBtn">＋追加</button>
       </header>
+
+      <section class="progress" id="progress" aria-label="進捗サマリー"></section>
 
       <nav class="seg" role="tablist" aria-label="表示切り替え">
         <button type="button" role="tab" data-view="today" aria-selected="true"></button>
@@ -292,6 +338,11 @@
         <div class="page-info" id="pageInfo"></div>
         <button type="button" id="nextBtn">次へ →</button>
       </div>
+
+      <form class="addbar" id="addForm">
+        <input type="text" id="quickName" placeholder="＋ タスクを追加" aria-label="タスク名を入力して追加" autocomplete="off" />
+        <button type="submit">追加</button>
+      </form>
 
       <div class="toast" id="toast" role="status">
         <span class="tmsg" id="toastMsg"></span>
@@ -353,13 +404,74 @@
         TASKS.forEach(function(t){ if(t.ord == null) t.ord = 999; });
       })();
 
-      function pageSize(){
-        // 実際に使える高さから決める（目安4〜6件）。行68px＋上下の固定UI分を差し引く。
-        var avail = window.innerHeight - 232;
+      function pageSize(upCount){
+        // 実際に使える高さから決める（目安4〜6件）。行68px＋固定UI分を差し引く。
+        // 232=従来の固定UI、102=進捗サマリー、58=下部追加バー、直近の予定は件数分。
+        var chrome = 232 + 102 + 58;
+        if(upCount) chrome += 56 + Math.min(upCount, 3) * 38 + (upCount > 3 ? 20 : 0);
+        var avail = window.innerHeight - chrome;
         var n = Math.floor(avail / 68);
-        if(n < 3) n = 3;
+        var min = upCount ? 2 : 3;
+        if(n < min) n = min;
         if(n > 6) n = 6;
         return n;
+      }
+
+      // 「今日」表示の下部に出す直近の予定：今日のリストに出ていない未完了で、
+      // 締切が今日〜7日以内、または実施予定日が明日〜7日以内のもの。日付の早い順。
+      function upcomingTasks(){
+        if(state.view !== "today" || state.query) return [];
+        var ts = todayStr();
+        var limit = addDaysStr(ts, 7);
+        function eff(t){
+          var cands = [];
+          if(t.due && t.due >= ts && t.due <= limit) cands.push(t.due);
+          if(t.plan && t.plan > ts && t.plan <= limit) cands.push(t.plan);
+          if(!cands.length) return null;
+          cands.sort();
+          return cands[0];
+        }
+        var list = TASKS.filter(function(t){
+          if(t.done || t.plan === ts) return false;
+          if(state.cat !== "all" && t.cat !== state.cat) return false;
+          return eff(t) !== null;
+        });
+        list.sort(function(a,b){
+          var ea = eff(a), eb = eff(b);
+          if(ea !== eb) return ea < eb ? -1 : 1;
+          if(!!a.must !== !!b.must) return a.must ? -1 : 1;
+          return a.ord - b.ord;
+        });
+        list.forEach(function(t){
+          var e = eff(t);
+          t._eff = e;
+          t._effKind = (t.plan === e && t.due !== e) ? "実施" : "締切";
+        });
+        return list;
+      }
+      function upDateLabel(s){
+        var d = Math.round((parseDue(s) - todayLocal()) / 86400000);
+        if(d === 0) return "今日";
+        if(d === 1) return "明日";
+        if(d === 2) return "明後日";
+        var dt = parseDue(s);
+        return (dt.getMonth()+1) + "/" + dt.getDate();
+      }
+      function upcomingHtml(list){
+        if(!list.length) return "";
+        var show = list.slice(0, 3);
+        var rows = show.map(function(t){
+          return '<button type="button" class="up-row" data-up="'+esc(t.id)+'" aria-label="詳細を開く：'+esc(t.name)+'">'
+            + '<span class="up-date">'+esc(upDateLabel(t._eff))+'</span>'
+            + '<span class="up-kind">'+t._effKind+'</span>'
+            + '<span class="up-name">'+esc(t.name)+'</span>'
+            + (t._effKind === "締切" && isTentative(t) ? '<span class="up-kind">目安</span>' : '')
+            + '</button>';
+        }).join("");
+        var more = list.length > show.length
+          ? '<div class="up-more">ほか'+(list.length - show.length)+'件は「すべて」で確認できます</div>' : "";
+        return '<section class="upcoming"><h2>直近の予定<span class="cnt">'+list.length+'件</span></h2>'
+          + '<div class="up-list">'+rows+'</div>'+more+'</section>';
       }
 
       // 締切の短い表示：「今日まで」「明日まで」「11/12まで」「3日超過」
@@ -458,9 +570,23 @@
         var todayCount = open.filter(function(t){ return t.plan === ts; }).length;
         var overCount = open.filter(function(t){ var d = daysLeft(t.due); return d !== null && d < 0; }).length;
 
-        document.getElementById("headSub").innerHTML =
-          "今日 " + todayCount + "件 ・ 未完了 " + open.length + "件"
-          + (overCount ? ' ・ <span class="over">期限超過 ' + overCount + '件</span>' : "");
+        document.getElementById("headSub").textContent =
+          "今日 " + todayCount + "件 ・ 未完了 " + open.length + "件";
+
+        // 進捗サマリー（カウンターはここに集約）
+        var totalAll = TASKS.length;
+        var pct = totalAll ? Math.round(done.length / totalAll * 100) : 0;
+        var weekCount = open.filter(function(t){ var d = daysLeft(t.due); return d !== null && d >= 0 && d <= 7; }).length;
+        document.getElementById("progress").innerHTML =
+          '<div class="p-row"><span class="p-label">進捗</span><span class="p-pct">' + pct + '%</span></div>'
+          + '<div class="bar"><i style="width:' + pct + '%"></i></div>'
+          + '<div class="p-counts">'
+          + (overCount
+              ? '<span class="over">遅れ <b>' + overCount + '件</b></span>'
+              : '<span>遅れ <b>0件</b></span>')
+          + '<span>7日以内 <b>' + weekCount + '件</b></span>'
+          + '<span>完了 <b>' + done.length + '/' + totalAll + '件</b></span>'
+          + '</div>';
 
         var tabs = document.querySelectorAll(".seg button");
         var labels = { today: "今日 " + todayCount, all: "すべて " + open.length, done: "完了 " + done.length };
@@ -474,8 +600,9 @@
           chips[j].setAttribute("aria-pressed", chips[j].getAttribute("data-cat") === state.cat ? "true" : "false");
         }
 
+        var up = upcomingTasks();
         var list = viewTasks();
-        var ps = pageSize();
+        var ps = pageSize(up.length);
         var totalPages = Math.max(1, Math.ceil(list.length / ps));
         var page = state.pages[state.view];
         if(page > totalPages - 1) page = totalPages - 1;
@@ -485,23 +612,25 @@
         var pageItems = list.slice(start, start + ps);
 
         var main = document.getElementById("main");
+        var cardHtml;
         if(!list.length){
           if(state.view === "today" && state.cat === "all" && !state.query){
-            main.innerHTML = '<section class="card"><div class="empty">'
+            cardHtml = '<section class="card"><div class="empty">'
               + '<div class="msg">今日の予定なし</div>'
               + '<div class="sub-msg">実施予定日が今日のタスクはありません</div>'
               + '<button type="button" class="pick-btn" id="pickBtn">タスクを選ぶ</button>'
               + '</div></section>';
           } else if(state.view === "done"){
-            main.innerHTML = '<section class="card"><div class="empty"><div class="msg">完了したタスクはありません</div></div></section>';
+            cardHtml = '<section class="card"><div class="empty"><div class="msg">完了したタスクはありません</div></div></section>';
           } else {
-            main.innerHTML = '<section class="card"><div class="empty"><div class="msg">該当するタスクはありません</div></div></section>';
+            cardHtml = '<section class="card"><div class="empty"><div class="msg">該当するタスクはありません</div></div></section>';
           }
         } else {
-          main.innerHTML = '<section class="card">'
+          cardHtml = '<section class="card">'
             + pageItems.map(function(t,i){ return rowHtml(t, start + i); }).join("")
             + '</section>';
         }
+        main.innerHTML = cardHtml + upcomingHtml(up);
 
         var info = document.getElementById("pageInfo");
         if(list.length){
@@ -515,9 +644,10 @@
       }
 
       /* ---------- Toast（完了の取り消し） ---------- */
-      function showToast(msg){
+      function showToast(msg, canUndo){
         var toast = document.getElementById("toast");
         document.getElementById("toastMsg").textContent = msg;
+        document.getElementById("toastUndo").style.display = canUndo ? "" : "none";
         toast.classList.add("show");
         if(toastTimer) clearTimeout(toastTimer);
         toastTimer = setTimeout(hideToast, 5000);
@@ -698,6 +828,13 @@
         var pick = e.target.closest ? e.target.closest("#pickBtn") : null;
         if(pick){ state.view = "all"; render(); return; }
 
+        var upRow = e.target.closest ? e.target.closest("[data-up]") : null;
+        if(upRow){
+          var tu = findTask(upRow.getAttribute("data-up"));
+          if(tu) openEditor(tu);
+          return;
+        }
+
         var chk = e.target.closest ? e.target.closest('[data-act="toggle"]') : null;
         if(chk){
           var row = chk.closest(".row");
@@ -709,7 +846,7 @@
             t1.done = !wasDone;
             lastToggle = { id: t1.id, wasDone: wasDone };
             render();
-            showToast(wasDone ? "未完了に戻しました" : "完了しました");
+            showToast(wasDone ? "未完了に戻しました" : "完了しました", true);
           }, 190);
           return;
         }
@@ -762,7 +899,27 @@
       document.getElementById("nextBtn").addEventListener("click", function(){
         state.pages[state.view]++; render();
       });
-      document.getElementById("addBtn").addEventListener("click", function(){ openEditor(null); });
+      // 下部バーからのクイック追加（タスク名だけで登録。実施予定日は今日、区分は現在の絞り込み）
+      document.getElementById("addForm").addEventListener("submit", function(e){
+        e.preventDefault();
+        var input = document.getElementById("quickName");
+        var name = input.value.replace(/^\s+|\s+$/g, "");
+        if(!name){ input.focus(); return; }
+        var maxOrd = 0;
+        TASKS.forEach(function(x){ if(x.ord > maxOrd && x.ord < 900) maxOrd = x.ord; });
+        TASKS.push({
+          id: "u" + Date.now(),
+          cat: state.cat === "all" ? "work" : state.cat,
+          name: name, due: null, tentative: false, assumed: false, must: false,
+          plan: todayStr(), kind: null, done: false, ord: maxOrd + 1
+        });
+        if(state.view === "done") state.view = "today";
+        input.value = "";
+        hideToast();
+        render();
+        showToast("追加しました", false);
+        input.focus();
+      });
 
       // スワイプでもページ送り（ボタン操作も併用可能）
       var touchX = null, touchY = null;
