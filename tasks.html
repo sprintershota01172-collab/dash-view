@@ -338,7 +338,8 @@
         { id: "common-jig-fmea", cat: "work", name: "全車種共通治具 FMEA", short: "共通治具のFMEA", due: "2026-11-30", plan: "2026-11-27" },
         { id: "gantt-maint",   cat: "work",    name: "ガナートメンテ", short: "ガナートメンテ", due: "2026-12-02", plan: "2026-11-18", planEnd: "2026-11-25", memo: "ガナートは生準（生産準備）の日程表。納期は12/2（水）午前、調整は納期の1〜2週間前まで" },
         { id: "kojima-press-tour", cat: "work", name: "小島プレスとの相互工場見学会", short: "小島プレス工場見学会", due: "2026-11-04", plan: "2026-11-04", memo: "見学会のため当日は作業不可" },
-        { id: "sensor-replace-1106", cat: "work", name: "センサを変える", short: "センサ交換", due: "2026-11-06", plan: "2026-11-06", memo: "11/6の昼休憩に実施" }
+        { id: "sensor-replace-1106", cat: "work", name: "センサを変える", short: "センサ交換", due: "2026-11-06", plan: "2026-11-06", memo: "11/6の昼休憩に実施" },
+        { id: "889-peeling-qc-meeting", cat: "work", name: "889恒温槽での剥がれについて品管と話し合う", short: "889恒温槽剥がれ協議", due: "2026-11-06", tentative: true, must: true, plan: "2026-11-05", memo: "品管との話し合いのため最優先。期限は秘書割当の仮期限" }
       ];
       TASKS.forEach(function(t){
         if(t.planEnd === undefined) t.planEnd = null;
